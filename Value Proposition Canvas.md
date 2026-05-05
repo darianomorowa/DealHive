@@ -2,7 +2,7 @@
 
 ## Customer Segment
 
-### To-Dos**
+### To-Dos
 
 - Produkte günstiger kaufen als zum Einzelpreis
 - Mengenrabatte nutzen, ohne selbst große Mengen abnehmen zu müssen
