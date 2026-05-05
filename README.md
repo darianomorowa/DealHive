@@ -1,6 +1,6 @@
 # Deal Hive
 
-Gruppenkauffplattform, auf der Nutzer Sammelaktionen erstellen, um gemeinsam Mengenrabatte zu erreichen.
+Deal Hive ist eine webbasierte Gruppenkauffplattform, auf der Händler Produkte mit Mengenrabatten anbieten und Käufer gemeinsam beitreten, um die Rabattschwelle zu erreichen.
 
 ## Dokumentation
 
