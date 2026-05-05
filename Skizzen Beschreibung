@@ -1,0 +1,41 @@
+1. Login-Screen
+
+- Nutzer kann auswählen, ob er als Privatperson oder Firma einloggen möchte.
+- Danach kann er sich mit E-Mail und Passwort anmelden.
+- Zusätzlich gibt es Optionen wie angemeldet bleiben, Passwort vergessen und Konto erstellen.
+
+2. Neue Anzeige erstellen
+
+- Unternehmen können hier eine neue Anzeige für ein Produkt erstellen.
+- Es werden wichtige Daten eingetragen, z. B. Produktname, Kategorie, Beschreibung, Zielmenge, Preis und Deadline.
+- Rechts gibt es eine Vorschau, damit man direkt sieht, wie die Anzeige später aussieht.
+
+3. Angebote entdecken
+
+- Privatnutzer sehen hier alle aktuellen Anzeigen von Unternehmen.
+- Über Filter wie Kategorie, Status, Standort und Preis können passende Angebote gesucht werden.
+- Jede Anzeige zeigt kurz Produkt, Preis, Teilnehmerstand und Buttons für Details oder Beitreten.
+
+4. Anzeige im Detail
+
+- Hier sieht man alle wichtigen Informationen zu einer bestimmten Anzeige.
+- Dazu gehören Produktbild, Beschreibung, Preis, Verkäufer, Standort, Teilnehmerzahl und Preisstaffel.
+- Nutzer können hier die Menge auswählen und der Einkaufsgruppe beitreten.
+
+5. Beitritt bestätigen / Erfolgsseite
+
+- Auf diesem Screen prüft der Nutzer seine Teilnahme nochmal.
+- Es werden Menge, Preisübersicht, Lieferadresse und Bedingungen angezeigt.
+- Nach der Bestätigung sieht der Nutzer, dass er erfolgreich beigetreten ist und wie viele Teilnehmer noch fehlen.
+
+6. Händler-Dashboard
+
+- Unternehmen verwalten hier ihre eigenen Anzeigen.
+- Sie sehen laufende Anzeigen, aktive Teilnehmer und abgeschlossene Deals.
+- Zusätzlich können sie direkt neue Anzeigen erstellen und bestehende Anzeigen über die Tabelle öffnen.
+
+7. Meine Einkaufsgruppen
+
+- Privatnutzer sehen hier alle Gruppenkäufe, denen sie beigetreten sind.
+- Es gibt eine Übersicht über aktive Gruppen, erreichte Ziele und abgeschlossene Deals.
+- In der Tabelle und den Karten kann der Nutzer seine Teilnahmen verfolgen und wieder zur Anzeige wechseln.
