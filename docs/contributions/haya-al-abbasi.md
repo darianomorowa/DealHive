@@ -26,17 +26,17 @@ Meine Zielnote für dieses Modul ist **1,0**.
 
 ## Personal goals
 
-Meine persönlichen Ziele in diesem Modul sind, meine Fähigkeiten im Bereich UI/UX-Design und Produktstrukturierung weiterzuentwickeln sowie besser zu verstehen, wie technische und konzeptionelle Entscheidungen gemeinsam eine funktionierende Plattform formen.
+Meine persönlichen Ziele in diesem Modul sind, meine Fähigkeiten im Bereich UI/UX-Design und Product Discovery weiterzuentwickeln sowie besser zu verstehen, wie digitale Plattformen nutzerfreundlich und sinnvoll aufgebaut werden.
 
-Außerdem möchte ich lernen, wie man Ideen klar dokumentiert, im Team abstimmt und nutzerfreundlich umsetzt.
+Außerdem möchte ich lernen, wie man Ideen im Team entwickelt, strukturiert ausarbeitet und gemeinsam in ein funktionierendes Produktkonzept überführt.
 
-Ich finde an DealHive besonders spannend, dass wir nicht nur eine technische Web-App entwickeln, sondern ein konkretes Produkt mit echter Zielgruppe und nachvollziehbarem Nutzen.
+Ich finde an DealHive besonders spannend, dass wir nicht nur eine technische Plattform entwickeln, sondern ein Konzept mit realem Nutzen für Käufer und Creator gestalten.
 
 ---
 
 # Eidesstattliche Erklärung (Stand 17.05.2026)
 
-**[Haya Al-Abbasi, Matrikelnummer: 77211974821]**
+**Haya Al-Abbasi, Matrikelnummer: 77211974821**
 
 Ich erkläre an Eides statt:
 
@@ -53,8 +53,8 @@ Mir ist weiterhin bewusst, dass ich, sofern ich zur Erstellung dieser Arbeit KI-
 | # | My contribution | Why I am proud of it | Which challenge I overcame |
 |---|---|---|---|
 | 1 | Mitarbeit an der UI- und Plattformstruktur | Dadurch wurde die Plattform übersichtlicher und verständlicher für Nutzer. | Die Herausforderung war, verschiedene Ideen sinnvoll und einfach zu strukturieren. |
-| 2 | Unterstützung bei Product Discovery und Zielgruppenideen | Dadurch wurde das Konzept realistischer und besser auf Nutzer abgestimmt. | Es war schwierig, die wichtigsten Funktionen zu priorisieren und unnötige Features wegzulassen. |
-| 3 | Mitarbeit an der Dokumentationsstruktur | Die Inhalte wurden besser organisiert und verständlicher dargestellt. | Viele unterschiedliche Themen mussten sauber voneinander getrennt werden. |
+| 2 | Unterstützung bei Product Discovery und Zielgruppenideen | Dadurch wurde das Konzept realistischer und besser auf Nutzer abgestimmt. | Es war schwierig, die wichtigsten Funktionen zu priorisieren und unterschiedliche Bedürfnisse zu berücksichtigen. |
+| 3 | Mitarbeit an der Entwicklung von Plattform- und Nutzerideen | Die Plattform wurde dadurch nutzerfreundlicher und klarer aufgebaut. | Die Herausforderung war, unterschiedliche Nutzerrollen und Abläufe sinnvoll miteinander zu kombinieren. |
 
 ---
 
@@ -62,9 +62,9 @@ Mir ist weiterhin bewusst, dass ich, sofern ich zur Erstellung dieser Arbeit KI-
 
 | Contribution | Proof, e.g., git commits | Sources used |
 |---|---|---|
-| Mitarbeit an UI-/UX-Ideen und Plattformstruktur | Product Discovery, UI-Screens | Eigene Ideen, Teamdiskussion |
-| Unterstützung bei Strukturierung der Projektdokumentation | Dokumentation im `/docs`-Ordner | FSWD-Template |
-| Mitarbeit an Zielgruppen- und Plattformideen | Value Proposition | Gruppenarbeit |
+| Mitarbeit an UI-/UX-Ideen und Plattformstruktur | UI-Screens, Product Discovery | Eigene Ideen, Teamdiskussion |
+| Unterstützung bei Zielgruppen- und Plattformideen | Value Proposition | Gruppenarbeit |
+| Mitarbeit an Product Discovery und Nutzerideen | Product Discovery | Eigene Überlegungen, Diskussionen |
 | Pflege der eigenen Contribution-Seite | Diese Datei | FSWD Contribution Template |
 
 ---
@@ -73,7 +73,7 @@ Mir ist weiterhin bewusst, dass ich, sofern ich zur Erstellung dieser Arbeit KI-
 
 | # | AI Tool | Purpose of Use | Affected Sections (Code + Docs) | Remarks, Procedure, Prompts |
 |---|---|---|---|---|
-| 01 | ChatGPT | Unterstützung beim Strukturieren und Formulieren von Dokumentationstexten | Contributions, Dokumentation | Inhalte wurden geprüft, angepasst und nicht unverändert übernommen. |
+| 01 | ChatGPT | Unterstützung beim Strukturieren und Formulieren von Dokumentationstexten | Contributions, Reflection | Inhalte wurden geprüft und angepasst. |
 | 02 | ChatGPT | Unterstützung bei UI-/UX-Ideen und Brainstorming | Product Discovery, UI-Screens | Nutzung als Ideengeber und Formulierungshilfe. |
-| 03 | Claude (claude.ai) | Unterstützung bei konzeptionellen Ideen und Textverbesserung | Value Proposition, Contributions | Inhalte stammen aus eigener Gruppenarbeit und wurden manuell überarbeitet. |
-| 04 | Claude (claude.ai) | Hilfe bei Markdown-, Git- und Dokumentationsfragen | GitHub Repository, Contribution-Seite | Befehle und Änderungen wurden selbst ausgeführt und kontrolliert. |
+| 03 | Claude (claude.ai) | Unterstützung bei konzeptionellen Ideen und Textverbesserung | Contributions, Product Discovery | Inhalte wurden manuell überarbeitet und angepasst. |
+| 04 | Claude (claude.ai) | Hilfe bei Markdown-, Git- und GitHub-Fragen | Contribution-Seite | Befehle und Änderungen wurden selbst ausgeführt und kontrolliert. |
