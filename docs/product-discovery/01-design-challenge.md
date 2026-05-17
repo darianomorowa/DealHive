@@ -13,7 +13,7 @@ Wie können wir Künstlern, Handwerkern und kleinen Anbietern in der Brettspiel-
 
 ---
 
-## [Raw Material]
+## Workflow
 
 Für die Definition der Design Challenge wurden folgende bisherige Projektinhalte berücksichtigt:
 

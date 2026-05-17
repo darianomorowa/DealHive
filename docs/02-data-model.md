@@ -1,5 +1,6 @@
 ---
 title: Data Model
+nav_exclude: true
 nav_order: 2
 ---
 

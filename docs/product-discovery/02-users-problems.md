@@ -14,7 +14,7 @@ nav_order: 2
 {: .text-delta }
 </details>
 
-## [Raw Material]
+## Workflow
 
 Für diese Seite haben wir vor allem unseren bisherigen Value Proposition Canvas genutzt:
 
