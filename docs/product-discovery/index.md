@@ -41,17 +41,17 @@ Diese Domäne passt gut zu Sammelkäufen, weil viele Produkte individuell, limit
 
 Die Product-Discovery-Dokumentation besteht aus vier Teilen:
 
-1. **Design Challenge**  
+1. [**Design Challenge**](01-design-challenge.md)  
    Hier beschreiben wir die zentrale Fragestellung des Projekts.
 
-2. **Target Users + Problems**  
+2. [**Target Users + Problems**](02-users-problems.md)  
    Hier beschreiben wir die wichtigsten Zielgruppen und deren Probleme.
 
-3. **Solution Elements**  
+3. [**Solution Elements**](03-solution-elements.md)  
    Hier beschreiben wir die wichtigsten App-Bausteine, den angepassten Value Proposition Canvas und die UI-Skizzen.
 
-4. **Tests**  
-   Hier dokumentieren wir Annahmen, geplante Tests und Feedbackpunkte.
+4. [**Tests**](04-tests.md)  
+   noch keine Ahnung, wie wir das gestalten
 
 ## Ziel der Product Discovery
 
