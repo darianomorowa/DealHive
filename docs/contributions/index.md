@@ -1,30 +1,37 @@
 ---
-title: Home
-nav_order: 0
+title: Individual Contributions
+nav_order: 5
+has_children: true
 ---
 
-# DealHive
+# Individual Contributions
 
-![DealHive Logo](assets/images/dealhive-logo.png)
+## Team Composition
+
+Team Name: **DealHive**
+
+## Contributors
+
+| Name | Personal Goals |
+| :-- | :-- |
+| Darian Omorowa | Full-Stack-Grundstruktur verstehen und anwenden können, besonders Python, Flask, SQLite und Jinja2. Außerdem eigenständig betriebswirtschaftliche Web-Applikationen konzipieren und den gesamten Entwicklungsprozess besser verstehen. |
+| Daniil Ioffe | Python lernen, Präsentieren verbessern, Teamarbeit professioneller gestalten und technische Umsetzung mit strategischem Denken verbinden. |
+| Haya Al-Abbasi | UI/UX-Designfähigkeiten verbessern, strukturiertes Produktdenken lernen und Teamarbeit in Softwareprojekten verbessern. |
+| Matthieu Weinlein | Fähigkeiten in der Webentwicklung mit Python verbessern und verstehen, wie man eine vollständige Webanwendung strukturiert und umsetzt. Außerdem sauberen und effizienten Code schreiben und praktische Erfahrung mit Flask sammeln. |
+
+## Project Context
 
 DealHive ist eine Web-App für Sammelkäufe im Bereich Brettspiele, TTRPGs, Tabletops und passendes Zubehör.
 
-Künstler, Handwerker und kleine Anbieter können limitierte Angebote für Produkte wie Würfelsets, Miniaturen, Terrain, Würfeltürme oder anderes Spielzubehör erstellen. Nutzer können diesen Angeboten beitreten. Sobald genügend Personen teilnehmen, wird die Produktion ausgelöst. Bei größeren Gruppen können zusätzliche Rabattstufen freigeschaltet werden, zum Beispiel 10% oder 20%.
+Creator, Künstler oder kleine Anbieter können Produkte wie Würfelsets, Miniaturen, Terrain, Würfeltürme oder andere Accessoires als Sammelkauf anbieten. Käufer können diesen Angeboten beitreten. Sobald genug Personen teilnehmen, kann die Produktion starten. Bei größeren Gruppen können zusätzliche Rabattstufen freigeschaltet werden.
 
-## Projektidee
+## Individual Contribution Pages
 
-Viele Produkte in der Brettspiel- und Tabletop-Community sind individuell, handgemacht oder nur in kleinen Mengen verfügbar. Dadurch sind sie oft teuer oder für kleine Anbieter schwer planbar.
+Die individuellen Beiträge werden in eigenen Dateien dokumentiert:
 
-DealHive bündelt interessierte Käufer in einem Sammelkauf. Dadurch können Anbieter besser einschätzen, ob sich die Herstellung lohnt. Gleichzeitig profitieren Käufer davon, dass größere Gruppen bessere Preise ermöglichen.
+- [Daniil Ioffe](daniil-ioffe.md)
+- [Darian Omorowa](darian-omorowa.md)
+- [Haya Al-Abbasi](haya-al-abbasi.md)
+- [Matthieu Weinlein](matthieu-weinlein.md)
 
-## Beispiel
-
-Ein Anbieter erstellt ein Angebot für ein besonderes Würfelset. Die Produktion startet erst, wenn mindestens 20 Personen teilnehmen. Ab 40 Personen erhalten alle 10% Rabatt. Ab 60 Personen steigt der Rabatt auf 20%.
-
-## Domainbezug
-
-Der Domainbezug liegt im Bereich Brettspiele, TTRPGs, Tabletops und passendes Zubehör. Die Plattform richtet sich an eine Community, in der individuelle, limitierte oder handgemachte Produkte eine wichtige Rolle spielen.
-
-## Verbesserungen seit der ersten Abgabe
-
-Domainbezug, Doku nach Vorgaben
+Jede Person dokumentiert dort ihre wichtigsten Beiträge, persönliche Ziele und den Einsatz von Hilfsmitteln wie KI-Tools.
