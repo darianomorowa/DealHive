@@ -14,7 +14,7 @@ nav_order: 3
 {: .text-delta }
 </details>
 
-## [Raw Material]
+## Workflow
 
 Für diese Seite haben wir unsere bisherigen Projektideen und Entwürfe als Grundlage genutzt:
 
