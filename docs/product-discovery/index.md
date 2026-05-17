@@ -13,8 +13,18 @@ Künstler, Handwerker und kleine Anbieter können limitierte Angebote für Produ
 
 ## Projektidee
 
+Viele Produkte in der Brettspiel- und Tabletop-Community sind individuell, handgemacht oder nur in kleinen Mengen verfügbar. Dadurch sind sie oft teuer oder für kleine Anbieter schwer planbar.
+
+DealHive bündelt interessierte Käufer in einem Sammelkauf. Dadurch können Anbieter besser einschätzen, ob sich die Herstellung lohnt. Gleichzeitig profitieren Käufer davon, dass größere Gruppen bessere Preise ermöglichen.
+
+## Beispiel
+
 Ein Anbieter erstellt ein Angebot für ein besonderes Würfelset. Die Produktion startet erst, wenn mindestens 20 Personen teilnehmen. Ab 40 Personen erhalten alle 10% Rabatt. Ab 60 Personen steigt der Rabatt auf 20%.
+
+## Domainbezug
+
+Der Domainbezug liegt im Bereich Brettspiele, TTRPGs, Tabletops und passendes Zubehör. Die Plattform richtet sich an eine Community, in der individuelle, limitierte oder handgemachte Produkte eine wichtige Rolle spielen.
 
 ## Verbesserungen seit der ersten Abgabe
 
-Domainbezug,sauberes Doku nach Vorgabe
+Domainbezug, Doku nach Vorgaben

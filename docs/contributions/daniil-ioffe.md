@@ -1,18 +1,11 @@
 ---
-title: Jane Dane
+title: Daniil Ioffe
 parent: Individual Contributions
 nav_order: 1
 ---
 
-{: .attention }
-> Create a separate, individual file for every team member, proposed naming scheme: `📄firstname-lastname.md`.
->
-> *Find and replace* (VS Code: <kbd>Ctrl</kbd>+<kbd>H</kbd> / <kbd>⌘</kbd>+<kbd>H</kbd>) `Jane Dane` with the student's name. On this template page, you will find this name 4 times (including in this `attention` box). 
->
-> You may delete this `attention` box.
-
 {: .no_toc }
-# Jane Dane
+# Daniil Ioffe
 
 <details open markdown="block">
 <summary>Table of contents</summary>
@@ -25,17 +18,21 @@ nav_order: 1
 
 ### Target grade
 
-[State your target grade for this module. This is meant as a signal to your fellow team members.]
+Meine Zielnote für dieses Modul ist **1,0**.
 
 ### Personal goals
 
-[Spell out your personal goals regarding this Module, to create transparency among the team members.]
+Meine persönlichen Ziele in diesem Modul sind, Python besser zu lernen, sicherer im Präsentieren zu werden und Teamarbeit in einem Softwareprojekt professioneller zu gestalten.
+
+Außerdem möchte ich lernen, wie man eine technische Umsetzung nicht nur als Code betrachtet, sondern auch mit Produktidee, Zielgruppe und strategischem Denken verbindet.
+
+Dat Spannende an DealHive ist, dass wir nicht einfach irgendeine Web-App bauen, sondern eine Idee mit konkretem Domainbezug entwickeln.
 
 ---
 
-## Eidesstattliche Erklärung
+## Eidesstattliche Erklärung (Stand 17.05.2026)
 
-**[Jane Dane, Matrikelnr.: 1234567]**
+**[Daniil Ioffe, Matrikelnr.: 77203498549]**
 
 Ich erkläre an Eides statt:
 
@@ -51,35 +48,27 @@ Mir ist weiterhin bewusst, dass ich, sofern ich zur Erstellung dieser Arbeit KI-
 
 | \# | My contribution | Why I am proud of it | Which challenge I overcame |
 | :-- | :-- | :-- | :-- |
-| 1 | [Describe your individual contribution] |  |  |
-| 2 |  |  |  |
-| 3 |  |  |  |
-
-## Design Decisions that I led
-
-1. [DD #00](../design-decisions/dd-00.md)
-2. [DD #01](../design-decisions/dd-01.md)
-
----
+| 1 | Überarbeitung des Projektkonzepts mit klarem Domainbezug auf Brettspiele, TTRPGs, Tabletops und Zubehör | Dadurch wurde DealHive konkreter und weniger generisch. Die App wirkt jetzt eher wie ein echtes Produkt für eine bestimmte Community. | Die ursprüngliche Idee war noch sehr allgemein. Nach Rücksprache mit Herrn. Eck mussten wir sie so zuschneiden, dass sie weiterhin einfach umsetzbar bleibt, aber fachlich klarer wird. |
+| 2 | Mitarbeit an der Dokumentationsstruktur nach dem vorgegebenen FSWD-Template | Ich habe darauf geachtet, dass unsere bisherigen Inhalte nicht verloren gehen, sondern in die Template-Struktur übertragen werden. | Das Template war am Anfang etwas unübersichtlich. Die Herausforderung war, Product Discovery, Value Proposition, Contributions und Material sauber auseinanderzuhalten. |
+| 3 | Überarbeitung und Generierung domainbezogener Low-Fidelity-UI-Screens | Die neuen Skizzen zeigen jetzt konkrete Sammelkäufe wie Würfelsets, Terrain und Miniaturen. Dadurch sieht man den Domainbezug direkt in der Oberfläche. | Die alten Screens waren funktional, aber noch sehr generisch. Ich musste die Begriffe, Beispiele und Abläufe so anpassen, dass sie zum DealHive-Konzept passen. |
 
 ## Contributions
 
 | Contribution | Proof, e.g., git commits | Sources used |
 | :-- | :-- | :-- |
-| [Design Challenge research] | [Research traces](../product-discovery/01-design-challenge.md#raw-materia) | See left |
-| [Refactor to use Flask Blueprints] | [Commit 1](https://github.com/hwrberlin/fswd/commit/d816e4), [Commit 2](https://github.com/hwrberlin/fswd/commit/75a6c1) | [Flask Documentation](https://flask.palletsprojects.com/en/stable/blueprints/#the-concept-of-blueprints) |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| Domainbezug für DealHive ausgearbeitet | Dokumentation in [Value Proposition](../01-value-proposition.md), [Design Challenge](../product-discovery/01-design-challenge.md) und [Solution Elements](../product-discovery/03-solution-elements.md) | Eigene Projektidee, Teamdiskussion, bestehender Value Proposition Canvas |
+| Bestehenden Value Proposition Canvas auf Brettspiele, TTRPGs und Tabletop-Zubehör übertragen | [Target Users + Problems](../product-discovery/02-users-problems.md), [Solution Elements](../product-discovery/03-solution-elements.md) | Ursprünglicher Value Proposition Canvas, eigene Überarbeitung |
+| UI-Screens mit stärkerem Domainbezug überarbeitet | Wireframes im Ordner `../product-discovery/material/03-se/ui-screens/` | Bestehende UI-Skizzen, eigene Überarbeitung, ChatGPT Image Generation |
+| Dokumentationsstruktur im FSWD-Template mit aufgebaut | Dateien im `/docs`-Ordner, besonders Product Discovery und Contributions | FSWD-App-Template des Kurses |
+| Eigene Contribution-Seite gepflegt | Diese Datei | FSWD Contribution Template |
 
 ---
 
 ## AI Directory
 
-[You must maintain a comprehensive AI Directory, as per [FB1 Regulations on Generative AI Use](../assets/pdf/FB1_KI_Regelung_DE_ENG.pdf). "Catch-all" disclosure (like "AI Tool used for bugfixing") is generally not sufficient. You may list an *AI Tool* multiple times, e.g., if you have used it for different purposes / in different parts of your project. Any use of Agentic AI is **forbidden**.]
-
 | #   | AI Tool | Purpose of Use | Affected Sections (Code + Docs) | Remarks, Procedure, Prompts |
 | :-- | :--     | :--            | :--                             | :--                         |
-| 01  |         |                |                                 |                             |
-| 02  |         |                |                                 |                             |
-| ... |         |                |                                 |                             |
+| 01  | ChatGPT | Unterstützung beim Sortieren und Strukturieren eigener Notizen und Projektideen | Teile der Dokumentation im `/docs`-Ordner | Die Inhalte wurden von mir geprüft, angepasst und nicht unverändert übernommen. |
+| 02  | ChatGPT | Sprachliche Überarbeitung einzelner deutscher Dokumentationstexte | Product Discovery, Value Proposition, Contributions | Nutzung als Formulierungshilfe. Die fachlichen Inhalte stammen aus der Gruppenidee und wurden manuell angepasst. |
+| 03 | ChatGPT Image Generation | Einfache UI-Skizzen Anpassung auf Basis unserer vorhandenen Skizzen | UI-Screens im Bereich Product Discovery | Die Prompts und Anpassungswünsche wurden manuell gesteuert. Die Ergebnisse wurden geprüft und ausgewählt. Keine autonome Bearbeitung des Projekts. |
+| 04  | ChatGPT | Unterstützung bei Git- und Template-Fragen | Arbeit am Branch `docs-template` | Nutzung als Schritt-für-Schritt-Hilfe. Befehle wurden manuell ausgeführt und kontrolliert. KEIN AGENTIC AI!!!!!!  |
