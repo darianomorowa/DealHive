@@ -7,13 +7,20 @@ nav_order: 2
 {: .no_toc }
 # Target Users + Problems
 
+<details open markdown="block">
+<summary>Table of contents</summary>
++ ToC
+{: toc }
+{: .text-delta }
+</details>
+
 ## [Raw Material]
 
 Für diese Seite haben wir vor allem unseren bisherigen Value Proposition Canvas genutzt:
 
 - [Ursprünglicher Value Proposition Canvas](material/02-up/value-proposition-canvas-original.md)
 
-Außerdem haben wir unsere erste Projektidee, die Team-Beschreibung und die vorhandenen UI-Skizzen berücksichtigt. Am Anfang war DealHive noch eher als allgemeine Gruppenkaufplattform gedacht. Danach haben wir den Fokus klarer gesetzt: Brettspiele, TTRPGs, Tabletops und das ganze Zubehör drumherum.
+Außerdem haben wir unsere erste Projektidee, die Team-Beschreibung und die vorhandenen UI-Skizzen berücksichtigt. Am Anfang war DealHive noch eher als allgemeine Gruppenkaufplattform gedacht. Danach haben wir den Fokus klarer gesetzt: Brettspiele, TTRPGs, Tabletops und passendes Zubehör.
 
 Dadurch wurden aus den allgemeinen Rollen „Buyer“ und „Seller“ konkretere Zielgruppen: Käufer aus der Hobby-Community und Anbieter, die besondere Produkte für genau diese Community herstellen oder verkaufen.
 
@@ -21,7 +28,7 @@ Dadurch wurden aus den allgemeinen Rollen „Buyer“ und „Seller“ konkreter
 
 ## Target User 1: Anbieter / Creator
 
-Die erste Zielgruppe sind Anbieter, also zum Beispiel Künstler, Handwerker oder kleine Shops, die Zubehör für Brettspiele, TTRPGs oder Tabletops herstellen.
+Die erste Zielgruppe sind Anbieter. Damit meinen wir Künstler, Handwerker, kleine Shops oder Hobby-Creator, die Produkte für Brettspiele, TTRPGs oder Tabletops herstellen.
 
 Das können zum Beispiel sein:
 
@@ -31,6 +38,7 @@ Das können zum Beispiel sein:
 - Hersteller von Würfeltürmen
 - kleine Shops für Tabletop-Zubehör
 - Künstler mit limitierten Hobbyprodukten
+- Personen, die Zubehör über kleine Serien oder Auftragsarbeiten anbieten
 
 ### Was Anbieter erreichen wollen
 
@@ -46,6 +54,7 @@ Typische Aufgaben der Anbieter sind deshalb:
 - Preisstaffeln oder Rabattstufen erklären
 - Bestellungen sammeln
 - Käufer über den aktuellen Stand informieren
+- Produktion erst starten, wenn genügend Nachfrage da ist
 
 ### Probleme der Anbieter
 
@@ -56,6 +65,13 @@ Typische Aufgaben der Anbieter sind deshalb:
 - Teilnehmerzahlen und Fortschritt müssen oft manuell kommuniziert werden.
 - Rabattstufen sind schwer sauber darzustellen.
 - Ohne zentrale Plattform ist es schwieriger, genau die passende Community zu erreichen.
+- Bei zu geringer Nachfrage bleibt der Anbieter auf Aufwand, Planung oder Material sitzen.
+
+### Was DealHive für Anbieter verbessern soll
+
+DealHive soll Anbietern helfen, ihre Sammelkäufe strukturierter aufzusetzen. Ein Creator kann ein Angebot erstellen, Mindestteilnehmer festlegen und Rabattstufen sichtbar machen.
+
+Dadurch wird aus einer losen Interessensabfrage ein klarer Hive mit Fortschritt, Ziel und nächstem Rabattlevel.
 
 ---
 
@@ -71,6 +87,8 @@ Dazu gehören zum Beispiel:
 - Brettspiel-Fans
 - Sammler von Würfeln oder Miniaturen
 - Leute, die individuelles Spielzubehör suchen
+- Spielleiter, die Zubehör für ihre Kampagnen brauchen
+- Tabletop-Spieler, die Terrain, Tokens oder Spielmatten nutzen
 
 ### Was Käufer erreichen wollen
 
@@ -86,6 +104,7 @@ Typische Aufgaben der Käufer sind deshalb:
 - einem Sammelkauf beitreten
 - Fortschritt des Angebots verfolgen
 - sehen, wann die Mindestmenge oder nächste Rabattstufe erreicht wird
+- eigene Teilnahmen im Blick behalten
 
 ### Probleme der Käufer
 
@@ -96,6 +115,20 @@ Typische Aufgaben der Käufer sind deshalb:
 - Der Fortschritt einer Sammelbestellung ist nicht immer sichtbar.
 - Rabattschwellen sind für einzelne Käufer allein kaum erreichbar.
 - Manuelle Sammelbestellungen wirken teilweise chaotisch oder unsicher.
+- Käufer wissen nicht immer, ob ein Angebot noch aktiv ist oder wann die Produktion startet.
+
+### Was DealHive für Käufer verbessern soll
+
+DealHive soll Käufern einen zentralen Ort geben, an dem sie passende Hives entdecken und nachvollziehen können.
+
+Statt irgendwo in einem Chat zu suchen, sieht der Käufer direkt:
+
+- welches Produkt angeboten wird
+- wer der Creator ist
+- wie viele Personen schon teilnehmen
+- wann die Produktion startet
+- welche Rabattstufen möglich sind
+- welchen Hives er bereits beigetreten ist
 
 ---
 
@@ -106,3 +139,22 @@ Das zentrale Problem ist die Koordination.
 Anbieter brauchen genug Nachfrage, bevor sich die Produktion lohnt. Käufer profitieren davon, wenn viele Personen gemeinsam teilnehmen und dadurch bessere Preise möglich werden. Ohne eine zentrale Plattform ist dieser Prozess aber schnell unübersichtlich.
 
 DealHive setzt genau dort an: Die App sammelt Interesse an einem Ort, zeigt Fortschritt und Rabattstufen sichtbar an und macht Sammelkäufe für beide Seiten verständlicher.
+
+---
+
+## Warum der Domainbezug wichtig ist
+
+Der Domainbezug macht die Zielgruppen klarer. Eine allgemeine Gruppenkaufplattform könnte theoretisch alles anbieten, wirkt dadurch aber schnell beliebig.
+
+Bei DealHive konzentrieren wir uns bewusst auf Brettspiele, TTRPGs, Tabletops und Zubehör. In dieser Community gibt es viele Produkte, die gut zu Sammelkäufen passen:
+
+- handgemachte Würfelsets
+- Dungeon-Terrain
+- Miniaturen
+- Würfeltürme
+- Spielmatten
+- Kartenhalter
+- Token-Sets
+- Kampagnenzubehör
+
+Viele dieser Produkte sind limitiert, individuell oder werden nur in kleinen Mengen hergestellt. Genau deshalb passt die Idee von Hives und Sammelkäufen gut zu dieser Domäne.
