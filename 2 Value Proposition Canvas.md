@@ -1,3 +1,9 @@
+---
+title: Value prop Canvas
+nav_exclude: true
+nav_order: 99
+---
+
 # Value Proposition Canvas - Buyer
 
 ## Customer Segment

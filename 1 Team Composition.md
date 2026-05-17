@@ -1,3 +1,9 @@
+---
+title: Team Composition
+nav_exclude: true
+nav_order: 99
+---
+
 # Team Composition
 
 Team Name: **Deal Hive**
