@@ -177,7 +177,7 @@ Für die weitere Entwicklung ist wichtig, dass die Rollen klar erkennbar sind. K
 
 ### 2. Angebote entdecken v2
 
-![Angebote entdecken v2](material/03-se/ui-screens/Angebote_Entdecken_v2.png)
+![Angebote entdecken v2](material/03-se/ui-screens/Angebote_Entdecken_v2.jpeg)
 
 Die überarbeitete Angebotsübersicht zeigt aktive Sammelkäufe aus der Brettspiel-, TTRPG- und Tabletop-Welt.
 
