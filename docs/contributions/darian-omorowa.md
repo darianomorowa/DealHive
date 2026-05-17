@@ -59,3 +59,13 @@ Mir ist weiterhin bewusst, dass ich, sofern ich zur Erstellung dieser Arbeit KI-
 | Konzeptionelle Definition des Target Scope – bewusste Eingrenzung der ersten App-Version auf den Kernprozess | [Value Proposition](../01-value-proposition.md) unter "Target Scope" | Teamdiskussion, eigene Priorisierung |
 | Mitarbeit an der inhaltlichen Ausarbeitung der Projektdokumentation nach FSWD-Template | Dateien im `/docs`-Ordner, besonders Value Proposition und Product Discovery | FSWD-App-Template des Kurses, Teamdiskussion |
 | Eigene Contribution-Seite gepflegt | Git commit von Darian Omorowa | FSWD Contribution Template |
+
+---
+
+## AI Directory
+
+| #   | AI Tool | Purpose of Use | Affected Sections (Code + Docs) | Remarks, Procedure, Prompts |
+| :-- | :--     | :--            | :--                             | :--                         |
+| 01  | Claude (claude.ai) | Sparringspartner für konzeptionelle Entscheidungen und Produktlogik | Value Proposition, Rollenstruktur, Target Scope | Die Inhalte wurden von mir inhaltlich gesteuert, geprüft und angepasst. Claude wurde als Denkpartner genutzt, nicht als autonomer Agent. |
+| 02  | Claude (claude.ai) | Sprachliche Formulierungshilfe für Dokumentationstexte | Value Proposition, Contributions | Nutzung als Formulierungshilfe. Die fachlichen Inhalte stammen aus der Gruppenarbeit und wurden manuell angepasst. |
+| 03  | Claude (claude.ai) | Unterstützung bei Git-Befehlen und Repository-Setup | GitHub Repository, GitHub Pages | Befehle wurden manuell ausgeführt und kontrolliert. KEIN AGENTIC AI. |
