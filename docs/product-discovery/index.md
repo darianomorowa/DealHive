@@ -1,30 +1,68 @@
 ---
-title: Home
-nav_order: 0
+title: Product Discovery
+nav_order: 3
+has_children: true
 ---
 
-# DealHive
+{: .no_toc }
+# Product Discovery
 
-![DealHive Logo](assets/images/dealhive-logo.png)
+<details open markdown="block">
+<summary>Table of contents</summary>
++ ToC
+{: toc }
+{: .text-delta }
+</details>
 
-DealHive ist eine Web-App für Sammelkäufe im Bereich Brettspiele, TTRPGs, Tabletops und passendes Zubehör.
+## Überblick
 
-Künstler, Handwerker und kleine Anbieter können limitierte Angebote für Produkte wie Würfelsets, Miniaturen, Terrain, Würfeltürme oder anderes Spielzubehör erstellen. Nutzer können diesen Angeboten beitreten. Sobald genügend Personen teilnehmen, wird die Produktion ausgelöst. Bei größeren Gruppen können zusätzliche Rabattstufen freigeschaltet werden, zum Beispiel 10% oder 20%.
+In diesem Bereich dokumentieren wir, wie wir die Projektidee von **DealHive** entwickelt und geschärft haben.
 
-## Projektidee
-
-Viele Produkte in der Brettspiel- und Tabletop-Community sind individuell, handgemacht oder nur in kleinen Mengen verfügbar. Dadurch sind sie oft teuer oder für kleine Anbieter schwer planbar.
-
-DealHive bündelt interessierte Käufer in einem Sammelkauf. Dadurch können Anbieter besser einschätzen, ob sich die Herstellung lohnt. Gleichzeitig profitieren Käufer davon, dass größere Gruppen bessere Preise ermöglichen.
-
-## Beispiel
-
-Ein Anbieter erstellt ein Angebot für ein besonderes Würfelset. Die Produktion startet erst, wenn mindestens 20 Personen teilnehmen. Ab 40 Personen erhalten alle 10% Rabatt. Ab 60 Personen steigt der Rabatt auf 20%.
+DealHive war ursprünglich als allgemeine Sammelkaufplattform gedacht. Im Verlauf der Product Discovery wurde der Fokus konkreter gesetzt: Die App richtet sich nun an Brettspiel-, TTRPG- und Tabletop-Communities sowie an Creator, Künstler und kleine Anbieter von passendem Zubehör.
 
 ## Domainbezug
 
-Der Domainbezug liegt im Bereich Brettspiele, TTRPGs, Tabletops und passendes Zubehör. Die Plattform richtet sich an eine Community, in der individuelle, limitierte oder handgemachte Produkte eine wichtige Rolle spielen.
+Der Domainbezug liegt bei Brettspielen, TTRPGs, Tabletops und Zubehör.
 
-## Verbesserungen seit der ersten Abgabe
+Dazu gehören zum Beispiel:
 
-Domainbezug, Doku nach Vorgaben
+- Würfelsets
+- Miniaturen
+- Terrain
+- Würfeltürme
+- Spielmatten
+- Kartenhalter
+- Token-Sets
+- Abenteuer-Module
+
+Diese Domäne passt gut zu Sammelkäufen, weil viele Produkte individuell, limitiert oder handgemacht sind. Für Creator lohnt sich die Produktion oft erst ab einer gewissen Mindestmenge. Käufer profitieren davon, wenn mehrere Personen gemeinsam teilnehmen und dadurch Rabattstufen freischalten.
+
+## Inhalte
+
+Die Product-Discovery-Dokumentation besteht aus vier Teilen:
+
+1. **Design Challenge**  
+   Hier beschreiben wir die zentrale Fragestellung des Projekts.
+
+2. **Target Users + Problems**  
+   Hier beschreiben wir die wichtigsten Zielgruppen und deren Probleme.
+
+3. **Solution Elements**  
+   Hier beschreiben wir die wichtigsten App-Bausteine, den angepassten Value Proposition Canvas und die UI-Skizzen.
+
+4. **Tests**  
+   Hier dokumentieren wir Annahmen, geplante Tests und Feedbackpunkte.
+
+## Ziel der Product Discovery
+
+Das Ziel der Product Discovery ist es, aus einer allgemeinen Idee eine klarere Produktidee zu machen.
+
+Bei DealHive bedeutet das:
+
+- aus allgemeinen Anzeigen werden Sammelkäufe
+- aus Händlern werden Creator oder Anbieter
+- aus Einkaufsgruppen werden Hives
+- aus generischen Produkten werden Brettspiel-, TTRPG- und Tabletop-Accessoires
+- aus einfachen Gruppenrabatten werden Mindestteilnehmer, Produktionsstart und Rabattstufen
+
+Dadurch wird DealHive weniger generisch und stärker auf eine konkrete Community ausgerichtet.
