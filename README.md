@@ -1,16 +1,38 @@
+<p align="center">
+  <img src="docs/assets/images/dealhive-logo.png" alt="DealHive Logo" width="220">
+</p>
 
-<img width="2172" height="724" alt="image" src="https://github.com/user-attachments/assets/057b6a33-6496-4e24-81ab-340a97955742" />
+# DealHive
 
-# Deal Hive
+DealHive ist eine Web-App für Sammelkäufe im Bereich Brettspiele, TTRPGs, Tabletops und Zubehör.
 
-Deal Hive ist eine webbasierte Gruppenkauffplattform, auf der Händler Produkte mit Mengenrabatten anbieten und Käufer gemeinsam beitreten, um die Rabattschwelle zu erreichen.
+Creator, Künstler, Handwerker oder kleine Anbieter können limitierte Produkte als Sammelkauf anbieten. Käufer können diesen Angeboten beitreten. Sobald genügend Personen teilnehmen, kann die Produktion starten. Bei größeren Gruppen können Rabattstufen freigeschaltet werden, zum Beispiel 10% oder 20%.
+
+## Kernidee
+
+Ein Creator erstellt einen Hive, zum Beispiel für ein handgemachtes Würfelset.
+
+Beispiel:
+
+- Produktion ab 20 Teilnehmern
+- 10% Rabatt ab 40 Teilnehmern
+- 20% Rabatt ab 60 Teilnehmern
+
+Käufer können dem Hive beitreten und den Fortschritt verfolgen.
 
 ## Dokumentation
 
-- [Team Composition](1%20Team%20Composition.md)
-- [Value Proposition Canvas](2%20Value%20Proposition%20Canvas.md)
-- [UI Screens](3%20UI-Screens/)
+Die Projektdokumentation ist hier auffindbar:
+
+https://darianomorowa.github.io/DealHive/#dealhive
 
 ## App Setup
 
 _Folgt mit First Submission_
+
+## Team
+
+- [Darian Omorowa](https://github.com/darianomorowa)
+- [Daniil Ioffe](https://github.com/gittyDanny)
+- [Haya Al-Abbasi](https://github.com/HayaHWR)
+- [Matthieu Weinlein](https://github.com/mttwln)
