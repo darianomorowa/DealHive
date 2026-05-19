@@ -65,4 +65,4 @@ Bei DealHive bedeutet das:
 - aus generischen Produkten werden Brettspiel-, TTRPG- und Tabletop-Accessoires
 - aus einfachen Gruppenrabatten werden Mindestteilnehmer, Produktionsstart und Rabattstufen
 
-Dadurch wird DealHive weniger generisch und stärker auf eine konkrete Community ausgerichtet.
+Dadurch sollte DealHive weniger generisch wirken und stärker auf eine konkrete Community ausgerichtet sein.
