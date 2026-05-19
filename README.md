@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/images/dealhive-logo.png" alt="DealHive Logo" width="220">
+  <img src="docs/assets/images/dealhive-logo.png" alt="DealHive Logo" style="max-width: 100%; height: auto;">
 </p>
 
 # DealHive
