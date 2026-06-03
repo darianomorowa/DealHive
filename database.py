@@ -27,3 +27,29 @@ def create_tables():
     # commit fürs eigentliche Speichern
     connection.commit()
     connection.close()
+
+def insert_test_hive():
+    connection = get_connection()
+
+    # hier fügen wir erstmal einen Test-Hive ein
+    # AUTOINCREMENT macht selber neue ID
+    connection.execute("""
+        INSERT INTO hives (title)
+        VALUES (?)
+    """, ("Drachenwürfel-Set",))
+
+    connection.commit()
+    connection.close()
+
+
+def get_all_hives():
+    connection = get_connection()
+
+    # Daten aus der Tabelle abfragen
+    hives = connection.execute("""
+        SELECT id, title
+        FROM hives
+    """).fetchall()
+
+    connection.close()
+    return hives
