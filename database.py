@@ -18,26 +18,49 @@ def create_tables():
     # rest ist stanbdart DDL oder so
     connection.execute("""
         CREATE TABLE IF NOT EXISTS hives (
-                       
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL
-            
+            title TEXT NOT NULL,
+            deadline TEXT NOT NULL,
+            current_participants INTEGER NOT NULL,
+            min_participants INTEGER NOT NULL
         )
     """)
     # commit fürs eigentliche Speichern
     connection.commit()
     connection.close()
 
-def insert_test_hive():
+#folgende Funktion wurde vollständig von KI generiert
+def insert_test_hives():
     connection = get_connection()
 
-    # hier fügen wir erstmal einen Test-Hive ein
-    # AUTOINCREMENT macht selber neue ID
-    connection.execute("""
-        INSERT INTO hives (title)
-        VALUES (?)
-    """, ("Drachenwürfel-Set",))
+    # hier legen wir 10 Test-Hives an, damit die Übersicht nicht leer ist
+    # Reihenfolge ist wichtig: title, deadline, current_participants, min_participants
+    test_hives = [
+        ("Drachenwürfel-Set", "31.05.2026", 18, 20),
+        ("Dungeon-Terrain-Set", "28.05.2026", 31, 40),
+        ("Holz-Würfelturm", "02.06.2026", 12, 25),
+        ("Goblin-Miniaturen-Set", "05.06.2026", 22, 30),
+        ("Zauberbuch-Kartenhalter", "10.06.2026", 9, 15),
+        ("Kampagnen-Token-Set", "15.06.2026", 44, 50),
+        ("Resin-Würfel Nebelblau", "20.06.2026", 7, 20),
+        ("Tabletop-Spielmatte", "25.06.2026", 16, 30),
+        ("Mimic-Würfelturm", "30.06.2026", 11, 25),
+        ("Abenteuer-Modul: Krypta der Bienenkönigin", "05.07.2026", 14, 20),
+    ]
 
+    # executemany ist wie INSERT in Schleife, nur sauberer
+    # jeder Tupel aus test_hives wird einmal in die Tabelle geschrieben
+    connection.executemany("""
+        INSERT INTO hives (
+            title,
+            deadline,
+            current_participants,
+            min_participants
+        )
+        VALUES (?, ?, ?, ?)
+    """, test_hives)
+
+    # commit fürs eigentliche Speichern der 10 Test-Hives
     connection.commit()
     connection.close()
 
@@ -47,7 +70,7 @@ def get_all_hives():
 
     # Daten aus der Tabelle abfragen
     hives = connection.execute("""
-        SELECT id, title
+        SELECT id, title, deadline, current_participants, min_participants
         FROM hives
     """).fetchall()
 
@@ -59,7 +82,7 @@ def get_hive_by_id(hive_id):
 
     # hier suchen wir genau einen Hive über seine ID
     hive = connection.execute("""
-        SELECT id, title
+        SELECT id, title, deadline, current_participants, min_participants
         FROM hives
         WHERE id = ?
     """, (hive_id,)).fetchone()
