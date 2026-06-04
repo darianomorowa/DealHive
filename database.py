@@ -53,3 +53,19 @@ def get_all_hives():
 
     connection.close()
     return hives
+
+def get_hive_by_id(hive_id):
+    connection = get_connection()
+
+    # hier suchen wir genau einen Hive über seine ID
+    hive = connection.execute("""
+        SELECT id, title
+        FROM hives
+        WHERE id = ?
+    """, (hive_id,)).fetchone()
+
+    connection.close()
+
+    # wir geben entweder den gefundenen Hive zurück oder "None",
+    # falls nichts gefunden wurde
+    return hive
