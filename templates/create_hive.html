@@ -18,6 +18,41 @@
         <br>
 
         <div>
+            <label for="category">Kategorie:</label>
+            <input type="text" id="category" name="category" placeholder="z.B. Miniaturen, Würfel, Gelände" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="game_system">Spielsystem:</label>
+            <input type="text" id="game_system" name="game_system" placeholder="z.B. Warhammer, D&D, Systemunabhängig" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="material">Material:</label>
+            <input type="text" id="material" name="material" placeholder="z.B. Resin, Kunststoff, Holz" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="description">Beschreibung des Produkts:</label><br>
+            <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="base_price">Basispreis (in €):</label>
+            <input type="number" id="base_price" name="base_price" step="0.01" required>
+        </div>
+
+        <br>
+
+        <div>
             <label for="min_participants">Mindestteilnehmer (Anzahl):</label>
             <input type="number" id="min_participants" name="min_participants" required>
         </div>
@@ -27,6 +62,13 @@
         <div>
             <label for="deadline">Frist (Deadline):</label>
             <input type="text" id="deadline" name="deadline" placeholder="z.B. 30.06.2026" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="discount_percent">Optionaler Rabatt (in % bei Zielerreichung):</label>
+            <input type="number" id="discount_percent" name="discount_percent" placeholder="z.B. 10 (optional)">
         </div>
 
         <br>
