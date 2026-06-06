@@ -51,9 +51,40 @@ def hive_detail(hive_id):
     """
 
 # Zeigt das Formular an, mit dem ein Creator einen neuen Hive erstellen kann
-@app.route("/creator/hives/new")
+@app.route("/creator/hives/new", methods=["GET", "POST"])
 def create_hive_page():
     
+# Wenn der Nutzer das Formular abschickt (POST)
+    if request.method == "POST":
+        
+        # 1. Alle Daten aus dem Formular auslesen
+        title = request.form.get("title")
+        category = request.form.get("category")
+        game_system = request.form.get("game_system")
+        material = request.form.get("material")
+        description = request.form.get("description")
+        base_price = request.form.get("base_price")
+        min_participants = request.form.get("min_participants")
+        deadline = request.form.get("deadline")
+        discount_percent = request.form.get("discount_percent")
+        
+        # 2. Die Daten als Paket (Dictionary) schnüren
+        neuer_hive = {
+            "title": title,
+            "category": category,
+            "base_price": base_price,
+            "deadline": deadline,
+            "min_participants": min_participants
+        }
+        
+        # 3. In unsere in Schritt 1 angelegte Liste speichern
+        simulierte_hives.append(neuer_hive) 
+        
+        # 4. Weiterleitung auf die Übersichtsseite, die Daniil gebaut hat
+        return redirect("/hives")
+
+    # Wenn der Nutzer die Seite nur normal aufruft (GET), zeige das leere Formular
     return render_template("create_hive.html")
+
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
