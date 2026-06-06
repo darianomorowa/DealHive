@@ -1,7 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 from database import create_tables, get_all_hives, get_hive_by_id
 
 app = Flask(__name__)
+simulierte_hives = []
 
 # hier erstellen wir beim Start der App die Tabelle, falls sie noch nicht existiert
 create_tables()
