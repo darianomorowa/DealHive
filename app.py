@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from database import create_tables, get_all_hives, get_hive_by_id
 
 app = Flask(__name__)
@@ -49,5 +49,10 @@ def hive_detail(hive_id):
     <a href="/hives">Zurück zu allen Hives</a>
     """
 
+# Zeigt das Formular an, mit dem ein Creator einen neuen Hive erstellen kann
+@app.route("/creator/hives/new")
+def create_hive_page():
+    
+    return render_template("create_hive.html")
 if __name__ == "__main__":
     app.run(debug=True)
