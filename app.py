@@ -1,23 +1,29 @@
 from flask import Flask, render_template, request
 from database import create_tables, get_all_hives, get_hive_by_id
+from creator_routes import register_creator_routes
 
 app = Flask(__name__)
 
-# hier erstellen wir beim Start der App die Tabelle, falls sie noch nicht existiert
+# Datenbanktabellen beim Start der App initialisieren
 create_tables()
+
+# hier registrieren wir die Creator-Routen aus creator_routes.py
+register_creator_routes(app)
+
 
 @app.route("/")
 def home():
     return "meine erste kleine Seite hehehe"
 
+
 @app.route("/hives")
 def hives_overview():
-
-    # hier holen wir die Hives aus der Datenbank
+    # Alle bestehenden Hives aus der Datenbank abrufen
     hives = get_all_hives()
 
     #variable für "welches System" - Filter
     selected_game_system = request.args.get("game_system", "all")
+
     # leere Liste, wo später hives abgespeichert werden
     filtered_hives = []
 
@@ -43,23 +49,16 @@ def hives_overview():
 #Detailroute
 @app.route("/hives/<int:hive_id>")
 def hive_detail(hive_id):
-    # hier holen wir genau den einen =ID Hive aus der Datenbank
+    # Spezifischen Hive anhand der ID aus der Datenbank auslesen
     hive = get_hive_by_id(hive_id)
 
-    # falls es keinen Hive mit dieser ID gibt, zeigen wir erstmal eine einfache Meldung
+    # Fehlerbehandlung: Falls die ID nicht existiert
     if hive is None:
         return "Hive wurde nicht gefunden."
 
-    
-    return f"""
-    <h1>{hive["title"]}</h1>
+    # hier geben wir den gefundenen Hive an die Detail-HTML-Datei weiter
+    return render_template("hive_detail.html", hive=hive)
 
-    <p>ID: {hive["id"]}</p>
-    <p>Deadline: {hive["deadline"]}</p>
-    <p>Teilnehmer: {hive["current_participants"]} / {hive["min_participants"]}</p>
-
-    <a href="/hives">Zurück zu allen Hives</a>
-    """
 
 if __name__ == "__main__":
     app.run(debug=True)

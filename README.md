@@ -36,3 +36,28 @@ _Folgt mit First Submission_
 - [Daniil Ioffe](https://github.com/gittyDanny)
 - [Haya Al-Abbasi](https://github.com/HayaHWR)
 - [Matthieu Weinlein](https://github.com/mttwln)
+
+## App Setup (Lokaler Start)
+
+Folge diesen Schritten, um die DealHive-App lokal auf deinem Computer zu starten:
+
+1. **Repository klonen / Projektordner öffnen:**
+   Stelle sicher, dass du dich im Hauptverzeichnis `DealHive` befindest und dein Terminal dort geöffnet ist.
+
+2. **Abhängigkeiten installieren:**
+   Installiere die benötigten Pakete (wie Flask) über die `requirements.txt`:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. **Datenbank vorbereiten:**
+   Die App erstellt beim ersten Start automatisch die SQLite-Datenbank `dealhive.db` und die benötigten Tabellen im Hintergrund.
+
+4. **Server starten:**
+   Starte den Flask-Server mit folgendem Befehl im Terminal:
+   ```bash
+   python3 app.py
+   ```
+5. **App im Browser aufrufen:**
+   Öffne deinen Browser und gehe auf:
+   * Hauptseite: `http://127.0.0.1:5001/`
+   * Hive erstellen: `http://127.0.0.1:5001/creator/hives/new`
