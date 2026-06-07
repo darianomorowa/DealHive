@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, request
 from database import create_tables, get_all_hives, get_hive_by_id
 
 app = Flask(__name__)
@@ -16,25 +16,28 @@ def hives_overview():
     # hier holen wir die Hives aus der Datenbank
     hives = get_all_hives()
 
-    # html variable
-    html = "<h1>Hives entdecken</h1>"
+    #variable für "welches System" - Filter
+    selected_game_system = request.args.get("game_system", "all")
+    # leere Liste, wo später hives abgespeichert werden
+    filtered_hives = []
 
-    # Schleife für alle Hives mit Detaillink für jeden Hive
-
+    # wir gehen jeden Hive durch und prüfen, ob er angezeigt werden soll
     for hive in hives:
-    # hier bauen wir für jeden Hive einen kleinen HTML-Block
-    # Deadline und Teilnehmerstand sind wichtig, weil Käufer das direkt sehen sollen
-        html += f"""
-        <div>
-        <h2>{hive["title"]}</h2>
-        <p>Deadline: {hive["deadline"]}</p>
-        <p>Teilnehmer: {hive["current_participants"]} / {hive["min_participants"]}</p>
-        <a href="/hives/{hive["id"]}">Details ansehen</a>
-        </div>
-        <hr>
-        """
+        # bei "all" zeigen wir einfach alles an
+        if selected_game_system == "all":
+            filtered_hives.append(hive)
 
-    return html
+        # sonst prüfen wir, ob das Spielsystem vom Hive zum Filter passt
+        elif hive["game_system"] == selected_game_system:
+            filtered_hives.append(hive)
+
+    # hier geben wir die gefilterten Hives und den aktuellen Filter
+    # ans Template weiter
+    return render_template(
+        "hives.html",
+        hives=filtered_hives,
+        selected_game_system=selected_game_system
+    )
 
 
 #Detailroute

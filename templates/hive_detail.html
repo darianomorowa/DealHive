@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ hive["title"] }}</title>
+</head>
+<body>
+    <h1>{{ hive["title"] }}</h1>
+
+    <p>ID: {{ hive["id"] }}</p>
+    <p>Spielsystem: {{ hive["game_system"] }}</p>
+    <p>Kurzbeschreibung: {{ hive["short_description"] }}</p>
+    <p>Beschreibung: {{ hive["description"] }}</p>
+    <p>Deadline: {{ hive["deadline"] }}</p>
+    <p>Teilnehmer: {{ hive["current_participants"] }} / {{ hive["min_participants"] }}</p>
+
+    <a href="/hives">Zurück zu allen Hives</a>
+</body>
+</html>
