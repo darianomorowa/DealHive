@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Creator Dashboard</title>
+</head>
+<body>
+
+    <h1>My Hives</h1>
+<h2>Create New Hive</h2>
+
+<form style="border:1px solid black; padding:10px; margin-bottom:20px;">
+    
+    <p>
+        <label>Hive Title:</label><br>
+        <input type="text" name="title" placeholder="Enter hive title">
+    </p>
+
+    <p>
+        <label>Game System:</label><br>
+        <input type="text" name="game_system" placeholder="e.g. D&D, Pathfinder">
+    </p>
+
+    <p>
+        <label>Short Description:</label><br>
+        <input type="text" name="short_description" placeholder="Short summary">
+    </p>
+
+    <p>
+        <label>Description:</label><br>
+        <textarea name="description" rows="4" cols="40" placeholder="Detailed description"></textarea>
+    </p>
+
+    <p>
+        <label>Minimum Participants:</label><br>
+        <input type="number" name="min_participants">
+    </p>
+
+    <p>
+        <label>Deadline:</label><br>
+        <input type="date" name="deadline">
+    </p>
+
+    <button type="submit">Create Hive</button>
+
+</form>
+    {% for hive in hives %}
+
+    <div style="border:1px solid black; padding:10px; margin:10px;">
+
+        <h2>{{ hive["title"] }}</h2>
+
+        <p>
+            Participants:
+            {{ hive["current_participants"] }}
+            /
+            {{ hive["min_participants"] }}
+        </p>
+
+        <p>
+            Deadline:
+            {{ hive["deadline"] }}
+        </p>
+
+        <p>
+            Status:
+            Open
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</body>
+</html>
