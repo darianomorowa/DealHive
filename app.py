@@ -62,6 +62,10 @@ def hive_detail(hive_id):
     # hier geben wir den gefundenen Hive an die Detail-HTML-Datei weiter
     return render_template("hive_detail.html", hive=hive)
 
+@app.route("/hives/<int:hive_id>/join", methods=["POST"])
+def join_hive(hive_id):
+    return render_template("join_confirm.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
