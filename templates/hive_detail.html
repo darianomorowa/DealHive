@@ -14,6 +14,12 @@
     <p>Deadline: {{ hive["deadline"] }}</p>
     <p>Teilnehmer: {{ hive["current_participants"] }} / {{ hive["min_participants"] }}</p>
 
+    <form action="/hives/{{ hive['id'] }}/join" method="POST">
+    <button type="submit">Hive beitreten</button>
+</form>
+
+<br>
+
     <a href="/hives">Zurück zu allen Hives</a>
 </body>
 </html>
