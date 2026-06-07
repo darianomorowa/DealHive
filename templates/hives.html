@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Hives entdecken</title>
+</head>
+<body>
+    <h1>Hives entdecken</h1>
+
+    <form method="get" action="/hives">
+        <label for="game_system">Spielsystem:</label>
+
+        <select name="game_system" id="game_system">
+            <option value="all" {% if selected_game_system == "all" %}selected{% endif %}>Alle</option>
+            <option value="D&D" {% if selected_game_system == "D&D" %}selected{% endif %}>D&D</option>
+            <option value="Pathfinder" {% if selected_game_system == "Pathfinder" %}selected{% endif %}>Pathfinder</option>
+            <option value="Warhammer" {% if selected_game_system == "Warhammer" %}selected{% endif %}>Warhammer</option>
+            <option value="Systemunabhängig" {% if selected_game_system == "Systemunabhängig" %}selected{% endif %}>Systemunabhängig</option>
+        </select>
+
+        <button type="submit">Filtern</button>
+    </form>
+
+    <hr>
+
+    {% for hive in hives %}
+        <h2>{{ hive["title"] }}</h2>
+
+        <p>Spielsystem: {{ hive["game_system"] }}</p>
+        <p>{{ hive["short_description"] }}</p>
+        <p>Deadline: {{ hive["deadline"] }}</p>
+        <p>Teilnehmer: {{ hive["current_participants"] }} / {{ hive["min_participants"] }}</p>
+
+        <a href="/hives/{{ hive["id"] }}">Details ansehen</a>
+
+        <hr>
+    {% else %}
+        <p>Keine Hives für diesen Filter gefunden.</p>
+    {% endfor %}
+</body>
+</html>
