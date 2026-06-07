@@ -10,6 +10,10 @@ create_tables()
 def home():
     return "meine erste kleine Seite hehehe"
 
+@app.route("/register")
+def register():
+    return render_template("register.html")
+
 @app.route("/hives")
 def hives_overview():
 
