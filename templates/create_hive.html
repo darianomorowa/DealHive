@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Neuen Hive erstellen</title>
+</head>
+<body>
+
+    <h1>Neuen Sammelkauf anlegen</h1>
+
+    <form action="/creator/hives/new" method="POST">
+
+        <div>
+            <label for="title">Produktname:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="game_system">Spielsystem:</label>
+            <select id="game_system" name="game_system" required>
+                <option value="D&D">D&D</option>
+                <option value="Pathfinder">Pathfinder</option>
+                <option value="Warhammer">Warhammer</option>
+                <option value="Systemunabhängig">Systemunabhängig</option>
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="short_description">Kurzbeschreibung:</label>
+            <input type="text" id="short_description" name="short_description" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="description">Beschreibung des Produkts:</label><br>
+            <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="min_participants">Mindestteilnehmer (Anzahl):</label>
+            <input type="number" id="min_participants" name="min_participants" required>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="deadline">Frist (Deadline):</label>
+            <input type="text" id="deadline" name="deadline" placeholder="z.B. 30.06.2026" required>
+        </div>
+
+        <br>
+
+        <button type="submit">Hive erstellen</button>
+
+    </form>
+
+    <br>
+    <a href="/hives">Zurück zur Übersicht</a>
+
+</body>
+</html>

@@ -97,3 +97,32 @@ def get_hive_by_id(hive_id):
     # wir geben entweder den gefundenen Hive zurück oder "None",
     # falls nichts gefunden wurde
     return hive
+
+def insert_hive(title, game_system, short_description, description, deadline, current_participants, min_participants):
+    connection = get_connection()
+
+    # hier speichern wir einen neuen Hive aus dem Creator-Formular
+    connection.execute("""
+        INSERT INTO hives (
+            title,
+            game_system,
+            short_description,
+            description,
+            deadline,
+            current_participants,
+            min_participants
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (
+        title,
+        game_system,
+        short_description,
+        description,
+        deadline,
+        current_participants,
+        min_participants
+    ))
+
+    # commit fürs eigentliche Speichern
+    connection.commit()
+    connection.close()
