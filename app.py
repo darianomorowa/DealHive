@@ -1,23 +1,22 @@
 from flask import Flask, render_template, request
 from database import create_tables, get_all_hives, get_hive_by_id
 from creator_routes import register_creator_routes
+from user_routes import setup_user_routes
 
 app = Flask(__name__)
 
 # Datenbanktabellen beim Start der App initialisieren
 create_tables()
-
 # hier registrieren wir die Creator-Routen aus creator_routes.py
 register_creator_routes(app)
+# nutzer-routen laden
+setup_user_routes(app)
 
 
 @app.route("/")
 def home():
     return "meine erste kleine Seite hehehe"
 
-@app.route("/register")
-def register():
-    return render_template("register.html")
 
 @app.route("/hives")
 def hives_overview():
