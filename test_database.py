@@ -1,4 +1,10 @@
-from database import create_tables, insert_test_hives, get_all_hives
+from database import (
+    create_tables,
+    insert_test_hives,
+    get_all_hives,
+    create_test_user,
+    assign_hive_to_user
+)
 
 
 # diese Liste wurde komplett mit KI erstellt
@@ -98,11 +104,30 @@ test_hives = [
 ]
 
 
-# hier erstellen wir die Tabelle, falls sie noch nicht existiert
+# hier erstellen wir die Tabellen, falls sie noch nicht existieren
 create_tables()
 
 # hier geben wir unsere Testdaten-Liste an die Insert-Funktion weiter
 insert_test_hives(test_hives)
+
+# hier erstellen wir einen Beispiel-Creator
+# dieser User wird später im Creator Dashboard verwendet
+max_id = create_test_user(
+    "max",
+    "Max Mustermann",
+    "max@example.com",
+    "test_hash",
+    "creator",
+    "Musterstraße 1",
+    "10115",
+    "Berlin",
+    "Deutschland"
+)
+
+# hier ordnen wir Max Mustermann drei Hives als Creator zu
+assign_hive_to_user(max_id, 1, "creator")
+assign_hive_to_user(max_id, 2, "creator")
+assign_hive_to_user(max_id, 3, "creator")
 
 # alle Hives wieder aus der Datenbank holen
 hives = get_all_hives()
@@ -119,3 +144,6 @@ for hive in hives:
         "/",
         hive["min_participants"]
     )
+
+print("Testnutzer Max Mustermann wurde erstellt.")
+print("Creator-Hive-Zuordnung wurde erstellt.")

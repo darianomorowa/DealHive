@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from database import create_tables, get_all_hives, get_hive_by_id
+from database import create_tables, get_all_hives, get_hive_by_id, get_hives_for_user
 from creator_routes import register_creator_routes
 
 app = Flask(__name__)
@@ -15,16 +15,18 @@ register_creator_routes(app)
 def home():
     return "meine erste kleine Seite hehehe"
 
+
 @app.route("/register")
 def register():
     return render_template("register.html")
+
 
 @app.route("/hives")
 def hives_overview():
     # Alle bestehenden Hives aus der Datenbank abrufen
     hives = get_all_hives()
 
-    #variable für "welches System" - Filter
+    # variable für "welches System" - Filter
     selected_game_system = request.args.get("game_system", "all")
 
     # leere Liste, wo später hives abgespeichert werden
@@ -49,7 +51,7 @@ def hives_overview():
     )
 
 
-#Detailroute
+# Detailroute
 @app.route("/hives/<int:hive_id>")
 def hive_detail(hive_id):
     # Spezifischen Hive anhand der ID aus der Datenbank auslesen
@@ -63,5 +65,17 @@ def hive_detail(hive_id):
     return render_template("hive_detail.html", hive=hive)
 
 
+@app.route("/creator/dashboard")
+def creator_dashboard():
+    # erstmal hardcoded, weil wir noch kein richtiges Login haben
+    # hier laden wir nur die Hives, die Max Mustermann als Creator zugeordnet sind
+    hives = get_hives_for_user("max", "creator")
+
+    return render_template(
+        "creator_dashboard.html",
+        hives=hives
+    )
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
