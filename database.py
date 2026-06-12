@@ -226,11 +226,10 @@ def assign_hive_to_user(user_id, hive_id, relation_type):
     connection.close()
 
 
-def get_hives_for_user(username, relation_type):
+def get_hives_for_user(user_id, relation_type):
     connection = get_connection()
 
-    # hier holen wir nur die Hives, die einem bestimmten Nutzer zugeordnet sind
-    # dadurch zeigt das Creator Dashboard nicht einfach alle Hives an
+    # hier holen wir nur die Hives, die einer bestimmten user_id zugeordnet sind
     hives = connection.execute("""
         SELECT
             hives.id,
@@ -243,14 +242,50 @@ def get_hives_for_user(username, relation_type):
             user_hives.relation_type
         FROM hives
         JOIN user_hives ON hives.id = user_hives.hive_id
-        JOIN users ON users.id = user_hives.user_id
-        WHERE users.username = ?
+        WHERE user_hives.user_id = ?
         AND user_hives.relation_type = ?
     """, (
-        username,
+        user_id,
         relation_type
     )).fetchall()
 
     connection.close()
 
     return hives
+
+def create_user_with_id(user_id, username, name, email, password_hash, role, street, postal_code, city, country):
+    connection = get_connection()
+
+    # hier legen wir einen Nutzer mit einer festen ID an
+    # das nutzen wir aktuell für unseren Demo-Creator mit user_id 0
+    connection.execute("""
+        INSERT OR IGNORE INTO users (
+            id,
+            username,
+            name,
+            email,
+            password_hash,
+            role,
+            street,
+            postal_code,
+            city,
+            country
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        user_id,
+        username,
+        name,
+        email,
+        password_hash,
+        role,
+        street,
+        postal_code,
+        city,
+        country
+    ))
+
+    connection.commit()
+    connection.close()
+
+    return user_id

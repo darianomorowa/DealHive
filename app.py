@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from database import create_tables, get_all_hives, get_hive_by_id, get_hives_for_user
+from database import create_tables, get_all_hives, get_hive_by_id
 from creator_routes import register_creator_routes
 
 app = Flask(__name__)
@@ -63,18 +63,6 @@ def hive_detail(hive_id):
 
     # hier geben wir den gefundenen Hive an die Detail-HTML-Datei weiter
     return render_template("hive_detail.html", hive=hive)
-
-
-@app.route("/creator/dashboard")
-def creator_dashboard():
-    # erstmal hardcoded, weil wir noch kein richtiges Login haben
-    # hier laden wir nur die Hives, die Max Mustermann als Creator zugeordnet sind
-    hives = get_hives_for_user("max", "creator")
-
-    return render_template(
-        "creator_dashboard.html",
-        hives=hives
-    )
 
 
 if __name__ == "__main__":
