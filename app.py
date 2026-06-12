@@ -17,13 +17,12 @@ setup_user_routes(app)
 def home():
     return "meine erste kleine Seite hehehe"
 
-
 @app.route("/hives")
 def hives_overview():
     # Alle bestehenden Hives aus der Datenbank abrufen
     hives = get_all_hives()
 
-    #variable für "welches System" - Filter
+    # variable für "welches System" - Filter
     selected_game_system = request.args.get("game_system", "all")
 
     # leere Liste, wo später hives abgespeichert werden
@@ -48,7 +47,7 @@ def hives_overview():
     )
 
 
-#Detailroute
+# Detailroute
 @app.route("/hives/<int:hive_id>")
 def hive_detail(hive_id):
     # Spezifischen Hive anhand der ID aus der Datenbank auslesen
@@ -67,4 +66,4 @@ def join_hive(hive_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

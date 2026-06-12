@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Creator Dashboard</title>
+</head>
+<body>
+
+    <h1>Creator Dashboard</h1>
+
+    <a href="/creator/hives/new">
+        <button>+ Neuen Hive erstellen</button>
+    </a>
+
+    <hr>
+
+    {% for hive in hives %}
+        <div style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
+            <h2>
+    <a href="/hives/{{ hive['id'] }}">
+        {{ hive["title"] }}
+    </a>
+</h2>
+
+            <p><strong>System:</strong> {{ hive["game_system"] }}</p>
+            <p><strong>Kurzbeschreibung:</strong> {{ hive["short_description"] }}</p>
+            <p><strong>Teilnehmer:</strong> {{ hive["current_participants"] }} / {{ hive["min_participants"] }}</p>
+            <p><strong>Deadline:</strong> {{ hive["deadline"] }}</p>
+
+            <p>
+                <strong>Status:</strong>
+                {% if hive["current_participants"] >= hive["min_participants"] %}
+                    Mindestmenge erreicht
+                {% else %}
+                    Offen
+                {% endif %}
+            </p>
+        </div>
+    {% endfor %}
+
+</body>
+</html>

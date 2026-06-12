@@ -1,5 +1,10 @@
-from database import create_tables, insert_test_hives, get_all_hives
-
+from database import (
+    create_tables,
+    insert_test_hives,
+    get_all_hives,
+    create_user_with_id,
+    assign_hive_to_user
+)
 
 # diese Liste wurde komplett mit KI erstellt
 # Reihenfolge ist wichtig:
@@ -98,11 +103,30 @@ test_hives = [
 ]
 
 
-# hier erstellen wir die Tabelle, falls sie noch nicht existiert
+# hier erstellen wir die Tabellen, falls sie noch nicht existieren
 create_tables()
 
 # hier geben wir unsere Testdaten-Liste an die Insert-Funktion weiter
 insert_test_hives(test_hives)
+
+# hier erstellen wir unseren Demo-Creator mit fester user_id 0
+demo_creator_id = create_user_with_id(
+    0,
+    "demo_creator",
+    "Demo Creator",
+    "demo@example.com",
+    "test_hash",
+    "creator",
+    "Musterstraße 1",
+    "10115",
+    "Berlin",
+    "Deutschland"
+)
+
+# hier ordnen wir dem Demo-Creator drei Hives als Creator zu
+assign_hive_to_user(demo_creator_id, 1, "creator")
+assign_hive_to_user(demo_creator_id, 2, "creator")
+assign_hive_to_user(demo_creator_id, 6, "creator")
 
 # alle Hives wieder aus der Datenbank holen
 hives = get_all_hives()
@@ -119,3 +143,6 @@ for hive in hives:
         "/",
         hive["min_participants"]
     )
+
+print("Demo-Creator mit user_id 0 wurde erstellt.")
+print("Creator-Hive-Zuordnung wurde erstellt.")
