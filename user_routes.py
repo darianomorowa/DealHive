@@ -1,12 +1,39 @@
-from flask import render_template
+from flask import render_template, request
+from database import create_user
 
 
 def setup_user_routes(app):
+
     # nutzer-routen sammeln
 
-    @app.route("/register")
+    @app.route("/register", methods=["GET", "POST"])
     def register():
-        # registrierungsseite anzeigen
+
+        if request.method == "POST":
+            username = request.form["username"]
+            name = request.form["name"]
+            email = request.form["email"]
+            password = request.form["password"]
+            role = request.form["role"]
+            street = request.form["street"]
+            postal_code = request.form["postal_code"]
+            city = request.form["city"]
+            country = request.form["country"]
+
+            create_user(
+                username,
+                name,
+                email,
+                password,
+                role,
+                street,
+                postal_code,
+                city,
+                country
+            )
+
+            print("User gespeichert:", username)
+
         return render_template("register.html")
 
 
@@ -14,7 +41,6 @@ def setup_user_routes(app):
     def login():
         # loginseite anzeigen
         return render_template("login.html")
-
 
     @app.route("/profile")
     def profile():

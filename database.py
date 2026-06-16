@@ -289,3 +289,33 @@ def create_user_with_id(user_id, username, name, email, password_hash, role, str
     connection.close()
 
     return user_id
+def create_user(username, name, email, password_hash, role, street, postal_code, city, country):
+    connection = get_connection()
+
+    connection.execute("""
+        INSERT INTO users (
+            username,
+            name,
+            email,
+            password_hash,
+            role,
+            street,
+            postal_code,
+            city,
+            country
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        username,
+        name,
+        email,
+        password_hash,
+        role,
+        street,
+        postal_code,
+        city,
+        country
+    ))
+
+    connection.commit()
+    connection.close()
