@@ -289,6 +289,7 @@ def create_user_with_id(user_id, username, name, email, password_hash, role, str
     connection.close()
 
     return user_id
+
 def create_user(username, name, email, password_hash, role, street, postal_code, city, country):
     connection = get_connection()
 
@@ -319,3 +320,17 @@ def create_user(username, name, email, password_hash, role, street, postal_code,
 
     connection.commit()
     connection.close()
+
+
+def get_user_by_username(username):
+    connection = get_connection()
+
+    user = connection.execute("""
+        SELECT *
+        FROM users
+        WHERE username = ?
+    """, (username,)).fetchone()
+
+    connection.close()
+
+    return user

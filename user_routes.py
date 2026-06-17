@@ -1,6 +1,5 @@
-from flask import render_template, request
-from database import create_user
-
+from flask import render_template, request, session
+from database import create_user, get_user_by_username
 
 def setup_user_routes(app):
 
@@ -37,9 +36,25 @@ def setup_user_routes(app):
         return render_template("register.html")
 
 
-    @app.route("/login")
+    @app.route("/login", methods=["GET", "POST"])
     def login():
-        # loginseite anzeigen
+
+        if request.method == "POST":
+            username = request.form["username"]
+            password = request.form["password"]
+
+            user = get_user_by_username(username)
+
+            if user and user["password_hash"] == password:
+                print("Login erfolgreich")
+                session["user_id"] = user["id"]
+                session["username"] = user["username"]
+                session["role"] = user["role"]
+
+                print(session["username"])
+            else:
+                print("Login fehlgeschlagen")
+
         return render_template("login.html")
 
     @app.route("/profile")

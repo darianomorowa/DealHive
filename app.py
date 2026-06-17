@@ -4,6 +4,7 @@ from creator_routes import register_creator_routes
 from user_routes import setup_user_routes
 
 app = Flask(__name__)
+app.secret_key = "dealhive_dev_key"
 
 # Datenbanktabellen beim Start der App initialisieren
 create_tables()
