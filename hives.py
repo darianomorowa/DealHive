@@ -1,6 +1,5 @@
 from flask import render_template, request, redirect, session, jsonify
-from database import get_all_hives, get_hive_by_id, assign_hive_to_user
-
+from database import get_all_hives, get_hive_by_id, assign_hive_to_user, save_message, get_messages_for_hive
 
 def register_hive_routes(app):
 
@@ -60,6 +59,27 @@ def register_hive_routes(app):
         # hier zeigen wir die Bestätigungsseite nach dem Beitritt
         return render_template("join_confirm.html")
 
+    @app.route("/hives/<int:hive_id>/chat", methods=["GET", "POST"])
+    def hive_chat(hive_id):
+        # Sicherheits-Check: Nur eingeloggte User dürfen chatten
+        if session.get("user_id") is None:
+            return redirect("/login")
+
+        # Wenn der User eine Nachricht absendet (POST)
+        if request.method == "POST":
+            message_text = request.form.get("message_text")
+            
+            if message_text:
+                save_message(hive_id, session["user_id"], message_text)
+            
+            # Seite neu laden, um die Nachricht sofort zu sehen
+            return redirect(f"/hives/{hive_id}/chat")
+
+        # Wenn die Seite normal aufgerufen wird (GET)
+        hive = get_hive_by_id(hive_id)
+        messages = get_messages_for_hive(hive_id)
+
+        return render_template("chat.html", hive=hive, messages=messages)
 
     @app.route("/api/hives")
     def api_hives():
