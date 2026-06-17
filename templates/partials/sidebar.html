@@ -41,13 +41,17 @@
                     <a class="sidebar-link" href="/logout">Logout</a>
                 </li>
             {% else %}
-                <li>
-                    <a class="sidebar-link" href="/login">Login</a>
-                </li>
+                 {% if request.path != "/login" %}
+                   <li>
+                   <a class="sidebar-link" href="/login">Login</a>
+                    </li>
+                 {% endif %}
 
-                <li>
+                  {% if request.path != "/register" %}
+                    <li>
                     <a class="sidebar-link" href="/register">Registrieren</a>
-                </li>
+                    </li>
+                 {% endif %}
             {% endif %}
         </ul>
     </nav>
