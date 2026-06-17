@@ -1,25 +1,43 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ hive["title"] }}</title>
-</head>
-<body>
+{% extends "layout.html" %}
+
+{% block content %}
     <h1>{{ hive["title"] }}</h1>
 
-    <p>ID: {{ hive["id"] }}</p>
-    <p>Spielsystem: {{ hive["game_system"] }}</p>
-    <p>Kurzbeschreibung: {{ hive["short_description"] }}</p>
-    <p>Beschreibung: {{ hive["description"] }}</p>
-    <p>Deadline: {{ hive["deadline"] }}</p>
-    <p>Teilnehmer: {{ hive["current_participants"] }} / {{ hive["min_participants"] }}</p>
+    <p>
+        <strong>Spielsystem:</strong>
+        {{ hive["game_system"] }}
+    </p>
 
-    <form action="/hives/{{ hive['id'] }}/join" method="POST">
-    <button type="submit">Hive beitreten</button>
-</form>
+    <p>
+        <strong>Kurzbeschreibung:</strong>
+        {{ hive["short_description"] }}
+    </p>
 
-<br>
+    <p>
+        <strong>Beschreibung:</strong>
+        {{ hive["long_description"] }}
+    </p>
+
+    <p>
+        <strong>Preis:</strong>
+        {{ hive["price"] }} €
+    </p>
+
+    <p>
+        <strong>Teilnehmer:</strong>
+        {{ hive["current_participants"] }} / {{ hive["min_participants"] }}
+    </p>
+
+    <p>
+        <strong>Deadline:</strong>
+        {{ hive["deadline"] }}
+    </p>
+
+    <form method="POST" action="/hives/{{ hive['id'] }}/join">
+        <button type="submit">Hive beitreten</button>
+    </form>
+
+    <br>
 
     <a href="/hives">Zurück zu allen Hives</a>
-</body>
-</html>
+{% endblock %}

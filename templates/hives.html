@@ -1,41 +1,66 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Hives entdecken</title>
-</head>
-<body>
-    <h1>Hives entdecken</h1>
+{% extends "layout.html" %}
 
-    <form method="get" action="/hives">
-        <label for="game_system">Spielsystem:</label>
+{% block content %}
+    <h1>Alle Hives</h1>
 
-        <select name="game_system" id="game_system">
-            <option value="all" {% if selected_game_system == "all" %}selected{% endif %}>Alle</option>
-            <option value="D&D" {% if selected_game_system == "D&D" %}selected{% endif %}>D&D</option>
-            <option value="Pathfinder" {% if selected_game_system == "Pathfinder" %}selected{% endif %}>Pathfinder</option>
-            <option value="Warhammer" {% if selected_game_system == "Warhammer" %}selected{% endif %}>Warhammer</option>
-            <option value="Systemunabhängig" {% if selected_game_system == "Systemunabhängig" %}selected{% endif %}>Systemunabhängig</option>
+    <form method="GET" action="/hives">
+        <label for="game_system">Spielsystem filtern:</label>
+
+        <select id="game_system" name="game_system">
+            <option value="all" {% if selected_game_system == "all" %}selected{% endif %}>
+                Alle
+            </option>
+
+            <option value="Dungeons & Dragons" {% if selected_game_system == "Dungeons & Dragons" %}selected{% endif %}>
+                Dungeons & Dragons
+            </option>
+
+            <option value="Warhammer 40k" {% if selected_game_system == "Warhammer 40k" %}selected{% endif %}>
+                Warhammer 40k
+            </option>
+
+            <option value="Pathfinder" {% if selected_game_system == "Pathfinder" %}selected{% endif %}>
+                Pathfinder
+            </option>
+
+            <option value="Board Games" {% if selected_game_system == "Board Games" %}selected{% endif %}>
+                Board Games
+            </option>
         </select>
 
         <button type="submit">Filtern</button>
     </form>
 
-    <hr>
+    <br>
 
-    {% for hive in hives %}
-        <h2>{{ hive["title"] }}</h2>
+    {% if hives %}
+        {% for hive in hives %}
+            <section style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px;">
+                <h2>{{ hive["title"] }}</h2>
 
-        <p>Spielsystem: {{ hive["game_system"] }}</p>
-        <p>{{ hive["short_description"] }}</p>
-        <p>Deadline: {{ hive["deadline"] }}</p>
-        <p>Teilnehmer: {{ hive["current_participants"] }} / {{ hive["min_participants"] }}</p>
+                <p>
+                    <strong>System:</strong>
+                    {{ hive["game_system"] }}
+                </p>
 
-        <a href="/hives/{{ hive["id"] }}">Details ansehen</a>
+                <p>
+                    {{ hive["short_description"] }}
+                </p>
 
-        <hr>
+                <p>
+                    <strong>Teilnehmer:</strong>
+                    {{ hive["current_participants"] }} / {{ hive["min_participants"] }}
+                </p>
+
+                <p>
+                    <strong>Deadline:</strong>
+                    {{ hive["deadline"] }}
+                </p>
+
+                <a href="/hives/{{ hive['id'] }}">Details ansehen</a>
+            </section>
+        {% endfor %}
     {% else %}
-        <p>Keine Hives für diesen Filter gefunden.</p>
-    {% endfor %}
-</body>
-</html>
+        <p>Aktuell gibt es keine passenden Hives.</p>
+    {% endif %}
+{% endblock %}

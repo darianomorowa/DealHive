@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Neuen Hive erstellen</title>
-</head>
-<body>
+{% extends "layout.html" %}
+
+{% block content %}
 
     <h1>Neuen Sammelkauf anlegen</h1>
 
@@ -62,7 +58,7 @@
     </form>
 
     <br>
+
     <a href="/hives">Zurück zur Übersicht</a>
 
-</body>
-</html>
+{% endblock %}
