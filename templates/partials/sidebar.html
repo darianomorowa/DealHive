@@ -1,0 +1,49 @@
+<aside style="width: 220px; padding: 20px; border-right: 1px solid #ccc; min-height: 100vh;">
+    <a href="/">
+    <img
+        src="{{ url_for('static', filename='images/dealhive-logo.png') }}"
+        alt="DealHive Logo"
+        style="width: 160px; height: auto; margin-bottom: 20px;"
+    >
+    </a>
+
+    <nav>
+        <ul style="list-style: none; padding-left: 0;">
+            <li>
+                <a href="/">Startseite</a>
+            </li>
+
+            <li>
+                <a href="/hives">Hives ansehen</a>
+            </li>
+
+            {% if session.get("user_id") %}
+                <li>
+                    <a href="/profile">Mein Profil</a>
+                </li>
+
+                {% if session.get("role") == "creator" %}
+                    <li>
+                        <a href="/creator/hives/new">Hive erstellen</a>
+                    </li>
+
+                    <li>
+                        <a href="/creator/dashboard">Creator Dashboard</a>
+                    </li>
+                {% endif %}
+
+                <li>
+                    <a href="/logout">Logout</a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="/login">Login</a>
+                </li>
+
+                <li>
+                    <a href="/register">Registrieren</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</aside>
