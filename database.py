@@ -57,7 +57,19 @@ def create_tables():
             UNIQUE(user_id, hive_id, relation_type)
         )
     """)
-
+    # Neue Tabelle für Chat-Nachrichten erstellen
+    # FOREIGN KEYs stellen sicher, dass Nachrichten nur zu echten Hives und Usern gehören
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            hive_id INTEGER NOT NULL,
+            user_id INTEGER NOT NULL,
+            message_text TEXT NOT NULL,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (hive_id) REFERENCES hives(id),
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    """)
     # commit fürs eigentliche Speichern
     connection.commit()
     connection.close()
@@ -319,3 +331,31 @@ def create_user(username, name, email, password_hash, role, street, postal_code,
 
     connection.commit()
     connection.close()
+
+def save_message(hive_id, user_id, message_text):
+    connection = get_connection()
+    
+    # Fügt eine neue Chat-Nachricht in die Datenbank ein
+    connection.execute("""
+        INSERT INTO messages (hive_id, user_id, message_text)
+        VALUES (?, ?, ?)
+    """, (hive_id, user_id, message_text))
+    
+    connection.commit()
+    connection.close()
+
+def get_messages_for_hive(hive_id):
+    connection = get_connection()
+    
+    # Holt alle Nachrichten eines spezifischen Hives, sortiert nach Erstelldatum
+    # JOIN verknüpft die Nachricht mit der users-Tabelle, um den echten Usernamen auszulesen
+    messages = connection.execute("""
+        SELECT messages.id, messages.message_text, messages.timestamp, users.username 
+        FROM messages
+        JOIN users ON messages.user_id = users.id
+        WHERE messages.hive_id = ?
+        ORDER BY messages.timestamp ASC
+    """, (hive_id,)).fetchall()
+    
+    connection.close()
+    return messages
