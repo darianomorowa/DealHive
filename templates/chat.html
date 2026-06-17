@@ -9,7 +9,7 @@
             {# Iteration über die vom Backend übergebenen Datensätze #}
             {% for msg in messages %}
                 <div style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
-                    <strong style="color: #333;">{{ msg["username"] }}</strong> 
+                    <strong style="color: #333;">{{ msg["sender_name"] }}</strong> 
                     <span style="font-size: 0.8em; color: #888; margin-left: 10px;">{{ msg["timestamp"] }}</span><br>
                     <div style="margin-top: 5px;">{{ msg["message_text"] }}</div>
                 </div>
@@ -19,7 +19,7 @@
         {% endif %}
     </div>
 
-    <form method="POST" action="/hives/{{ hive['id'] }}/chat" style="display: flex; gap: 10px;">
+    <form method="POST" action="/hives/{{ hive['id'] }}/chat/{{ partner_id }}" style="display: flex; gap: 10px;">
         <input type="text" name="message_text" placeholder="Schreibe eine Nachricht..." required style="flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
         <button type="submit" style="padding: 10px 20px; cursor: pointer;">Senden</button>
     </form>
