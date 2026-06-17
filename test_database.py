@@ -128,6 +128,25 @@ assign_hive_to_user(demo_creator_id, 1, "creator")
 assign_hive_to_user(demo_creator_id, 2, "creator")
 assign_hive_to_user(demo_creator_id, 6, "creator")
 
+# hier erstellen wir einen Demo-Buyer mit fester user_id 1
+demo_buyer_id = create_user_with_id(
+    1,
+    "demo_buyer",
+    "Demo Buyer",
+    "buyer@example.com",
+    "test_hash",
+    "buyer",
+    "Beispielstraße 5",
+    "10117",
+    "Berlin",
+    "Deutschland"
+)
+
+# hier ordnen wir dem Demo-Buyer ein paar Hives als beigetretene Hives zu
+assign_hive_to_user(demo_buyer_id, 3, "buyer")
+assign_hive_to_user(demo_buyer_id, 4, "buyer")
+assign_hive_to_user(demo_buyer_id, 7, "buyer")
+
 # alle Hives wieder aus der Datenbank holen
 hives = get_all_hives()
 
@@ -146,3 +165,5 @@ for hive in hives:
 
 print("Demo-Creator mit user_id 0 wurde erstellt.")
 print("Creator-Hive-Zuordnung wurde erstellt.")
+print("Demo-Buyer mit user_id 1 wurde erstellt.")
+print("Buyer-Hive-Zuordnung wurde erstellt.")

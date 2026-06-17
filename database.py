@@ -4,18 +4,18 @@ import sqlite3
 def get_connection():
     # Datenbankdatei dealhive.db
     connection = sqlite3.connect("dealhive.db")
+
     # dadurch können wir später auf Spaltennamen zugreifen z.B. hive["title"]
     connection.row_factory = sqlite3.Row
+
     # wir geben die Verbindung zurück, damit andere Funktionen sie nutzen können
     return connection
 
 
 def create_tables():
-     # hier holen wir uns eine Verbindung zur Datenbank
+    # hier holen wir uns eine Verbindung zur Datenbank
     connection = get_connection()
-    # AUTOINCREMENT ist insane - es generiert selber IDs!!!
-    # (jede Zeile bekommt eine eigene ID)
-    # rest ist stanbdart DDL oder so
+
     connection.execute("""
         CREATE TABLE IF NOT EXISTS hives (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -92,14 +92,14 @@ def get_all_hives():
 
     # Daten aus der Tabelle abfragen
     hives = connection.execute("""
-        SELECT id, 
-        title, 
-        game_system, 
-        short_description, 
-        deadline, 
-        current_participants, 
-        min_participants
-
+        SELECT
+            id,
+            title,
+            game_system,
+            short_description,
+            deadline,
+            current_participants,
+            min_participants
         FROM hives
     """).fetchall()
 
@@ -112,21 +112,22 @@ def get_hive_by_id(hive_id):
 
     # hier suchen wir genau einen Hive über seine ID
     hive = connection.execute("""
-        SELECT id, 
-        title, 
-        game_system, 
-        short_description, 
-        description, 
-        deadline, 
-        current_participants, 
-        min_participants
+        SELECT
+            id,
+            title,
+            game_system,
+            short_description,
+            description,
+            deadline,
+            current_participants,
+            min_participants
         FROM hives
         WHERE id = ?
     """, (hive_id,)).fetchone()
 
     connection.close()
 
-    # wir geben entweder den gefundenen Hive zurück oder "None",
+    # wir geben entweder den gefundenen Hive zurück oder None,
     # falls nichts gefunden wurde
     return hive
 
@@ -157,6 +158,36 @@ def insert_hive(title, game_system, short_description, description, deadline, cu
     ))
 
     # commit fürs eigentliche Speichern
+    connection.commit()
+    connection.close()
+
+
+def update_hive(hive_id, title, game_system, short_description, description, deadline, min_participants):
+    connection = get_connection()
+
+    # hier bearbeiten wir einen bestehenden Hive
+    # current_participants wird bewusst nicht geändert,
+    # weil die Teilnehmerzahl durch Beitritte entstehen soll
+    connection.execute("""
+        UPDATE hives
+        SET
+            title = ?,
+            game_system = ?,
+            short_description = ?,
+            description = ?,
+            deadline = ?,
+            min_participants = ?
+        WHERE id = ?
+    """, (
+        title,
+        game_system,
+        short_description,
+        description,
+        deadline,
+        min_participants,
+        hive_id
+    ))
+
     connection.commit()
     connection.close()
 
@@ -204,11 +235,86 @@ def create_test_user(username, name, email, password_hash, role, street, postal_
     return user["id"]
 
 
+def create_user_with_id(user_id, username, name, email, password_hash, role, street, postal_code, city, country):
+    connection = get_connection()
+
+    # hier legen wir einen Nutzer mit einer festen ID an
+    # das nutzen wir aktuell für Demo-/Testdaten
+    connection.execute("""
+        INSERT OR IGNORE INTO users (
+            id,
+            username,
+            name,
+            email,
+            password_hash,
+            role,
+            street,
+            postal_code,
+            city,
+            country
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        user_id,
+        username,
+        name,
+        email,
+        password_hash,
+        role,
+        street,
+        postal_code,
+        city,
+        country
+    ))
+
+    connection.commit()
+    connection.close()
+
+    return user_id
+
+
+def create_user(username, name, email, password_hash, role, street, postal_code, city, country):
+    connection = get_connection()
+
+    # diese Funktion wird für echte Registrierung genutzt
+    cursor = connection.execute("""
+        INSERT INTO users (
+            username,
+            name,
+            email,
+            password_hash,
+            role,
+            street,
+            postal_code,
+            city,
+            country
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        username,
+        name,
+        email,
+        password_hash,
+        role,
+        street,
+        postal_code,
+        city,
+        country
+    ))
+
+    user_id = cursor.lastrowid
+
+    connection.commit()
+    connection.close()
+
+    return user_id
+
+
 def assign_hive_to_user(user_id, hive_id, relation_type):
     connection = get_connection()
 
     # hier mappen wir einen User auf einen Hive
-    # relation_type sagt, ob der Nutzer Creator oder Käufer dieses Hives ist
+    # relation_type sagt, ob der Nutzer creator oder buyer/joiner dieses Hives ist
     connection.execute("""
         INSERT OR IGNORE INTO user_hives (
             user_id,
@@ -253,69 +359,23 @@ def get_hives_for_user(user_id, relation_type):
 
     return hives
 
-def create_user_with_id(user_id, username, name, email, password_hash, role, street, postal_code, city, country):
+
+def is_creator_of_hive(user_id, hive_id):
     connection = get_connection()
 
-    # hier legen wir einen Nutzer mit einer festen ID an
-    # das nutzen wir aktuell für unseren Demo-Creator mit user_id 0
-    connection.execute("""
-        INSERT OR IGNORE INTO users (
-            id,
-            username,
-            name,
-            email,
-            password_hash,
-            role,
-            street,
-            postal_code,
-            city,
-            country
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    # hier prüfen wir, ob der Nutzer Creator von genau diesem Hive ist
+    creator_relation = connection.execute("""
+        SELECT id
+        FROM user_hives
+        WHERE user_id = ?
+        AND hive_id = ?
+        AND relation_type = ?
     """, (
         user_id,
-        username,
-        name,
-        email,
-        password_hash,
-        role,
-        street,
-        postal_code,
-        city,
-        country
-    ))
+        hive_id,
+        "creator"
+    )).fetchone()
 
-    connection.commit()
     connection.close()
 
-    return user_id
-def create_user(username, name, email, password_hash, role, street, postal_code, city, country):
-    connection = get_connection()
-
-    connection.execute("""
-        INSERT INTO users (
-            username,
-            name,
-            email,
-            password_hash,
-            role,
-            street,
-            postal_code,
-            city,
-            country
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (
-        username,
-        name,
-        email,
-        password_hash,
-        role,
-        street,
-        postal_code,
-        city,
-        country
-    ))
-
-    connection.commit()
-    connection.close()
+    return creator_relation is not None

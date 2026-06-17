@@ -1,14 +1,10 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <h1>Creator Dashboard</h1>
+    <h1>User Dashboard</h1>
 
     <p>
-        Hier siehst du die Hives, die du als Creator angelegt hast.
-    </p>
-
-    <p>
-        <a href="/creator/hives/new">Neuen Hive erstellen</a>
+        Hier siehst du die Hives, denen du beigetreten bist.
     </p>
 
     {% if hives %}
@@ -51,13 +47,9 @@
                 <p>
                     <a href="/hives/{{ hive['id'] }}">Details ansehen</a>
                 </p>
-
-                <p>
-                    <a href="/creator/hives/{{ hive['id'] }}/edit">Hive bearbeiten</a>
-                </p>
             </section>
         {% endfor %}
     {% else %}
-        <p>Du hast aktuell noch keine Hives erstellt.</p>
+        <p>Du bist aktuell noch keinem Hive beigetreten.</p>
     {% endif %}
 {% endblock %}

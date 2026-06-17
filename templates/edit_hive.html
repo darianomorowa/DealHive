@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Hive bearbeiten</h1>
+
+    <form method="POST">
+        <div>
+            <label for="title">Titel</label><br>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                value="{{ hive['title'] }}"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="game_system">Spielsystem</label><br>
+            <input
+                type="text"
+                id="game_system"
+                name="game_system"
+                value="{{ hive['game_system'] }}"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="short_description">Kurzbeschreibung</label><br>
+            <input
+                type="text"
+                id="short_description"
+                name="short_description"
+                value="{{ hive['short_description'] }}"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="description">Beschreibung</label><br>
+            <textarea
+                id="description"
+                name="description"
+                required
+            >{{ hive['description'] }}</textarea>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="deadline">Deadline</label><br>
+            <input
+                type="text"
+                id="deadline"
+                name="deadline"
+                value="{{ hive['deadline'] }}"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="min_participants">Mindestteilnehmer</label><br>
+            <input
+                type="number"
+                id="min_participants"
+                name="min_participants"
+                value="{{ hive['min_participants'] }}"
+                required
+            >
+        </div>
+
+        <br>
+
+        <button type="submit">Änderungen speichern</button>
+    </form>
+
+    <br>
+
+    <a href="/creator/dashboard">Zurück zum Creator Dashboard</a>
+{% endblock %}
