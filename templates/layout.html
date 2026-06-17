@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>DealHive</title>
+
+    <style>
+    .form-row {
+        display: grid;
+        grid-template-columns: 130px 240px;
+        align-items: center;
+        margin-bottom: 14px;
+    }
+
+    .form-row input,
+    .form-row select {
+        width: 240px;
+        box-sizing: border-box;
+    }
+
+    .form-actions {
+        margin-left: 130px;
+        margin-top: 18px;
+    }
+    
+</style>
+</head>
+<body style="margin: 0; font-family: Arial, sans-serif;">
+
+    <div style="display: flex;">
+        {% include "partials/sidebar.html" %}
+
+        <main style="padding: 30px; max-width: 900px; width: 100%;">
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+
+</body>
+</html>
