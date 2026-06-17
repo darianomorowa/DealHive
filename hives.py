@@ -80,6 +80,19 @@ def register_hive_routes(app):
         messages = get_messages_for_hive(hive_id)
 
         return render_template("chat.html", hive=hive, messages=messages)
+    
+    @app.route("/my-chats")
+    def my_chats():
+        # Sicherheits-Check: Nur für eingeloggte User
+        if session.get("user_id") is None:
+            return redirect("/login")
+        
+        # Wir rufen unsere die entsprechende Funktion aus der database.py auf
+        # Sie holt gezielt nur die Hives, in denen dieser User Mitglied ist
+        user_chats = get_user_hives_for_chat(session["user_id"])
+        
+        # Übergabe der Chat-Liste an das (noch zu erstellende) Template
+        return render_template("my_chats.html", chats=user_chats)
 
     @app.route("/api/hives")
     def api_hives():
