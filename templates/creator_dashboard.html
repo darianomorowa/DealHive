@@ -1,41 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Creator Dashboard</title>
-</head>
-<body>
+{% extends "layout.html" %}
 
+{% block content %}
     <h1>Creator Dashboard</h1>
 
-    <a href="/creator/hives/new">
-        <button>+ Neuen Hive erstellen</button>
-    </a>
+    <p>
+        Hier siehst du die Hives, die du als Creator angelegt hast.
+    </p>
 
-    <hr>
+    <p>
+        <a href="/creator/hives/new">Neuen Hive erstellen</a>
+    </p>
 
-    {% for hive in hives %}
-        <div style="border: 1px solid black; padding: 10px; margin-bottom: 10px;">
-            <h2>
-    <a href="/hives/{{ hive['id'] }}">
-        {{ hive["title"] }}
-    </a>
-</h2>
+    {% if hives %}
+        {% for hive in hives %}
+            <section style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px;">
+                <h2>{{ hive["title"] }}</h2>
 
-            <p><strong>System:</strong> {{ hive["game_system"] }}</p>
-            <p><strong>Kurzbeschreibung:</strong> {{ hive["short_description"] }}</p>
-            <p><strong>Teilnehmer:</strong> {{ hive["current_participants"] }} / {{ hive["min_participants"] }}</p>
-            <p><strong>Deadline:</strong> {{ hive["deadline"] }}</p>
+                <p>
+                    <strong>System:</strong>
+                    {{ hive["game_system"] }}
+                </p>
 
-            <p>
-                <strong>Status:</strong>
-                {% if hive["current_participants"] >= hive["min_participants"] %}
-                    Mindestmenge erreicht
-                {% else %}
-                    Offen
-                {% endif %}
-            </p>
-        </div>
-    {% endfor %}
+                <p>
+                    {{ hive["short_description"] }}
+                </p>
 
-</body>
-</html>
+                <p>
+                    <strong>Teilnehmer:</strong>
+                    {{ hive["current_participants"] }} / {{ hive["min_participants"] }}
+                </p>
+
+                <p>
+                    <strong>Deadline:</strong>
+                    {{ hive["deadline"] }}
+                </p>
+
+                <a href="/hives/{{ hive['id'] }}">Details ansehen</a>
+            </section>
+        {% endfor %}
+    {% else %}
+        <p>Du hast aktuell noch keine Hives erstellt.</p>
+    {% endif %}
+{% endblock %}

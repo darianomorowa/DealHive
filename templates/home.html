@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Willkommen bei DealHive</h1>
+
+    <p>
+        DealHive ist eine Plattform für Sammelkäufe im Bereich Brettspiele,
+        TTRPGs, Tabletop und Zubehör.
+    </p>
+
+    <p>
+        Creator können Hives für besondere Produkte erstellen.
+        Käufer können diesen Hives beitreten, damit genug Nachfrage für eine Produktion entsteht.
+    </p>
+
+    {% if session.get("user_id") %}
+        <p>
+            Du bist eingeloggt als
+            <strong>{{ session.get("username") }}</strong>.
+        </p>
+    {% else %}
+        <p>
+            Melde dich an oder registriere dich, um alle Funktionen von DealHive zu nutzen.
+        </p>
+    {% endif %}
+{% endblock %}
