@@ -70,6 +70,6 @@ def setup_user_routes(app):
 
 
     @app.route("/logout")
-    def logout():
-        # logoutseite anzeigen
-        return render_template("logout.html")
+   def logout():
+    session.clear()
+    return render_template("login.html")
