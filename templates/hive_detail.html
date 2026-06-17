@@ -32,12 +32,16 @@
         <strong>Deadline:</strong>
         {{ hive["deadline"] }}
     </p>
-
+    
     <form method="POST" action="/hives/{{ hive['id'] }}/join">
         <button type="submit">Hive beitreten</button>
     </form>
 
     <br>
+    <a href="/hives/{{ hive['id'] }}/chat" style="display: inline-block; padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+    
+    </a>
+    <br><br>
 
     <a href="/hives">Zurück zu allen Hives</a>
 {% endblock %}
