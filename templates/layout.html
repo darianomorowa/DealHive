@@ -19,10 +19,15 @@
         .sidebar {
             width: 230px;
             min-width: 230px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
             padding: 22px;
             border-right: 1px solid #ddd;
             background-color: #ffffff;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
 
         .sidebar-logo {
@@ -33,10 +38,19 @@
             margin-bottom: 24px;
         }
 
+        .sidebar nav {
+            flex: 1;
+            display: flex;
+        }
+
         .sidebar-nav {
             list-style: none;
             padding-left: 0;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            width: 100%;
         }
 
         .sidebar-nav li {
@@ -65,6 +79,27 @@
             font-size: 14px;
         }
 
+        .sidebar-bottom-info {
+            margin-top: auto;
+            margin-bottom: 0;
+        }
+
+        .role-switch-form {
+            margin: 0;
+        }
+
+        .role-switch-form label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .role-switch-form select {
+            width: 100%;
+            padding: 7px;
+            box-sizing: border-box;
+        }
+
         .content-area {
             padding: 30px;
             max-width: 950px;
@@ -72,6 +107,12 @@
             box-sizing: border-box;
             background-color: #ffffff;
             min-height: 100vh;
+        }
+
+        .helper-text {
+            max-width: 650px;
+            line-height: 1.5;
+            margin-bottom: 24px;
         }
 
         .form-row {
@@ -95,6 +136,49 @@
         .form-actions {
             margin-left: 130px;
             margin-top: 18px;
+        }
+
+        .create-hive-form .form-row {
+            grid-template-columns: 160px 420px;
+            column-gap: 14px;
+        }
+
+        .create-hive-form .form-row input,
+        .create-hive-form .form-row select,
+        .create-hive-form .form-row textarea {
+            width: 420px;
+            padding: 6px;
+            box-sizing: border-box;
+        }
+
+        .create-hive-form .form-row textarea {
+            min-height: 90px;
+        }
+
+        .create-hive-form .form-actions {
+            margin-left: 174px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        button,
+        .button-link {
+            display: inline-block;
+            padding: 8px 12px;
+            border: 1px solid #bbb;
+            border-radius: 8px;
+            background-color: #f5f5f5;
+            color: #222;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+
+        button:hover,
+        .button-link:hover {
+            background-color: #eeeeee;
         }
     </style>
 </head>

@@ -82,3 +82,17 @@ def setup_user_routes(app):
         session.clear()
 
         return redirect("/")
+    
+    @app.route("/session/role", methods=["POST"])
+    def change_session_role():
+        if session.get("user_id") is None:
+            return redirect("/login")
+
+        selected_role = request.form.get("role")
+
+        if selected_role == "buyer" or selected_role == "creator":
+            session["role"] = selected_role
+
+        next_page = request.form.get("next_page", "/")
+
+        return redirect(next_page)

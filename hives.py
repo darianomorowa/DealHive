@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, session, jsonify
-from database import get_all_hives, get_hive_by_id, assign_hive_to_user
+from database import get_all_hives, get_hive_by_id, assign_hive_to_user, increase_hive_participants
 
 
 def register_hive_routes(app):
@@ -50,14 +50,18 @@ def register_hive_routes(app):
 
     @app.route("/hives/<int:hive_id>/join", methods=["POST"])
     def join_hive(hive_id):
-        # ohne Login soll niemand verbindlich einem Hive beitreten
+         # ohne Login soll niemand verbindlich einem Hive beitreten
         if session.get("user_id") is None:
             return redirect("/login")
 
-        # hier verbinden wir den eingeloggten Nutzer mit dem Hive als Käufer
-        assign_hive_to_user(session["user_id"], hive_id, "buyer")
+    # hier verbinden wir den eingeloggten Nutzer mit dem Hive als Käufer
+        relation_was_created = assign_hive_to_user(session["user_id"], hive_id, "buyer")
 
-        # hier zeigen wir die Bestätigungsseite nach dem Beitritt
+    # die Teilnehmerzahl wird nur erhöht, wenn der Beitritt neu war
+        if relation_was_created:
+            increase_hive_participants(hive_id)
+
+    # hier zeigen wir die Bestätigungsseite nach dem Beitritt
         return render_template("join_confirm.html")
 
 
