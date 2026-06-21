@@ -7,9 +7,13 @@
         Hier siehst du die Hives, die du als Creator angelegt hast.
     </p>
 
-    <p>
-        <a href="/creator/hives/new">Neuen Hive erstellen</a>
-    </p>
+    <div class="form-actions">
+        <a href="/creator/hives/new">
+            <button type="button">Neuen Hive erstellen</button>
+        </a>
+    </div>
+
+    <br>
 
     {% if hives %}
         {% for hive in hives %}
@@ -35,7 +39,24 @@
                     {{ hive["deadline"] }}
                 </p>
 
-                <a href="/hives/{{ hive['id'] }}">Details ansehen</a>
+                <p>
+                    <strong>Status:</strong>
+                    {% if hive["current_participants"] >= hive["min_participants"] %}
+                        Mindestmenge erreicht
+                    {% else %}
+                        Offen
+                    {% endif %}
+                </p>
+
+                <div class="form-actions">
+                    <a href="/hives/{{ hive['id'] }}">
+                        <button type="button">Details ansehen</button>
+                    </a>
+
+                    <a href="/creator/hives/{{ hive['id'] }}/edit">
+                        <button type="button">Hive bearbeiten</button>
+                    </a>
+                </div>
             </section>
         {% endfor %}
     {% else %}
