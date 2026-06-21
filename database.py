@@ -149,10 +149,10 @@ def get_hive_by_id(hive_id):
     # falls nichts gefunden wurde
     return hive
 
-def insert_hive(title, game_system, short_description, description, deadline, current_participants, min_participants):
+def insert_hive(title, game_system, short_description, description, deadline, current_participants, min_participants, base_price):
     connection = get_connection()
 
-    # hier speichern wir einen neuen Hive aus dem Creator-Formular
+    # 8 Spalten, 8 Fragezeichen, 8 Variablen!
     cursor = connection.execute("""
         INSERT INTO hives (
             title,
@@ -161,9 +161,10 @@ def insert_hive(title, game_system, short_description, description, deadline, cu
             description,
             deadline,
             current_participants,
-            min_participants
+            min_participants,
+            base_price
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         title,
         game_system,
@@ -171,7 +172,8 @@ def insert_hive(title, game_system, short_description, description, deadline, cu
         description,
         deadline,
         current_participants,
-        min_participants
+        min_participants,
+        base_price
     ))
 
     # hier merken wir uns die ID vom gerade erstellten Hive
