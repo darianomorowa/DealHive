@@ -20,9 +20,11 @@
         <p><strong>Stadt:</strong> {{ user["city"] }}</p>
         <p><strong>Land:</strong> {{ user["country"] }}</p>
 
-        <p>
-            <a href="/profile/edit">Profil bearbeiten</a>
-        </p>
+        <div class="form-actions">
+            <a href="/profile/edit">
+                <button type="button">Profil bearbeiten</button>
+            </a>
+        </div>
     {% else %}
         <p>Es konnten keine Profildaten geladen werden.</p>
     {% endif %}
