@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, session
-from database import insert_hive, get_hives_for_user, assign_hive_to_user
+from database import insert_hive, get_hives_for_user, assign_hive_to_user, insert_hive_tier
 
 def register_creator_routes(app):
     @app.route("/creator/hives/new", methods=["GET", "POST"])
@@ -21,6 +21,9 @@ def register_creator_routes(app):
             min_participants = request.form.get("min_participants")
             deadline = request.form.get("deadline")
 
+            # neu Basispreis auslesen und in eine Fließkommazahl umwandeln
+            base_price = float(request.form.get("base_price", 0.0))
+
             # 2. Neue Hives starten erstmal mit 0 Teilnehmern
             current_participants = 0
 
@@ -33,12 +36,21 @@ def register_creator_routes(app):
                 deadline,
                 current_participants,
                 min_participants
+                base_price
             )
 
             # hier ordnen wir den neu erstellten Hive direkt dem eingeloggten Creator zu
             assign_hive_to_user(session["user_id"], new_hive_id, "creator")
 
-        
+            # neu Dynamische Staffeln aus dem Formular auslesen
+            thresholds = request.form.getlist("threshold_quantity[]")
+            discounts = request.form.getlist("discount_percent[]")
+
+            # Schleife verknüpft die Listen und speichert jede gültige Staffel in der DB
+            for i in range(len(thresholds)):
+                if thresholds[i] and discounts[i]:
+                    insert_hive_tier(new_hive_id, int(thresholds[i]), float(discounts[i]))
+
             # 4. Nach erfolgreichem Speichern den Nutzer zum Creator Dashboard umleiten
             return redirect("/creator/dashboard")
 
