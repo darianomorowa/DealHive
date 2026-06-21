@@ -457,6 +457,7 @@ def insert_hive_tier(hive_id, threshold_quantity, discount_percent):
     connection.commit()
     connection.close()
 
+
 def get_hive_tiers(hive_id):
     # Holt alle Rabattstaffeln eines Hives aus der Datenbank, sortiert nach der Mindestmenge aufsteigend
     connection = get_connection()
@@ -468,3 +469,27 @@ def get_hive_tiers(hive_id):
     """, (hive_id,)).fetchall()
     connection.close()
     return tiers
+
+
+def calculate_current_price(hive_id):
+    # Berechnet den aktuellen, dynamischen Stückpreis eines Hives basierend auf den Gesamtbestellungen und Rabattstaffeln
+    hive = get_hive_by_id(hive_id)
+    if not hive:
+        return 0.0
+
+    base_price = hive["base_price"]
+    # Da current_participants jetzt die Summe aller bestellten Bretter speichert:
+    current_total = hive["current_participants"]
+    
+    # Alle Staffeln für diesen Hive aufsteigend holen
+    tiers = get_hive_tiers(hive_id)
+    
+    active_discount = 0.0
+    # Schleife prüft, welche Rabattstufe durch die Gesamtmenge bereits geknackt wurde
+    for tier in tiers:
+        if current_total >= tier["threshold_quantity"]:
+            active_discount = tier["discount_percent"]
+            
+    # Endpreis berechnen (z.B. 50.00 * (1.0 - 0.10) = 45.00)
+    current_price = base_price * (1.0 - (active_discount / 100.0))
+    return round(current_price, 2)
