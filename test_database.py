@@ -1,8 +1,10 @@
+import random
+
 from database import (
     create_tables,
     insert_test_hives,
     get_all_hives,
-    create_user_with_id,
+    create_test_user,
     assign_hive_to_user
 )
 
@@ -109,27 +111,72 @@ create_tables()
 # hier geben wir unsere Testdaten-Liste an die Insert-Funktion weiter
 insert_test_hives(test_hives)
 
-# hier erstellen wir unseren Demo-Creator mit fester user_id 0
-demo_creator_id = create_user_with_id(
-    0,
-    "demo_creator",
-    "Demo Creator",
-    "demo@example.com",
-    "test_hash",
-    "creator",
-    "Musterstraße 1",
-    "10115",
-    "Berlin",
-    "Deutschland"
-)
+# damit die zufällige Zuordnung bei jedem Ausführen gleich bleibt
+# dadurch ist es für Tests nicht komplett chaotisch
+random.seed(42)
 
-# hier ordnen wir dem Demo-Creator drei Hives als Creator zu
-assign_hive_to_user(demo_creator_id, 1, "creator")
-assign_hive_to_user(demo_creator_id, 2, "creator")
-assign_hive_to_user(demo_creator_id, 6, "creator")
+# hier erstellen wir mehrere Creator mit echten Datenbank-IDs
+test_creators = [
+    (
+        "dice_creator",
+        "Dice Creator",
+        "dice.creator@example.com",
+        "test123",
+        "creator",
+        "Würfelweg 1",
+        "10115",
+        "Berlin",
+        "Deutschland"
+    ),
+    (
+        "terrain_creator",
+        "Terrain Creator",
+        "terrain.creator@example.com",
+        "test123",
+        "creator",
+        "Bastelstraße 7",
+        "10243",
+        "Berlin",
+        "Deutschland"
+    ),
+    (
+        "miniature_creator",
+        "Miniature Creator",
+        "miniature.creator@example.com",
+        "test123",
+        "creator",
+        "Figurenallee 12",
+        "10405",
+        "Berlin",
+        "Deutschland"
+    )
+]
+
+creator_ids = []
+
+# hier erstellen wir die Creator und speichern ihre echten IDs
+for creator in test_creators:
+    creator_id = create_test_user(
+        creator[0],
+        creator[1],
+        creator[2],
+        creator[3],
+        creator[4],
+        creator[5],
+        creator[6],
+        creator[7],
+        creator[8]
+    )
+
+    creator_ids.append(creator_id)
 
 # alle Hives wieder aus der Datenbank holen
 hives = get_all_hives()
+
+# hier ordnen wir jedem Hive zufällig einen echten Creator zu
+for hive in hives:
+    creator_id = random.choice(creator_ids)
+    assign_hive_to_user(creator_id, hive["id"], "creator")
 
 # was in der Datenbank steht ausgeben
 for hive in hives:
@@ -144,5 +191,5 @@ for hive in hives:
         hive["min_participants"]
     )
 
-print("Demo-Creator mit user_id 0 wurde erstellt.")
+print("Creator wurden mit echten Datenbank-IDs erstellt.")
 print("Creator-Hive-Zuordnung wurde erstellt.")
