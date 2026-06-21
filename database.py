@@ -1,5 +1,6 @@
 import sqlite3
 
+
 def get_connection():
     # Datenbankdatei dealhive.db
     connection = sqlite3.connect("dealhive.db")
@@ -8,8 +9,9 @@ def get_connection():
     # wir geben die Verbindung zurück, damit andere Funktionen sie nutzen können
     return connection
 
+
 def create_tables():
-     # hier holen wir uns eine Verbindung zur Datenbank
+    # hier holen wir uns eine Verbindung zur Datenbank
     connection = get_connection()
     # AUTOINCREMENT ist insane - es generiert selber IDs!!!
     # (jede Zeile bekommt eine eigene ID)
@@ -55,7 +57,7 @@ def create_tables():
             UNIQUE(user_id, hive_id, relation_type)
         )
     """)
-    
+
     # Neue Tabelle für Chat-Nachrichten erstellen (eBay-Style 1-zu-1 Kommunikation)
     # FOREIGN KEYs stellen sicher, dass Nachrichten nur zu echten Hives und Usern gehören
     connection.execute("""
@@ -71,9 +73,11 @@ def create_tables():
             FOREIGN KEY (receiver_id) REFERENCES users(id)
         )
     """)
+
     # commit fürs eigentliche Speichern
     connection.commit()
     connection.close()
+
 
 # folgende Funktion wurde vollständig von KI generiert
 def insert_test_hives(test_hives):
@@ -98,6 +102,7 @@ def insert_test_hives(test_hives):
     connection.commit()
     connection.close()
 
+
 def get_all_hives():
     connection = get_connection()
 
@@ -115,6 +120,7 @@ def get_all_hives():
 
     connection.close()
     return hives
+
 
 def get_hive_by_id(hive_id):
     connection = get_connection()
@@ -138,6 +144,7 @@ def get_hive_by_id(hive_id):
     # wir geben entweder den gefundenen Hive zurück oder "None",
     # falls nichts gefunden wurde
     return hive
+
 
 def insert_hive(title, game_system, short_description, description, deadline, current_participants, min_participants):
     connection = get_connection()
@@ -172,6 +179,7 @@ def insert_hive(title, game_system, short_description, description, deadline, cu
     connection.close()
 
     return new_hive_id
+
 
 def create_test_user(username, name, email, password_hash, role, street, postal_code, city, country):
     connection = get_connection()
@@ -215,6 +223,7 @@ def create_test_user(username, name, email, password_hash, role, street, postal_
 
     return user["id"]
 
+
 def assign_hive_to_user(user_id, hive_id, relation_type):
     connection = get_connection()
 
@@ -241,6 +250,7 @@ def assign_hive_to_user(user_id, hive_id, relation_type):
 
     return relation_was_created
 
+
 def increase_hive_participants(hive_id):
     connection = get_connection()
 
@@ -253,6 +263,7 @@ def increase_hive_participants(hive_id):
 
     connection.commit()
     connection.close()
+
 
 def get_hives_for_user(user_id, relation_type):
     connection = get_connection()
@@ -280,6 +291,7 @@ def get_hives_for_user(user_id, relation_type):
     connection.close()
 
     return hives
+
 
 def create_user_with_id(user_id, username, name, email, password_hash, role, street, postal_code, city, country):
     connection = get_connection()
@@ -318,6 +330,7 @@ def create_user_with_id(user_id, username, name, email, password_hash, role, str
 
     return user_id
 
+
 def create_user(username, name, email, password_hash, role, street, postal_code, city, country):
     connection = get_connection()
 
@@ -349,6 +362,7 @@ def create_user(username, name, email, password_hash, role, street, postal_code,
     connection.commit()
     connection.close()
 
+
 def get_user_by_username(username):
     connection = get_connection()
 
@@ -361,6 +375,50 @@ def get_user_by_username(username):
     connection.close()
 
     return user
+
+
+def get_user_by_id(user_id):
+    connection = get_connection()
+
+    user = connection.execute("""
+        SELECT *
+        FROM users
+        WHERE id = ?
+    """, (user_id,)).fetchone()
+
+    connection.close()
+
+    return user
+
+
+def update_user_profile(user_id, name, email, role, street, postal_code, city, country):
+    connection = get_connection()
+
+    # hier speichern wir Änderungen am Profil des eingeloggten Nutzers
+    connection.execute("""
+        UPDATE users
+        SET
+            name = ?,
+            email = ?,
+            role = ?,
+            street = ?,
+            postal_code = ?,
+            city = ?,
+            country = ?
+        WHERE id = ?
+    """, (
+        name,
+        email,
+        role,
+        street,
+        postal_code,
+        city,
+        country,
+        user_id
+    ))
+
+    connection.commit()
+    connection.close()
 
 
 def save_private_message(hive_id, sender_id, receiver_id, text):
@@ -435,15 +493,3 @@ def get_hive_creator_id(hive_id):
         return creator["user_id"]
 
     return None
-def get_user_by_id(user_id):
-    connection = get_connection()
-
-    user = connection.execute("""
-        SELECT *
-        FROM users
-        WHERE id = ?
-    """, (user_id,)).fetchone()
-
-    connection.close()
-
-    return user
