@@ -445,3 +445,12 @@ def get_hive_creator_id(hive_id):
         return creator["user_id"]
 
     return None
+
+def insert_hive_tier(hive_id, threshold_quantity, discount_percent):
+    connection = get_connection()
+    connection.execute("""
+        INSERT INTO hive_tiers (hive_id, threshold_quantity, discount_percent)
+        VALUES (?, ?, ?)
+    """, (hive_id, threshold_quantity, discount_percent))
+    connection.commit()
+    connection.close()
