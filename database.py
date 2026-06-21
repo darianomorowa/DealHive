@@ -435,3 +435,15 @@ def get_hive_creator_id(hive_id):
         return creator["user_id"]
 
     return None
+def get_user_by_id(user_id):
+    connection = get_connection()
+
+    user = connection.execute("""
+        SELECT *
+        FROM users
+        WHERE id = ?
+    """, (user_id,)).fetchone()
+
+    connection.close()
+
+    return user
