@@ -120,6 +120,7 @@ def get_all_hives():
         deadline, 
         current_participants, 
         min_participants
+        base_price                      
         FROM hives
     """).fetchall()
 
@@ -279,6 +280,7 @@ def get_hives_for_user(user_id, relation_type):
             hives.deadline,
             hives.current_participants,
             hives.min_participants,
+            hives.base_price,                  
             user_hives.relation_type
         FROM hives
         JOIN user_hives ON hives.id = user_hives.hive_id
