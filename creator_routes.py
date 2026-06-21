@@ -1,8 +1,7 @@
-from flask import render_template, request, redirect
 from database import insert_hive, get_hives_for_user
 from flask import render_template, request, redirect
 from database import insert_hive
-
+from flask import render_template, request, redirect, session
 
 def register_creator_routes(app):
     @app.route("/creator/hives/new", methods=["GET", "POST"])
@@ -40,12 +39,16 @@ def register_creator_routes(app):
     
     @app.route("/creator/dashboard")
     def creator_dashboard():
-        # erstmal hardcoded, weil wir noch kein richtiges Login haben
-        # user_id 0 ist unser Demo-Creator für die Präsentation
-        demo_creator_id = 0
+        # ohne Login soll niemand das Creator Dashboard sehen
+        if session.get("user_id") is None:
+            return redirect("/login")
 
-        # hier laden wir nur die Hives, die dem Demo-Creator zugeordnet sind
-        hives = get_hives_for_user(demo_creator_id, "creator")
+        # wenn man nicht in der Creator-Ansicht ist, geht es zurück zur Startseite
+        if session.get("role") != "creator":
+            return redirect("/")
+
+        # hier laden wir nur die Hives, die dem eingeloggten Creator zugeordnet sind
+        hives = get_hives_for_user(session["user_id"], "creator")
 
         return render_template(
             "creator_dashboard.html",
