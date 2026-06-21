@@ -446,7 +446,9 @@ def get_hive_creator_id(hive_id):
 
     return None
 
+
 def insert_hive_tier(hive_id, threshold_quantity, discount_percent):
+    # Speichert eine einzelne Rabattstaffel für einen spezifischen Hive in der Datenbank
     connection = get_connection()
     connection.execute("""
         INSERT INTO hive_tiers (hive_id, threshold_quantity, discount_percent)
@@ -454,3 +456,15 @@ def insert_hive_tier(hive_id, threshold_quantity, discount_percent):
     """, (hive_id, threshold_quantity, discount_percent))
     connection.commit()
     connection.close()
+
+def get_hive_tiers(hive_id):
+    # Holt alle Rabattstaffeln eines Hives aus der Datenbank, sortiert nach der Mindestmenge aufsteigend
+    connection = get_connection()
+    tiers = connection.execute("""
+        SELECT threshold_quantity, discount_percent
+        FROM hive_tiers
+        WHERE hive_id = ?
+        ORDER BY threshold_quantity ASC
+    """, (hive_id,)).fetchall()
+    connection.close()
+    return tiers
