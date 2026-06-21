@@ -7,10 +7,23 @@
         Hier siehst du deine aktuellen Profildaten.
     </p>
 
-    <p><strong>Username:</strong> {{ username }}</p>
-    <p><strong>Rolle:</strong> {{ role }}</p>
+    {% if user %}
+        <p><strong>Username:</strong> {{ user["username"] }}</p>
+        <p><strong>Name:</strong> {{ user["name"] }}</p>
+        <p><strong>E-Mail:</strong> {{ user["email"] }}</p>
+        <p><strong>Rolle:</strong> {{ user["role"] }}</p>
 
-    <p>
-        <a href="/profile/edit">Profil bearbeiten</a>
-    </p>
+        <h2>Adresse</h2>
+
+        <p><strong>Straße:</strong> {{ user["street"] }}</p>
+        <p><strong>PLZ:</strong> {{ user["postal_code"] }}</p>
+        <p><strong>Stadt:</strong> {{ user["city"] }}</p>
+        <p><strong>Land:</strong> {{ user["country"] }}</p>
+
+        <p>
+            <a href="/profile/edit">Profil bearbeiten</a>
+        </p>
+    {% else %}
+        <p>Es konnten keine Profildaten geladen werden.</p>
+    {% endif %}
 {% endblock %}
