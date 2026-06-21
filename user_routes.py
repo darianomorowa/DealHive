@@ -1,5 +1,10 @@
 from flask import render_template, request, session, redirect
-from database import create_user, get_user_by_username
+from database import (
+    create_user,
+    get_user_by_username,
+    get_user_by_id,
+    update_user_profile
+)
 
 
 def setup_user_routes(app):
@@ -57,6 +62,8 @@ def setup_user_routes(app):
 
                 print(session["username"])
 
+                return redirect("/profile")
+
             else:
                 print("Login fehlgeschlagen")
 
@@ -65,21 +72,56 @@ def setup_user_routes(app):
 
     @app.route("/profile")
     def profile():
+        user_id = session.get("user_id")
 
-        username = session.get("username")
-        role = session.get("role")
+        if user_id is None:
+            return redirect("/login")
+
+        user = get_user_by_id(user_id)
 
         return render_template(
             "profile.html",
-            username=username,
-            role=role
+            user=user
         )
 
 
-    @app.route("/profile/edit")
+    @app.route("/profile/edit", methods=["GET", "POST"])
     def edit_profile():
-        # profil bearbeiten
-        return render_template("edit_profile.html")
+        user_id = session.get("user_id")
+
+        if user_id is None:
+            return redirect("/login")
+
+        user = get_user_by_id(user_id)
+
+        if request.method == "POST":
+            name = request.form["name"]
+            email = request.form["email"]
+            role = request.form["role"]
+            street = request.form["street"]
+            postal_code = request.form["postal_code"]
+            city = request.form["city"]
+            country = request.form["country"]
+
+            update_user_profile(
+                user_id,
+                name,
+                email,
+                role,
+                street,
+                postal_code,
+                city,
+                country
+            )
+
+            session["role"] = role
+
+            return redirect("/profile")
+
+        return render_template(
+            "edit_profile.html",
+            user=user
+        )
 
 
     @app.route("/logout")
@@ -89,6 +131,7 @@ def setup_user_routes(app):
 
         return redirect("/")
     
+
     @app.route("/session/role", methods=["POST"])
     def change_session_role():
         if session.get("user_id") is None:
