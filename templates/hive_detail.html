@@ -27,9 +27,28 @@
         <strong>Deadline:</strong>
         {{ hive["deadline"] }}
     </p>
+    <p>
+        <strong>Basispreis:</strong>
+        {{ "%.2f"|format(hive["base_price"]) }} €
+    </p>
+
+    <p>
+        <strong>Aktueller Preis:</strong>
+        {{ "%.2f"|format(current_price) }} €
+    </p>
+
+    {% if tiers %}
+        <p><strong>Verfügbare Rabatte:</strong></p>
+        <ul>
+            {% for tier in tiers %}
+                <li>Ab {{ tier.threshold_quantity }} Brettern: {{ tier.discount_percent }}% Rabatt</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
     <div class="hive-actions">
         <form method="POST" action="/hives/{{ hive['id'] }}/join" style="display: inline-block; margin: 0;">
+            <input type="number" id="quantity" name="quantity" value="1" min="1" required style="width: 50px; margin-right: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
             <button type="submit">Hive beitreten</button>
         </form>
 
