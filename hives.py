@@ -70,13 +70,14 @@ def register_hive_routes(app):
          # ohne Login soll niemand verbindlich einem Hive beitreten
         if session.get("user_id") is None:
             return redirect("/login")
-
-    # hier verbinden wir den eingeloggten Nutzer mit dem Hive als Käufer
-        relation_was_created = assign_hive_to_user(session["user_id"], hive_id, "buyer")
+        
+        quantity = int(request.form.get("quantity", 1))
+    # hier verbinden wir den eingeloggten Nutzer mit dem Hive als Käufer + übergibt gwählte stückzahl
+        relation_was_created = assign_hive_to_user(session["user_id"], hive_id, "buyer", quantity=quantity)
 
     # die Teilnehmerzahl wird nur erhöht, wenn der Beitritt neu war
         if relation_was_created:
-            increase_hive_participants(hive_id)
+            increase_hive_participants(hive_id, amount=quantity)
 
     # hier zeigen wir die Bestätigungsseite nach dem Beitritt
         return render_template("join_confirm.html")
