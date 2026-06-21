@@ -10,52 +10,72 @@ def register_creator_routes(app):
 
         if session.get("role") != "creator":
             return redirect("/")
+        
+        # Standard Beim ersten Aufruf der Seite starten wir mit einer leeren Zeile
+        thresholds = [""]
+        discounts = [""]
+
         # Verarbeitung der eingegebenen Daten, wenn das Formular abgeschickt wurde
         if request.method == "POST":
+            # Wir lesen aus, welcher Button geklickt wurde ('add_tier' oder 'submit')
+            action = request.form.get("action")
 
-            # 1. Auslesen der Input-Felder aus dem HTML-Formular
-            title = request.form.get("title")
-            game_system = request.form.get("game_system")
-            short_description = request.form.get("short_description")
-            description = request.form.get("description")
-            min_participants = request.form.get("min_participants")
-            deadline = request.form.get("deadline")
-
-            # neu Basispreis auslesen und in eine Fließkommazahl umwandeln
-            base_price = float(request.form.get("base_price", 0.0))
-
-            # 2. Neue Hives starten erstmal mit 0 Teilnehmern
-            current_participants = 0
-
-            # 3. Den neuen Datensatz über database.py in die zentrale hives-Tabelle schreiben
-            new_hive_id = insert_hive(
-                title,
-                game_system,
-                short_description,
-                description,
-                deadline,
-                current_participants,
-                min_participants
-                base_price
-            )
-
-            # hier ordnen wir den neu erstellten Hive direkt dem eingeloggten Creator zu
-            assign_hive_to_user(session["user_id"], new_hive_id, "creator")
-
-            # neu Dynamische Staffeln aus dem Formular auslesen
+            # Die bisher eingetippten Staffeln auslesen, damit sie nicht verloren gehen
             thresholds = request.form.getlist("threshold_quantity[]")
             discounts = request.form.getlist("discount_percent[]")
 
-            # Schleife verknüpft die Listen und speichert jede gültige Staffel in der DB
-            for i in range(len(thresholds)):
-                if thresholds[i] and discounts[i]:
-                    insert_hive_tier(new_hive_id, int(thresholds[i]), float(discounts[i]))
+            # FALL A: Der User hat auf "+ Weitere Staffel hinzufügen" geklickt
+            if action == "add_tier":
+                # Wir hängen einfach ein leeres Feld an die Listen an
+                thresholds.append("")
+                discounts.append("")
+                # Wir rendern die Seite sofort neu mit der zusätzlichen Zeile
+                return render_template(
+                    "create_hive.html", 
+                    thresholds=thresholds, 
+                    discounts=discounts
+                )
+          
+            # 1. Auslesen der Input-Felder aus dem HTML-Formular und speichern nach Button-Klick
+            elif action == "submit":
+                title = request.form.get("title")
+                game_system = request.form.get("game_system")
+                short_description = request.form.get("short_description")
+                description = request.form.get("description")
+                min_participants = request.form.get("min_participants")
+                deadline = request.form.get("deadline")
+                #Basispreis auslesen und in eine Fließkommazahl umwandeln
+                base_price = float(request.form.get("base_price", 0.0))
 
-            # 4. Nach erfolgreichem Speichern den Nutzer zum Creator Dashboard umleiten
-            return redirect("/creator/dashboard")
+                # 2. Neue Hives starten erstmal mit 0 Teilnehmern
+                current_participants = 0
+
+                # 3. Den neuen Datensatz über database.py in die zentrale hives-Tabelle schreiben
+                new_hive_id = insert_hive(
+                    title,
+                    game_system,
+                    short_description,
+                    description,
+                    deadline,
+                    current_participants,
+                    min_participants,
+                    base_price
+                )
+
+                # hier ordnen wir den neu erstellten Hive direkt dem eingeloggten Creator zu
+                assign_hive_to_user(session["user_id"], new_hive_id, "creator")
+
+
+                # Schleife verknüpft die Listen und speichert jede gültige Staffel in der DB
+                for i in range(len(thresholds)):
+                    if thresholds[i] and discounts[i]:
+                        insert_hive_tier(new_hive_id, int(thresholds[i]), float(discounts[i]))
+
+                # 4. Nach erfolgreichem Speichern den Nutzer zum Creator Dashboard umleiten
+                return redirect("/creator/dashboard")
 
         # Rendert das leere Formular, wenn die Seite normal aufgerufen wird (GET-Anfrage)
-        return render_template("create_hive.html")
+        return render_template("create_hive.html", thresholds=thresholds, discounts=discounts)
     
     @app.route("/creator/dashboard")
     def creator_dashboard():
