@@ -201,6 +201,37 @@ def insert_hive(title, game_system, short_description, description, deadline, cu
     return new_hive_id
 
 
+def update_hive(hive_id, title, game_system, short_description, description, deadline, min_participants, base_price):
+    connection = get_connection()
+
+    # hier aktualisieren wir die Grunddaten eines bestehenden Hives
+    # current_participants ändern wir hier nicht, weil das über Beitritte läuft
+    connection.execute("""
+        UPDATE hives
+        SET
+            title = ?,
+            game_system = ?,
+            short_description = ?,
+            description = ?,
+            deadline = ?,
+            min_participants = ?,
+            base_price = ?
+        WHERE id = ?
+    """, (
+        title,
+        game_system,
+        short_description,
+        description,
+        deadline,
+        min_participants,
+        base_price,
+        hive_id
+    ))
+
+    connection.commit()
+    connection.close()
+
+
 def create_test_user(username, name, email, password_hash, role, street, postal_code, city, country):
     connection = get_connection()
 
@@ -562,6 +593,37 @@ def get_hive_tiers(hive_id):
     connection.close()
 
     return tiers
+
+
+def replace_hive_tiers(hive_id, thresholds, discounts):
+    connection = get_connection()
+
+    # hier löschen wir zuerst die alten Preisstufen dieses Hives
+    # danach speichern wir die aktuellen Werte aus dem Bearbeiten-Formular neu
+    connection.execute("""
+        DELETE FROM hive_tiers
+        WHERE hive_id = ?
+    """, (hive_id,))
+
+    # hier gehen wir beide Listen parallel durch
+    # leere Zeilen werden übersprungen, damit keine kaputten Staffeln gespeichert werden
+    for i in range(len(thresholds)):
+        if thresholds[i] and discounts[i]:
+            connection.execute("""
+                INSERT INTO hive_tiers (
+                    hive_id,
+                    threshold_quantity,
+                    discount_percent
+                )
+                VALUES (?, ?, ?)
+            """, (
+                hive_id,
+                int(thresholds[i]),
+                float(discounts[i])
+            ))
+
+    connection.commit()
+    connection.close()
 
 
 def calculate_current_price(hive_id):
