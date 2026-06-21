@@ -47,12 +47,54 @@
         </div>
 
         <div class="form-row">
+            <label for="base_price">Basispreis (€):</label>
+            <input
+                type="number"
+                id="base_price"
+                name="base_price"
+                step="0.01"
+                min="0"
+                required
+            >
+        </div>
+
+        <div class="form-row">
             <label for="deadline">Frist:</label>
             <input type="date" id="deadline" name="deadline" required>
         </div>
 
+        <div class="form-row">
+            <label>Rabatt-Staffeln:</label>
+            
+            {% for i in range(thresholds|length) %}
+            <div class="tier-input-group" style="display: flex; gap: 10px; margin-bottom: 8px;">
+                <span style="align-self: center; width: 80px;">Staffel {{ i + 1 }}:</span>
+                
+                <input type="number" 
+                       name="threshold_quantity[]" 
+                       placeholder="Ab X Brettern" 
+                       min="1" 
+                       value="{{ thresholds[i] }}" 
+                       style="flex: 1;">
+                       
+                <input type="number" 
+                       name="discount_percent[]" 
+                       placeholder="Rabatt in %" 
+                       step="0.1" 
+                       min="0" 
+                       max="100" 
+                       value="{{ discounts[i] }}" 
+                       style="flex: 1;">
+            </div>
+            {% endfor %}
+
+            <button type="submit" name="action" value="add_tier" style="margin-top: 8px; background-color: #28a745; color: white; padding: 5px 10px; border: none; cursor: pointer;">
+                + Weitere Staffel hinzufügen
+            </button>
+        </div>
+        
         <div class="form-actions">
-            <button type="submit">Hive erstellen</button>
+            <button type="submit" name="action" value="submit">Hive erstellen</button>
             <a class="button-link" href="/hives">Zurück zur Übersicht</a>
         </div>
     </form>
