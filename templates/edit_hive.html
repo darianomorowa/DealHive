@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h1>Hive bearbeiten</h1>
+
+    <p class="helper-text">
+        Hier kannst du die Grunddaten deines Hives bearbeiten.
+    </p>
+
+    <form action="/creator/hives/{{ hive['id'] }}/edit" method="POST" class="create-hive-form">
+        <div class="form-row">
+            <label for="title">Produktname:</label>
+            <input type="text" id="title" name="title" value="{{ hive['title'] }}" required>
+        </div>
+
+        <div class="form-row">
+            <label for="game_system">Spielsystem:</label>
+            <select id="game_system" name="game_system" required>
+                <option value="D&D" {% if hive["game_system"] == "D&D" %}selected{% endif %}>D&D</option>
+                <option value="Pathfinder" {% if hive["game_system"] == "Pathfinder" %}selected{% endif %}>Pathfinder</option>
+                <option value="Warhammer 40k" {% if hive["game_system"] == "Warhammer 40k" %}selected{% endif %}>Warhammer 40k</option>
+                <option value="Warhammer Fantasy" {% if hive["game_system"] == "Warhammer Fantasy" %}selected{% endif %}>Warhammer Fantasy</option>
+                <option value="Systemunabhängig" {% if hive["game_system"] == "Systemunabhängig" %}selected{% endif %}>Systemunabhängig</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <label for="short_description">Kurzbeschreibung:</label>
+            <input type="text" id="short_description" name="short_description" value="{{ hive['short_description'] }}" required>
+        </div>
+
+        <div class="form-row">
+            <label for="description">Beschreibung:</label>
+            <textarea id="description" name="description" rows="5" required>{{ hive['description'] }}</textarea>
+        </div>
+
+        <div class="form-row">
+            <label for="min_participants">Mindestanzahl:</label>
+            <input
+                type="number"
+                id="min_participants"
+                name="min_participants"
+                min="1"
+                value="{{ hive['min_participants'] }}"
+                required
+            >
+        </div>
+
+        <div class="form-row">
+            <label for="base_price">Basispreis (€):</label>
+            <input
+                type="number"
+                id="base_price"
+                name="base_price"
+                step="0.01"
+                min="0"
+                value="{{ hive['base_price'] }}"
+                required
+            >
+        </div>
+
+        <div class="form-row">
+            <label for="deadline">Frist:</label>
+            <input type="date" id="deadline" name="deadline" value="{{ hive['deadline'] }}" required>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit">Änderungen speichern</button>
+            <a class="button-link" href="/creator/dashboard">Zurück zum Dashboard</a>
+        </div>
+    </form>
+
+{% endblock %}

@@ -200,6 +200,35 @@ def insert_hive(title, game_system, short_description, description, deadline, cu
 
     return new_hive_id
 
+def update_hive(hive_id, title, game_system, short_description, description, deadline, min_participants, base_price):
+    connection = get_connection()
+
+    # hier aktualisieren wir die Grunddaten eines bestehenden Hives
+    # current_participants ändern wir hier nicht, weil das über Beitritte läuft
+    connection.execute("""
+        UPDATE hives
+        SET
+            title = ?,
+            game_system = ?,
+            short_description = ?,
+            description = ?,
+            deadline = ?,
+            min_participants = ?,
+            base_price = ?
+        WHERE id = ?
+    """, (
+        title,
+        game_system,
+        short_description,
+        description,
+        deadline,
+        min_participants,
+        base_price,
+        hive_id
+    ))
+
+    connection.commit()
+    connection.close()
 
 def create_test_user(username, name, email, password_hash, role, street, postal_code, city, country):
     connection = get_connection()
