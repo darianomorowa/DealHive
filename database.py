@@ -23,7 +23,7 @@ def create_tables():
             description TEXT NOT NULL,
             deadline TEXT NOT NULL,
             current_participants INTEGER NOT NULL,
-            min_participants INTEGER NOT NULL
+            min_participants INTEGER NOT NULL,
             base_price REAL NOT NULL DEFAULT 0.0           
         )
     """)
@@ -49,7 +49,7 @@ def create_tables():
             user_id INTEGER NOT NULL,
             hive_id INTEGER NOT NULL,
             relation_type TEXT NOT NULL,
-            quantity INTEGER NOT NULL DEFAULT 1
+            quantity INTEGER NOT NULL DEFAULT 1,
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (hive_id) REFERENCES hives(id),
 
