@@ -209,7 +209,7 @@ def assign_hive_to_user(user_id, hive_id, relation_type):
 
     # hier mappen wir einen User auf einen Hive
     # relation_type sagt, ob der Nutzer Creator oder Käufer dieses Hives ist
-    connection.execute("""
+    cursor = connection.execute("""
         INSERT OR IGNORE INTO user_hives (
             user_id,
             hive_id,
@@ -221,6 +221,24 @@ def assign_hive_to_user(user_id, hive_id, relation_type):
         hive_id,
         relation_type
     ))
+
+    # rowcount sagt uns, ob wirklich eine neue Zuordnung entstanden ist
+    relation_was_created = cursor.rowcount > 0
+
+    connection.commit()
+    connection.close()
+
+    return relation_was_created
+
+def increase_hive_participants(hive_id):
+    connection = get_connection()
+
+    # hier erhöhen wir die Teilnehmerzahl für genau diesen Hive
+    connection.execute("""
+        UPDATE hives
+        SET current_participants = current_participants + 1
+        WHERE id = ?
+    """, (hive_id,))
 
     connection.commit()
     connection.close()

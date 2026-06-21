@@ -19,10 +19,6 @@
             </li>
 
             {% if session.get("user_id") %}
-                <li class="sidebar-info">
-                    Eingeloggt als {{ session.get("username") }}
-                </li>
-
                 <li>
                     <a class="sidebar-link" href="/profile">Mein Profil</a>
                 </li>
@@ -37,17 +33,43 @@
                     </li>
                 {% endif %}
 
-                <li>
-                    <a class="sidebar-link" href="/logout">Logout</a>
-                </li>
-            {% else %}
-                <li>
-                    <a class="sidebar-link" href="/login">Login</a>
+                <li class="sidebar-info">
+                    <form method="POST" action="/session/role" class="role-switch-form">
+                        <input type="hidden" name="next_page" value="{{ request.path }}">
+
+                        <label for="role-switch">Ansicht:</label>
+
+                        <select id="role-switch" name="role" onchange="this.form.submit()">
+                            <option value="buyer" {% if session.get("role") == "buyer" %}selected{% endif %}>
+                                Buyer
+                            </option>
+
+                            <option value="creator" {% if session.get("role") == "creator" %}selected{% endif %}>
+                                Creator
+                            </option>
+                        </select>
+                    </form>
                 </li>
 
                 <li>
-                    <a class="sidebar-link" href="/register">Registrieren</a>
+                    <a class="sidebar-link" href="/logout">Logout</a>
                 </li>
+
+                <li class="sidebar-info sidebar-bottom-info">
+                    Eingeloggt als {{ session.get("username") }}
+                </li>
+            {% else %}
+                {% if request.path != "/login" %}
+                    <li>
+                        <a class="sidebar-link" href="/login">Login</a>
+                    </li>
+                {% endif %}
+
+                {% if request.path != "/register" %}
+                    <li>
+                        <a class="sidebar-link" href="/register">Registrieren</a>
+                    </li>
+                {% endif %}
             {% endif %}
         </ul>
     </nav>
