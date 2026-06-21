@@ -24,6 +24,7 @@ def create_tables():
             deadline TEXT NOT NULL,
             current_participants INTEGER NOT NULL,
             min_participants INTEGER NOT NULL
+            base_price REAL NOT NULL DEFAULT 0.0           
         )
     """)
 
@@ -48,14 +49,23 @@ def create_tables():
             user_id INTEGER NOT NULL,
             hive_id INTEGER NOT NULL,
             relation_type TEXT NOT NULL,
-
+            quantity INTEGER NOT NULL DEFAULT 1
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (hive_id) REFERENCES hives(id),
 
             UNIQUE(user_id, hive_id, relation_type)
         )
     """)
-    
+    # Tabelle für die Preisstaffeln und Discounting eines Hives
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS hive_tiers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            hive_id INTEGER NOT NULL,
+            threshold_quantity INTEGER NOT NULL,
+            discount_percent REAL NOT NULL,
+            FOREIGN KEY (hive_id) REFERENCES hives(id)
+        )
+    """)
     # Neue Tabelle für Chat-Nachrichten erstellen (eBay-Style 1-zu-1 Kommunikation)
     # FOREIGN KEYs stellen sicher, dass Nachrichten nur zu echten Hives und Usern gehören
     connection.execute("""
