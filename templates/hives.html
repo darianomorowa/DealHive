@@ -7,26 +7,30 @@
         <label for="game_system">Spielsystem filtern:</label>
 
         <select id="game_system" name="game_system">
-            <option value="all" {% if selected_game_system == "all" %}selected{% endif %}>
-                Alle
-            </option>
+    <option value="all" {% if selected_game_system == "all" %}selected{% endif %}>
+        Alle
+    </option>
 
-            <option value="Dungeons & Dragons" {% if selected_game_system == "Dungeons & Dragons" %}selected{% endif %}>
-                Dungeons & Dragons
-            </option>
+    <option value="D&D" {% if selected_game_system == "D&D" %}selected{% endif %}>
+        D&D
+    </option>
 
-            <option value="Warhammer 40k" {% if selected_game_system == "Warhammer 40k" %}selected{% endif %}>
-                Warhammer 40k
-            </option>
+    <option value="Warhammer Fantasy" {% if selected_game_system == "Warhammer Fantasy" %}selected{% endif %}>
+        Warhammer Fantasy
+    </option>
 
-            <option value="Pathfinder" {% if selected_game_system == "Pathfinder" %}selected{% endif %}>
-                Pathfinder
-            </option>
+    <option value="Warhammer 40k" {% if selected_game_system == "Warhammer 40k" %}selected{% endif %}>
+        Warhammer 40k
+    </option>
 
-            <option value="Board Games" {% if selected_game_system == "Board Games" %}selected{% endif %}>
-                Board Games
-            </option>
-        </select>
+    <option value="Pathfinder" {% if selected_game_system == "Pathfinder" %}selected{% endif %}>
+        Pathfinder
+    </option>
+
+    <option value="Systemunabhängig" {% if selected_game_system == "Systemunabhängig" %}selected{% endif %}>
+        Systemunabhängig
+    </option>
+</select>
 
         <button type="submit">Filtern</button>
     </form>

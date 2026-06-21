@@ -1,12 +1,15 @@
-from flask import render_template, request, redirect
-from database import insert_hive, get_hives_for_user
-from flask import render_template, request, redirect
-from database import insert_hive
-
+from flask import render_template, request, redirect, session
+from database import insert_hive, get_hives_for_user, assign_hive_to_user
 
 def register_creator_routes(app):
     @app.route("/creator/hives/new", methods=["GET", "POST"])
     def create_hive_page():
+
+        if session.get("user_id") is None:
+            return redirect("/login")
+
+        if session.get("role") != "creator":
+            return redirect("/")
         # Verarbeitung der eingegebenen Daten, wenn das Formular abgeschickt wurde
         if request.method == "POST":
 
@@ -22,7 +25,7 @@ def register_creator_routes(app):
             current_participants = 0
 
             # 3. Den neuen Datensatz über database.py in die zentrale hives-Tabelle schreiben
-            insert_hive(
+            new_hive_id = insert_hive(
                 title,
                 game_system,
                 short_description,
@@ -32,20 +35,28 @@ def register_creator_routes(app):
                 min_participants
             )
 
-            # 4. Nach erfolgreichem Speichern den Nutzer zur Übersicht umleiten
-            return redirect("/hives")
+            # hier ordnen wir den neu erstellten Hive direkt dem eingeloggten Creator zu
+            assign_hive_to_user(session["user_id"], new_hive_id, "creator")
+
+        
+            # 4. Nach erfolgreichem Speichern den Nutzer zum Creator Dashboard umleiten
+            return redirect("/creator/dashboard")
 
         # Rendert das leere Formular, wenn die Seite normal aufgerufen wird (GET-Anfrage)
         return render_template("create_hive.html")
     
     @app.route("/creator/dashboard")
     def creator_dashboard():
-        # erstmal hardcoded, weil wir noch kein richtiges Login haben
-        # user_id 0 ist unser Demo-Creator für die Präsentation
-        demo_creator_id = 0
+        # ohne Login soll niemand das Creator Dashboard sehen
+        if session.get("user_id") is None:
+            return redirect("/login")
 
-        # hier laden wir nur die Hives, die dem Demo-Creator zugeordnet sind
-        hives = get_hives_for_user(demo_creator_id, "creator")
+        # wenn man nicht in der Creator-Ansicht ist, geht es zurück zur Startseite
+        if session.get("role") != "creator":
+            return redirect("/")
+
+        # hier laden wir nur die Hives, die dem eingeloggten Creator zugeordnet sind
+        hives = get_hives_for_user(session["user_id"], "creator")
 
         return render_template(
             "creator_dashboard.html",

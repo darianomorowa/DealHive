@@ -143,7 +143,7 @@ def insert_hive(title, game_system, short_description, description, deadline, cu
     connection = get_connection()
 
     # hier speichern wir einen neuen Hive aus dem Creator-Formular
-    connection.execute("""
+    cursor = connection.execute("""
         INSERT INTO hives (
             title,
             game_system,
@@ -164,9 +164,14 @@ def insert_hive(title, game_system, short_description, description, deadline, cu
         min_participants
     ))
 
+    # hier merken wir uns die ID vom gerade erstellten Hive
+    new_hive_id = cursor.lastrowid
+
     # commit fürs eigentliche Speichern
     connection.commit()
     connection.close()
+
+    return new_hive_id
 
 def create_test_user(username, name, email, password_hash, role, street, postal_code, city, country):
     connection = get_connection()
