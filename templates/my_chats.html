@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Mein Posteingang</h1>
+
+    <div style="background-color: #fafafa; border: 1px solid #ccc; border-radius: 8px; padding: 20px; max-width: 600px;">
+        {% if chats %}
+            <ul style="list-style-type: none; padding: 0; margin: 0;">
+                {% for chat in chats %}
+                    <li style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                        <a href="/hives/{{ chat['hive_id'] }}/chat/{{ chat['partner_id'] }}" style="text-decoration: none; color: #007BFF; font-weight: bold; font-size: 1.1em;">
+                            💬 Chat zu "{{ chat['hive_title'] }}"
+                        </a>
+                        <br>
+                        <span style="font-size: 0.8em; color: #888;">(mit User #{{ chat['partner_id'] }})</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="color: #666; font-style: italic; margin: 0;">Du hast noch keine Nachrichten geschrieben oder empfangen.</p>
+        {% endif %}
+    </div>
+{% endblock %}

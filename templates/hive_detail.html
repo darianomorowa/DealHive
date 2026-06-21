@@ -15,12 +15,7 @@
 
     <p>
         <strong>Beschreibung:</strong>
-        {{ hive["long_description"] }}
-    </p>
-
-    <p>
-        <strong>Preis:</strong>
-        {{ hive["price"] }} €
+        {{ hive["description"] }}
     </p>
 
     <p>
@@ -33,11 +28,26 @@
         {{ hive["deadline"] }}
     </p>
 
-    <form method="POST" action="/hives/{{ hive['id'] }}/join">
-        <button type="submit">Hive beitreten</button>
-    </form>
+    <div class="hive-actions">
+        <form method="POST" action="/hives/{{ hive['id'] }}/join" style="display: inline-block; margin: 0;">
+            <button type="submit">Hive beitreten</button>
+        </form>
 
-    <br>
+        {% if creator_id %}
+            <a class="button-link" href="/hives/{{ hive['id'] }}/chat/{{ creator_id }}">
+                Creator kontaktieren
+            </a>
+        {% endif %}
+        {% if creator_id %}
+            <a class="button-link" href="/hives/{{ hive['id'] }}/chat/{{ creator_id }}">
+            Creator kontaktieren
+            </a>
+        {% endif %}
+            <a class="button-link" href="/hives">
+            Zurück zu allen Hives
+            </a>
 
-    <a href="/hives">Zurück zu allen Hives</a>
+        
+
+    </div>
 {% endblock %}

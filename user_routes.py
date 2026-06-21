@@ -1,4 +1,4 @@
-from flask import render_template, request, session
+from flask import render_template, request, session, redirect
 from database import create_user, get_user_by_username
 
 
@@ -33,6 +33,8 @@ def setup_user_routes(app):
             )
 
             print("User gespeichert:", username)
+
+            return redirect("/login")
 
         return render_template("register.html")
 
@@ -82,5 +84,21 @@ def setup_user_routes(app):
 
     @app.route("/logout")
     def logout():
+        # session leeren, damit der Nutzer ausgeloggt ist
         session.clear()
-        return render_template("login.html")
+
+        return redirect("/")
+    
+    @app.route("/session/role", methods=["POST"])
+    def change_session_role():
+        if session.get("user_id") is None:
+            return redirect("/login")
+
+        selected_role = request.form.get("role")
+
+        if selected_role == "buyer" or selected_role == "creator":
+            session["role"] = selected_role
+
+        next_page = request.form.get("next_page", "/")
+
+        return redirect(next_page)
