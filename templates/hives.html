@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Alle Hives</h1>
 
-    <form method="GET" action="/hives">
+    <form method="GET" action="/hives" class="filter-form">
         <label for="game_system">Spielsystem filtern:</label>
 
         <select id="game_system" name="game_system">
@@ -31,11 +31,9 @@
         <button type="submit">Filtern</button>
     </form>
 
-    <br>
-
     {% if hives %}
         {% for hive in hives %}
-            <section style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px;">
+            <section class="hive-card">
                 <h2>{{ hive["title"] }}</h2>
 
                 <p>
@@ -57,7 +55,11 @@
                     {{ hive["deadline"] }}
                 </p>
 
-                <a href="/hives/{{ hive['id'] }}">Details ansehen</a>
+                <div class="hive-actions">
+                    <a class="button-link" href="/hives/{{ hive['id'] }}">
+                        Details ansehen
+                    </a>
+                </div>
             </section>
         {% endfor %}
     {% else %}
