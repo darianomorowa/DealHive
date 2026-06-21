@@ -55,19 +55,25 @@ def setup_user_routes(app):
                 session["username"] = user["username"]
                 session["role"] = user["role"]
 
-                return redirect("/")
+                print(session["username"])
 
-            print("Login fehlgeschlagen")
-
-            return render_template("login.html", error="Login fehlgeschlagen.")
+            else:
+                print("Login fehlgeschlagen")
 
         return render_template("login.html")
 
 
     @app.route("/profile")
     def profile():
-        # profilseite anzeigen
-        return render_template("profile.html")
+
+        username = session.get("username")
+        role = session.get("role")
+
+        return render_template(
+            "profile.html",
+            username=username,
+            role=role
+        )
 
 
     @app.route("/profile/edit")
