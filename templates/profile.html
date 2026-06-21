@@ -1,15 +1,16 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Profil</title>
-</head>
-<body>
+{% extends "layout.html" %}
 
+{% block content %}
     <h1>Mein Profil</h1>
+
+    <p>
+        Hier siehst du deine aktuellen Profildaten.
+    </p>
 
     <p><strong>Username:</strong> {{ username }}</p>
     <p><strong>Rolle:</strong> {{ role }}</p>
 
-</body>
-</html>
+    <p>
+        <a href="/profile/edit">Profil bearbeiten</a>
+    </p>
+{% endblock %}
