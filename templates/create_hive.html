@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h1>Neuen Sammelkauf anlegen</h1>
+
+    <p class="helper-text">
+        Hier kann ein Creator einen neuen Hive anlegen, dem Käufer später beitreten können.
+    </p>
+
+    <form action="/creator/hives/new" method="POST" class="create-hive-form">
+        <div class="form-row">
+            <label for="title">Produktname:</label>
+            <input type="text" id="title" name="title" value="{{ title|default('') }}" required>
+        </div>
+
+        <div class="form-row">
+            <label for="game_system">Spielsystem:</label>
+            <select id="game_system" name="game_system" required>
+                <option value="D&D" {% if game_system == 'D&D' %}selected{% endif %}>D&D</option>
+                <option value="Pathfinder" {% if game_system == 'Pathfinder' %}selected{% endif %}>Pathfinder</option>
+                <option value="Warhammer 40k" {% if game_system == 'Warhammer 40k' %}selected{% endif %}>Warhammer 40k</option>
+                <option value="Warhammer Fantasy" {% if game_system == 'Warhammer Fantasy' %}selected{% endif %}>Warhammer Fantasy</option>
+                <option value="Systemunabhängig" {% if game_system == 'Systemunabhängig' %}selected{% endif %}>Systemunabhängig</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <label for="short_description">Kurzbeschreibung:</label>
+            <input type="text" id="short_description" name="short_description" value="{{ short_description|default('') }}" required>
+        </div>
+
+        <div class="form-row">
+            <label for="description">Beschreibung:</label>
+            <textarea id="description" name="description" rows="5" required>{{ description|default('') }}</textarea>
+        </div>
+
+        <div class="form-row">
+            <label for="min_participants">Mindestanzahl:</label>
+            <input
+                type="number"
+                id="min_participants"
+                name="min_participants"
+                min="1"
+                value="{{ min_participants|default('') }}"
+                required
+            >
+        </div>
+
+        <div class="form-row">
+            <label for="base_price">Basispreis (€):</label>
+            <input
+                type="number"
+                id="base_price"
+                name="base_price"
+                step="0.01"
+                min="0"
+                value="{{ base_price|default('') }}"
+                required
+            >
+        </div>
+
+        <div class="form-row">
+            <label for="deadline">Frist:</label>
+            <input type="date" id="deadline" name="deadline" value="{{ deadline|default('') }}" required>
+        </div>
+
+        <div class="form-row" style="display: block; clear: both; margin-top: 15px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: bold;">Rabatt-Staffeln:</label>
+            
+            <div style="display: flex; flex-direction: column; gap: 8px; max-width: 500px; width: 100%;">
+                {% for i in range(thresholds|length) %}
+                <div class="tier-input-group" style="display: flex; gap: 10px; align-items: center; width: 100%;">
+                    <span style="width: 70px; flex-shrink: 0; font-size: 0.9em;">Staffel {{ i + 1 }}:</span>
+                    
+                    <input type="number" 
+                           name="threshold_quantity[]" 
+                           placeholder="Ab X Brettern" 
+                           min="1" 
+                           value="{{ thresholds[i] }}" 
+                           style="flex: 1; padding: 4px;">
+                           
+                    <input type="number" 
+                           name="discount_percent[]" 
+                           placeholder="Rabatt in %" 
+                           step="0.1" 
+                           min="0" 
+                           max="100" 
+                           value="{{ discounts[i] }}" 
+                           style="flex: 1; padding: 4px;">
+                </div>
+                {% endfor %}
+            </div>
+
+            <div style="margin-top: 12px; display: block;">
+                <button type="submit" name="action" value="add_tier" style="background-color: #28a745; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer;">
+                    + Weitere Staffel hinzufügen
+                </button>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" name="action" value="submit">Hive erstellen</button>
+            <a class="button-link" href="/hives">Zurück zur Übersicht</a>
+        </div>
+    </form>
+
+{% endblock %}

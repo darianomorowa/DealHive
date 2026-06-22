@@ -2,3 +2,8 @@
 __pycache__/
 *.pyc
 dealhive.db
+.DS_Store
+
+all_commits_detailed.txt
+commits_detailed.csv
+commits_full_stats.csv

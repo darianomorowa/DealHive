@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Profil bearbeiten</h1>
+
+    <p>
+        Hier kannst du deine Profildaten ändern.
+    </p>
+
+    <form method="POST">
+        <div>
+            <label for="name">Name</label><br>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                value="{{ user['name'] }}"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="email">E-Mail</label><br>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                value="{{ user['email'] }}"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="role">Rolle</label><br>
+            <select id="role" name="role" required>
+                <option value="buyer" {% if user["role"] == "buyer" %}selected{% endif %}>
+                    Buyer
+                </option>
+                <option value="creator" {% if user["role"] == "creator" %}selected{% endif %}>
+                    Creator
+                </option>
+            </select>
+        </div>
+
+        <br>
+
+        <h2>Adresse</h2>
+
+        <div>
+            <label for="street">Straße</label><br>
+            <input
+                type="text"
+                id="street"
+                name="street"
+                value="{{ user['street'] }}"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="postal_code">PLZ</label><br>
+            <input
+                type="text"
+                id="postal_code"
+                name="postal_code"
+                value="{{ user['postal_code'] }}"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="city">Stadt</label><br>
+            <input
+                type="text"
+                id="city"
+                name="city"
+                value="{{ user['city'] }}"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div>
+            <label for="country">Land</label><br>
+            <input
+                type="text"
+                id="country"
+                name="country"
+                value="{{ user['country'] }}"
+                required
+            >
+        </div>
+
+        <br>
+
+        <div class="form-actions">
+            <button type="submit">Änderungen speichern</button>
+        </div>
+    </form>
+
+    <br>
+
+    <div class="form-actions">
+        <a href="/profile">
+            <button type="button">Zurück zum Profil</button>
+        </a>
+    </div>
+{% endblock %}
