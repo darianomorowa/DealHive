@@ -30,7 +30,7 @@ Das Spannende an DealHive ist, dass wir nicht nur eine technische Plattform entw
 
 ---
 
-## Eidesstattliche Erklärung (Stand 17.05.2026)
+## Eidesstattliche Erklärung (Stand 23.06.2026)
 
 **[Haya Al-Abbasi, Matrikelnr.: 77211974821]**
 
@@ -48,21 +48,21 @@ Mir ist weiterhin bewusst, dass ich, sofern ich zur Erstellung dieser Arbeit KI-
 
 | \# | My contribution | Why I am proud of it | Which challenge I overcame |
 | :-- | :-- | :-- | :-- |
-| 1 | Mitarbeit an der UI- und Plattformstruktur | Dadurch wurde die Plattform übersichtlicher und verständlicher für Nutzer. | Die Herausforderung war, verschiedene Ideen sinnvoll und einfach zu strukturieren. |
-| 2 | Unterstützung bei Product Discovery und Zielgruppenideen | Dadurch wurde das Konzept realistischer und besser auf Nutzer abgestimmt. | Es war schwierig, die wichtigsten Funktionen zu priorisieren und unterschiedliche Bedürfnisse zu berücksichtigen. |
-| 3 | Mitarbeit an der Entwicklung von Plattform- und Nutzerideen | Die Plattform wurde dadurch nutzerfreundlicher und klarer aufgebaut. | Die Herausforderung war, unterschiedliche Nutzerrollen und Abläufe sinnvoll miteinander zu kombinieren. |
+| 1 | Implementierung des Buyer-Flows „Meine Hives“ | Käufer können nach dem Beitritt ihre eigenen Hives übersichtlich verwalten und wiederfinden. | Die Herausforderung war, neue Routen, Templates und bestehende Datenbankfunktionen sauber miteinander zu verbinden. |
+| 2 | Verbesserung der Join-Bestätigung für Hives | Die Bestätigungsseite zeigt jetzt den konkreten Hive-Namen und liefert verständlicheres Feedback für Nutzer. | Ich musste bestehende Logik erweitern und doppelte Beitritte korrekt behandeln. |
+| 3 | Integration neuer Navigationselemente im Käuferbereich | Durch den neuen Menüpunkt „Meine Hives“ wurde der Buyer-Bereich vollständiger und nutzerfreundlicher. | Die Herausforderung war, die Änderungen mit dem bestehenden Layout und den Teamänderungen kompatibel zu halten. |
 
 ## Contributions
 
 | Contribution | Proof, e.g., git commits | Sources used |
 | :-- | :-- | :-- |
-| Mitarbeit an UI-/UX-Ideen und Plattformstruktur | UI-Screens, Product Discovery | Eigene Ideen, Teamdiskussion |
-| Unterstützung bei Zielgruppen- und Plattformideen | Dokumentation in [Value Proposition](../01-value-proposition.md) | Gruppenarbeit, eigene Überlegungen |
-| Mitarbeit an Product Discovery und Nutzerideen | Dokumentation in [Target Users + Problems](../product-discovery/02-users-problems.md) | Teamdiskussion, gemeinsame Ausarbeitung |
-| Mitarbeit an der Strukturierung der Plattformidee | UI-Screens und Konzeptideen | Teamarbeit, gemeinsame Abstimmung |
+| Implementierung der Route `/my-hives` für eingeloggte Käufer | Commit `Added buyer my-hives flow`, Datei `user_routes.py` | Bestehende Datenbankfunktionen, Teamarchitektur |
+| Erstellung der Seite `my_hives.html` zur Anzeige beigetretener Hives | Commit `Added buyer my-hives flow`, Datei `templates/my_hives.html` | Vorhandenes Layout (`layout.html`), Teamdesign |
+| Erweiterung der Sidebar um den Menüpunkt „Meine Hives“ | Datei `templates/partials/sidebar.html` | Bestehende Navigationsstruktur |
+| Verbesserung der Hive-Beitrittsbestätigung inkl. Hive-Name und Nutzerfeedback | Datei `templates/join_confirm.html` | Bestehender Buyer-Flow |
+| Erweiterung der Datenbanklogik für doppelte Beitritte (`relation_was_created`) | Datei `database.py` | Vorhandene Datenbankstruktur |
+| Integration und Konfliktlösung beim Zusammenführen des Branches | Git-Historie und Commit `Added buyer my-hives flow` | Git, GitHub, Teamarbeit |
 | Eigene Contribution-Seite gepflegt | Diese Datei | FSWD Contribution Template |
-
----
 
 ## AI Directory
 
@@ -72,4 +72,5 @@ Mir ist weiterhin bewusst, dass ich, sofern ich zur Erstellung dieser Arbeit KI-
 | 02  | ChatGPT | Unterstützung bei UI-/UX-Ideen und Brainstorming | Product Discovery, UI-Screens | Nutzung als Ideengeber und Formulierungshilfe. |
 | 03  | Claude (claude.ai) | Unterstützung bei konzeptionellen Ideen und Textverbesserung | Contributions, Product Discovery | Inhalte wurden manuell überarbeitet und angepasst. |
 | 04  | ChatGPT | Unterstützung bei Git-, GitHub- und Template-Fragen | Arbeit am Branch `docs-template` | Nutzung als Schritt-für-Schritt-Hilfe. Befehle wurden manuell ausgeführt und kontrolliert. |
+| 05 | ChatGPT | Unterstützung bei Implementierung und Debugging des Buyer-Flows | user_routes.py, database.py, hives.py, join_confirm.html, my_hives.html | Nutzung zur Fehlersuche, Git-Konfliktlösung und Implementierung. Änderungen wurden manuell geprüft und übernommen. |
 ---
