@@ -236,6 +236,7 @@ def assign_hive_to_user(user_id, hive_id, relation_type):
 
     return relation_was_created
 
+
 def increase_hive_participants(hive_id):
     connection = get_connection()
 

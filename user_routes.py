@@ -1,6 +1,9 @@
 from flask import render_template, request, session, redirect
-from database import create_user, get_user_by_username
-
+from database import (
+    create_user,
+    get_user_by_username,
+    get_hives_for_user
+)
 
 def setup_user_routes(app):
 
@@ -73,6 +76,20 @@ def setup_user_routes(app):
             "profile.html",
             username=username,
             role=role
+        )
+
+
+    @app.route("/my-hives")
+    def my_hives():
+
+        hives = get_hives_for_user(
+            session["user_id"],
+            "buyer"
+        )
+
+        return render_template(
+            "my_hives.html",
+            hives=hives
         )
 
 
