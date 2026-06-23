@@ -66,10 +66,10 @@ Mir ist weiterhin bewusst, dass ich, sofern ich zur Erstellung dieser Arbeit KI-
 
 ## AI Directory
 
-| # | AI Tool | Purpose of Use | Affected Sections (Code + Docs) | Remarks, Procedure, Prompts |
-| :-- | :-- | :-- | :-- | :-- |
-| 01 | ChatGPT | Unterstützung beim Strukturieren und Formulieren von Dokumentationstexten | Contributions, Reflection | Inhalte wurden geprüft und angepasst. |
-| 02 | ChatGPT | Unterstützung bei UI-/UX-Ideen und Brainstorming | Product Discovery, UI-Screens | Nutzung als Ideengeber und Formulierungshilfe. |
-| 03 | Claude (claude.ai) | Unterstützung bei konzeptionellen Ideen und Textverbesserung | Contributions, Product Discovery | Inhalte wurden manuell überarbeitet und angepasst. |
-| 04 | ChatGPT | Unterstützung bei Git-, GitHub- und Template-Fragen | Arbeit am Branch `docs-template` | Nutzung als Schritt-für-Schritt-Hilfe. Befehle wurden manuell ausgeführt und kontrolliert. |
-| 05 | ChatGPT | Unterstützung bei Implementierung und Debugging des Buyer-Flows | `user_routes.py`, `database.py`, `hives.py`, `join_confirm.html`, `my_hives.html` | Nutzung zur Fehlersuche, Git-Konfliktlösung und Implementierung. Änderungen wurden manuell geprüft und übernommen. |
+| #  | AI Tool            | Purpose of Use                                                            | Affected Sections (Code + Docs)                                                   | Remarks, Procedure, Prompts                                                                                        |
+| :- | :----------------- | :------------------------------------------------------------------------ | :-------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
+| 01 | ChatGPT            | Unterstützung beim Strukturieren und Formulieren von Dokumentationstexten | Contributions, Reflection                                                         | Inhalte wurden geprüft und angepasst.                                                                              |
+| 02 | ChatGPT            | Unterstützung bei UI-/UX-Ideen und Brainstorming                          | Product Discovery, UI-Screens                                                     | Nutzung als Ideengeber und Formulierungshilfe.                                                                     |
+| 03 | Claude (claude.ai) | Unterstützung bei konzeptionellen Ideen und Textverbesserung              | Contributions, Product Discovery                                                  | Inhalte wurden manuell überarbeitet und angepasst.                                                                 |
+| 04 | ChatGPT            | Unterstützung bei Git-, GitHub- und Template-Fragen                       | Arbeit am Branch `docs-template`                                                  | Nutzung als Schritt-für-Schritt-Hilfe. Befehle wurden manuell ausgeführt und kontrolliert.                         |
+| 05 | ChatGPT            | Unterstützung bei Implementierung und Debugging des Buyer-Flows           | `user_routes.py`, `database.py`, `hives.py`, `join_confirm.html`, `my_hives.html` | Nutzung zur Fehlersuche, Git-Konfliktlösung und Implementierung. Änderungen wurden manuell geprüft und übernommen. |

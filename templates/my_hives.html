@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1>Meine Hives</h1>
+
+{% if hives %}
+
+    {% for hive in hives %}
+        <section class="hive-card">
+            <h2>{{ hive["title"] }}</h2>
+
+            <p>
+                Teilnehmer:
+                {{ hive["current_participants"] }}
+                /
+                {{ hive["min_participants"] }}
+            </p>
+
+            <p>
+                Deadline:
+                {{ hive["deadline"] }}
+            </p>
+
+            <a href="/hives/{{ hive['id'] }}">
+                Zum Hive
+            </a>
+        </section>
+
+        <hr>
+    {% endfor %}
+
+{% else %}
+
+    <p>Du bist aktuell keinem Hive beigetreten.</p>
+
+{% endif %}
+
+{% endblock %}
