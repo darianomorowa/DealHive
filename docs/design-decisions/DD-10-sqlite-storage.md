@@ -1,9 +1,11 @@
 ---
-title: DD-10
+title: DD-10-sqlite-storage
 parent: Design Decisions
+nav_order: 10
 ---
 
 {: .no_toc }
+
 # 10: Daten richtig speichern vs. nur in einer Pythonliste
 
 ## Meta

@@ -1,9 +1,8 @@
 ---
-
-title: DD-07
+title: DD-07-jinja-layout-sidebar
 parent: Design Decisions
 nav_order: 7
-------------
+---
 
 {: .no_toc }
 

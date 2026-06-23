@@ -1,9 +1,8 @@
 ---
-
-title: DD-09
+title: DD-09-headless-api
 parent: Design Decisions
 nav_order: 9
-------------
+---
 
 {: .no_toc }
 

@@ -1,9 +1,8 @@
 ---
-
-title: DD-01
+title: DD-01-creator-hives
 parent: Design Decisions
 nav_order: 1
-------------
+---
 
 {: .no_toc }
 

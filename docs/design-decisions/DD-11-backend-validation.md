@@ -1,9 +1,11 @@
 ---
-title: DD-11
+title: DD-11-backend-validation
 parent: Design Decisions
+nav_order: 11
 ---
 
 {: .no_toc }
+
 # 11: Formular-Validierung - Optionale Rabatte abfangen
 
 ## Meta

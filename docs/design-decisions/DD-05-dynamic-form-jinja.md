@@ -1,9 +1,11 @@
 ---
-title: DD-05
+title: DD-05-dynamic-form-jinja
 parent: Design Decisions
+nav_order: 5
 ---
 
 {: .no_toc }
+
 # 05: Dynamische Formularzeilen – Jinja2-Schleife vs. Client-JavaScript
 
 ## Meta

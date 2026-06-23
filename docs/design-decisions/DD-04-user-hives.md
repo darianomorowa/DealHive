@@ -1,9 +1,8 @@
 ---
-
-title: DD-04
+title: DD-04-user-hives
 parent: Design Decisions
 nav_order: 4
-------------
+---
 
 {: .no_toc }
 

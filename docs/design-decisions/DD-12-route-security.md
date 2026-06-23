@@ -1,9 +1,11 @@
 ---
-title: DD-12
+title: DD-12-route-security
 parent: Design Decisions
+nav_order: 12
 ---
 
 {: .no_toc }
+
 # 12: Käuferliste absichern, Schutz gegen URL Tricks
 
 ## Meta

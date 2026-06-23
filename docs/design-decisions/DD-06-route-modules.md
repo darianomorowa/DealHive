@@ -1,4 +1,8 @@
 ---
+title: DD-06-route-modules
+parent: Design Decisions
+nav_order: 6
+---
 
 {: .no_toc }
 

@@ -1,9 +1,8 @@
 ---
-
-title: DD-03
+title: DD-03-sqlite-execute
 parent: Design Decisions
 nav_order: 3
-------------
+---
 
 {: .no_toc }
 

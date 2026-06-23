@@ -1,9 +1,11 @@
 ---
-title: DD-08
+title: DD-08-html-chat-mvp
 parent: Design Decisions
+nav_order: 8
 ---
 
 {: .no_toc }
+
 # 08: Chat-MVP – Simples HTML-Formular vs. Live Chat mit WebSockets
 
 ## Meta
