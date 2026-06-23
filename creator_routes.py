@@ -228,3 +228,25 @@ def register_creator_routes(app):
             discounts=discounts,
             locked_tiers=locked_tiers
         )
+        
+    @app.route("/creator/hives/<int:hive_id>/buyers")
+    def view_hive_buyers(hive_id):
+        if session.get("user_id") is None:
+            return redirect("/login")
+
+        if session.get("role") != "creator":
+            return redirect("/")
+
+        hive = get_hive_by_id(hive_id)
+        if hive is None:
+            return "Hive wurde nicht gefunden."
+
+        creator_id = get_hive_creator_id(hive_id)
+        if creator_id != session["user_id"]:
+            return redirect("/creator/dashboard")
+
+        from database import get_buyers_for_hive
+        buyers = get_buyers_for_hive(hive_id)
+
+        return render_template("hive_buyers.html", hive=hive, buyers=buyers)
+        
