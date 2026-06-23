@@ -123,3 +123,33 @@ Nicht Teil des ersten Umfangs:
 Diese Eingrenzung ist wichtig, damit das Projekt realistisch bleibt. DealHive soll zuerst zeigen, dass der zentrale Ablauf funktioniert: Creator erstellen Sammelkäufe, Käufer treten bei und beide Seiten können den Fortschritt nachvollziehen.
 
 Die UI-Skizzen und Screen-Flows werden im Bereich [Solution Elements](product-discovery/03-solution-elements.md) dokumentiert.
+
+
+## Ergänzung zum aktuellen App-Stand
+
+Seit der ursprünglichen Formulierung der Value Proposition wurde der technische Umfang der App weiter konkretisiert. Die Grundidee bleibt gleich: DealHive soll Creator und Käufer bei Sammelkäufen im Bereich Brettspiele, TTRPGs, Tabletops und Zubehör zusammenbringen.
+
+Der aktuelle App-Stand bildet den Kernprozess inzwischen konkreter ab:
+
+* Creator können eigene Hives erstellen.
+* Creator können eigene Hives im Creator Dashboard sehen.
+* Creator können ihre eigenen Hives bearbeiten.
+* Creator können Käufer eines Hives ansehen.
+* Käufer können Hives entdecken und Detailseiten öffnen.
+* Käufer können einem Hive mit einer bestimmten Menge beitreten.
+* Käufer können ihre beigetretenen Hives unter „Meine Hives“ wiederfinden.
+* Buyer und Creator können über einen einfachen Chat im Kontext eines Hives miteinander schreiben.
+* Die App stellt über `/api/hives` eine einfache JSON-API bereit.
+
+Damit wurde der Happy Path nicht nur konzeptionell beschrieben, sondern auch in der Flask-App umgesetzt. Besonders wichtig ist dabei, dass die App nicht als vollständiger Online-Shop gedacht ist. DealHive konzentriert sich weiterhin auf den ersten, realistischen MVP-Umfang: Sammelkäufe sichtbar machen, Nachfrage sammeln, Fortschritt zeigen und einfache Kommunikation zwischen Buyer und Creator ermöglichen.
+
+Einige ursprünglich angedachte Felder aus den frühen Skizzen, zum Beispiel Material, Versandregion oder Produktbilder, sind im aktuellen MVP noch nicht vollständig umgesetzt. Stattdessen wurde der Umfang bewusst reduziert und auf die wichtigsten Felder beschränkt:
+
+* Produktname
+* Spielsystem
+* Kurzbeschreibung
+* Beschreibung
+* Mindestmenge
+* Basispreis
+* Deadline
+* Rabattstaffeln
