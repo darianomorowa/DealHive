@@ -28,3 +28,25 @@ Der Domainbezug liegt im Bereich Brettspiele, TTRPGs, Tabletops und passendes Zu
 ## Verbesserungen seit der ersten Abgabe
 
 Domainbezug, Doku nach Vorgaben
+
+## Implementierte Features seit dem Rework der ersten Abgabe.
+
+Im aktuellen Stand haben wir folgende zentrale Features umgesetzt:
+
+* Registrierung und Login für Nutzer
+* Rollenmodell mit Buyer und Creator
+* Rollenwechsel über die Session
+* Hive-Übersicht mit einfachen Filtermöglichkeiten
+* Detailseite für einzelne Hives
+* Beitritt zu einem Hive mit gewählter Menge
+* Anzeige eigener beigetretener Hives unter „Meine Hives“
+* Creator Dashboard für eigene Sammelkäufe
+* Erstellung neuer Hives durch Creator
+* Bearbeitung eigener Hives durch Creator
+* Basispreis und Rabattstaffeln für Hives
+* automatische Berechnung des aktuellen Preises anhand der erreichten Rabattstufe
+* Käuferübersicht für Creator
+* einfacher Chat zwischen Buyer und Creator im Kontext eines Hives
+* SQLite-Datenbank mit Nutzern, Hives, Preisstaffeln, Zuordnungen und Nachrichten
+* Headless JSON-API unter `/api/hives`
+* lokale Demo-Datenbank und Testdaten-Skript für die First Submission
