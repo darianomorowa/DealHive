@@ -12,6 +12,7 @@ from database import (
     get_hive_tiers
 )
 
+
 def register_hive_routes(app):
 
     @app.route("/hives")
@@ -19,24 +20,17 @@ def register_hive_routes(app):
         # Alle bestehenden Hives aus der Datenbank abrufen
         hives = get_all_hives()
 
-        # variable für "welches System" - Filter
         selected_game_system = request.args.get("game_system", "all")
 
-        # leere Liste, wo später hives abgespeichert werden
         filtered_hives = []
 
-        # wir gehen jeden Hive durch und prüfen, ob er angezeigt werden soll
         for hive in hives:
-            # bei "all" zeigen wir einfach alles an
             if selected_game_system == "all":
                 filtered_hives.append(hive)
 
-            # sonst prüfen wir, ob das Spielsystem vom Hive zum Filter passt
             elif hive["game_system"] == selected_game_system:
                 filtered_hives.append(hive)
 
-        # hier geben wir die gefilterten Hives und den aktuellen Filter
-        # ans Template weiter
         return render_template(
             "hives.html",
             hives=filtered_hives,
@@ -44,100 +38,131 @@ def register_hive_routes(app):
         )
 
 
-    # Detailroute
     @app.route("/hives/<int:hive_id>")
     def hive_detail(hive_id):
-        # Spezifischen Hive anhand der ID aus der Datenbank auslesen
         hive = get_hive_by_id(hive_id)
 
-        # Fehlerbehandlung: Falls die ID nicht existiert
         if hive is None:
             return "Hive wurde nicht gefunden."
 
-       # Wir holen die ID des Erstellers, damit der Button weiß, an wen der Chat geht
+        # Wir holen die ID des Erstellers, damit der Button weiß, an wen der Chat geht
         creator_id = get_hive_creator_id(hive_id)
 
-    # Liveberechnung Stückpreises basierend auf anzahl der Bestellungen
+        # Liveberechnung Stückpreises basierend auf Anzahl der Bestellungen
         current_price = calculate_current_price(hive_id)
         tiers = get_hive_tiers(hive_id)
 
-        # hier geben wir den gefundenen Hive (und den Creator) an die Detail-HTML-Datei weiter und Preise + Rabattstufen
-        return render_template("hive_detail.html", hive=hive, creator_id=creator_id, current_price=current_price, tiers=tiers)
+        # hier geben wir den gefundenen Hive, den Creator, den aktuellen Preis
+        # und die Rabattstufen an die Detail-HTML-Datei weiter
+        return render_template(
+            "hive_detail.html",
+            hive=hive,
+            creator_id=creator_id,
+            current_price=current_price,
+            tiers=tiers
+        )
 
 
     @app.route("/hives/<int:hive_id>/join", methods=["POST"])
     def join_hive(hive_id):
-         # ohne Login soll niemand verbindlich einem Hive beitreten
+        # ohne Login soll niemand verbindlich einem Hive beitreten
         if session.get("user_id") is None:
             return redirect("/login")
-        
-        quantity = int(request.form.get("quantity", 1))
-    # hier verbinden wir den eingeloggten Nutzer mit dem Hive als Käufer + übergibt gwählte stückzahl
-        relation_was_created = assign_hive_to_user(session["user_id"], hive_id, "buyer", quantity=quantity)
 
-    # die Teilnehmerzahl wird nur erhöht, wenn der Beitritt neu war
+        # hier lesen wir die gewünschte Menge aus dem Formular aus
+        # wenn nichts mitkommt, nehmen wir als Standard 1 Stück
+        quantity = int(request.form.get("quantity", 1))
+
+        # hier verbinden wir den eingeloggten Nutzer mit dem Hive als Käufer
+        # und übergeben die gewählte Stückzahl
+        relation_was_created = assign_hive_to_user(
+            session["user_id"],
+            hive_id,
+            "buyer",
+            quantity=quantity
+        )
+
+        # die Teilnehmerzahl wird nur erhöht, wenn der Beitritt neu war
         if relation_was_created:
             increase_hive_participants(hive_id, amount=quantity)
 
-    # hier zeigen wir die Bestätigungsseite nach dem Beitritt
-        return render_template("join_confirm.html")
+        hive = get_hive_by_id(hive_id)
+
+        return render_template(
+            "join_confirm.html",
+            hive=hive,
+            relation_was_created=relation_was_created
+        )
 
 
     # EBAY-UPDATE: Die Chat-Route braucht jetzt zwingend die partner_id, mit der man gerade schreibt
     @app.route("/hives/<int:hive_id>/chat/<int:partner_id>", methods=["GET", "POST"])
     def private_chat(hive_id, partner_id):
-        # Sicherheits-Check: Nur eingeloggte User dürfen chatten
         if session.get("user_id") is None:
             return redirect("/login")
 
         current_user = session["user_id"]
 
-        # Wenn der User eine Nachricht absendet (POST)
         if request.method == "POST":
             message_text = request.form.get("message_text")
-            
+
             if message_text:
-                # Nachricht wird gezielt an die partner_id geschickt
-                save_private_message(hive_id, current_user, partner_id, message_text)
-            
-            # Seite neu laden, um die Nachricht sofort zu sehen
+                save_private_message(
+                    hive_id,
+                    current_user,
+                    partner_id,
+                    message_text
+                )
+
             return redirect(f"/hives/{hive_id}/chat/{partner_id}")
 
-        # Wenn die Seite normal aufgerufen wird (GET)
         hive = get_hive_by_id(hive_id)
-        # Wir laden nur Nachrichten zwischen dir und exakt diesem Partner
-        messages = get_private_messages(hive_id, current_user, partner_id)
+        messages = get_private_messages(
+            hive_id,
+            current_user,
+            partner_id
+        )
 
-        return render_template("chat.html", hive=hive, messages=messages, partner_id=partner_id)
-    
-    
-    # EBAY-UPDATE: Der globale Posteingang
+        return render_template(
+            "chat.html",
+            hive=hive,
+            messages=messages,
+            partner_id=partner_id
+        )
+
+
     @app.route("/my-chats")
     def my_chats():
-        # Sicherheits-Check: Nur für eingeloggte User
         if session.get("user_id") is None:
             return redirect("/login")
-        
+
         current_user = session["user_id"]
-        
-        # Wir suchen alle aktiven Chats für diesen User aus der Tabelle (wer hat mit wem geschrieben)
+
         connection = get_connection()
+
         user_chats = connection.execute("""
-            SELECT DISTINCT 
-                hives.id AS hive_id, 
+            SELECT DISTINCT
+                hives.id AS hive_id,
                 hives.title AS hive_title,
-                CASE 
-                    WHEN messages.sender_id = ? THEN messages.receiver_id 
-                    ELSE messages.sender_id 
+                CASE
+                    WHEN messages.sender_id = ? THEN messages.receiver_id
+                    ELSE messages.sender_id
                 END AS partner_id
             FROM messages
             JOIN hives ON messages.hive_id = hives.id
             WHERE messages.sender_id = ? OR messages.receiver_id = ?
-        """, (current_user, current_user, current_user)).fetchall()
+        """, (
+            current_user,
+            current_user,
+            current_user
+        )).fetchall()
+
         connection.close()
-        
-        # Übergabe der Chat-Liste an das Template
-        return render_template("my_chats.html", chats=user_chats)
+
+        return render_template(
+            "my_chats.html",
+            chats=user_chats
+        )
 
 
     @app.route("/api/hives")

@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Käuferübersicht für: {{ hive["title"] }}</h1>
+
+<p class="text-muted">Hier siehst du alle Teilnehmer, die diesem Sammelkauf verbindlich beigetreten sind.</p>
+
+{% if buyers %}
+    <table class="table" style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+        <thead>
+            <tr style="border-bottom: 2px solid #ccc; text-align: left;">
+                <th>Username</th>
+                <th>Name</th>
+                <th>E-Mail</th>
+                <th>Menge</th>
+                <th>Aktion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for buyer in buyers %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td>{{ buyer["username"] }}</td>
+                    <td>{{ buyer["name"] }}</td>
+                    <td>{{ buyer["email"] }}</td>
+                    <td><strong>{{ buyer["quantity"] }} Stk.</strong></td>
+                    <td>
+                        <a href="/hives/{{ hive['id'] }}/chat/{{ buyer['id'] }}" class="btn-link">
+                            Chat starten
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p style="margin-top: 20px; color: #666;"><em>Es sind noch keine Käufer diesem Hive beigetreten.</em></p>
+{% endif %}
+
+<div style="margin-top: 30px;">
+    <a href="/creator/dashboard" class="btn-secondary">Zurück zum Dashboard</a>
+</div>
+{% endblock %}

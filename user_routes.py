@@ -2,6 +2,7 @@ from flask import render_template, request, session, redirect
 from database import (
     create_user,
     get_user_by_username,
+    get_hives_for_user,
     get_user_by_id,
     update_user_profile
 )
@@ -85,6 +86,22 @@ def setup_user_routes(app):
         )
 
 
+    @app.route("/my-hives")
+    def my_hives():
+        if session.get("user_id") is None:
+            return redirect("/login")
+
+        hives = get_hives_for_user(
+            session["user_id"],
+            "buyer"
+        )
+
+        return render_template(
+            "my_hives.html",
+            hives=hives
+        )
+
+
     @app.route("/profile/edit", methods=["GET", "POST"])
     def edit_profile():
         user_id = session.get("user_id")
@@ -130,7 +147,7 @@ def setup_user_routes(app):
         session.clear()
 
         return redirect("/")
-    
+
 
     @app.route("/session/role", methods=["POST"])
     def change_session_role():
