@@ -10,12 +10,12 @@ nav_order: 2
 
 <details open markdown="block">
 <summary>Table of contents</summary>
-+ ToC
-{: toc }
-{: .text-delta }
+
+1. TOC
+   {:toc}
+
 </details>
 
-# Data Model
 
 Diese Seite beschreibt das Datenmodell unserer Anwendung.
 Die Datenbank basiert auf SQLite und wird in `database.py` über die Funktion `create_tables()` erstellt.
