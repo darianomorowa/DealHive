@@ -1,0 +1,183 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h1>Hive bearbeiten</h1>
+
+    <p class="helper-text">
+        Hier kannst du die Grunddaten und Preisstufen deines Hives bearbeiten.
+    </p>
+
+    {% if error_message %}
+        <p style="color: red; font-weight: bold;">
+            {{ error_message }}
+        </p>
+    {% endif %}
+
+    <form action="/creator/hives/{{ hive['id'] }}/edit" method="POST" class="create-hive-form">
+        <div class="form-row">
+            <label for="title">Produktname:</label>
+            <input type="text" id="title" name="title" value="{{ title|default(hive['title']) }}" required>
+        </div>
+
+        <div class="form-row">
+            <label for="game_system">Spielsystem:</label>
+
+            {% set selected_game_system = game_system|default(hive["game_system"]) %}
+
+            <select id="game_system" name="game_system" required>
+                <option value="D&D" {% if selected_game_system == "D&D" %}selected{% endif %}>
+                    D&D
+                </option>
+
+                <option value="Pathfinder" {% if selected_game_system == "Pathfinder" %}selected{% endif %}>
+                    Pathfinder
+                </option>
+
+                <option value="Warhammer 40k" {% if selected_game_system == "Warhammer 40k" %}selected{% endif %}>
+                    Warhammer 40k
+                </option>
+
+                <option value="Warhammer Fantasy" {% if selected_game_system == "Warhammer Fantasy" %}selected{% endif %}>
+                    Warhammer Fantasy
+                </option>
+
+                <option value="Systemunabhängig" {% if selected_game_system == "Systemunabhängig" %}selected{% endif %}>
+                    Systemunabhängig
+                </option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <label for="short_description">Kurzbeschreibung:</label>
+            <input
+                type="text"
+                id="short_description"
+                name="short_description"
+                value="{{ short_description|default(hive['short_description']) }}"
+                required
+            >
+        </div>
+
+        <div class="form-row">
+            <label for="description">Beschreibung:</label>
+            <textarea id="description" name="description" rows="5" required>{{ description|default(hive['description']) }}</textarea>
+        </div>
+
+        <div class="form-row">
+            <label for="min_participants">Mindestanzahl:</label>
+            <input
+                type="number"
+                id="min_participants"
+                name="min_participants"
+                min="1"
+                value="{{ min_participants|default(hive['min_participants']) }}"
+                required
+            >
+        </div>
+
+        <div class="form-row">
+            <label for="base_price">Basispreis (€):</label>
+            <input
+                type="number"
+                id="base_price"
+                name="base_price"
+                step="0.01"
+                min="0"
+                value="{{ base_price|default(hive['base_price']) }}"
+                required
+            >
+        </div>
+
+        <div class="form-row">
+            <label for="deadline">Frist:</label>
+            <input
+                type="date"
+                id="deadline"
+                name="deadline"
+                value="{{ deadline|default(hive['deadline']) }}"
+                required
+            >
+        </div>
+
+        <div class="form-row" style="display: block; clear: both; margin-top: 15px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: bold;">
+                Rabatt-Staffeln:
+            </label>
+
+            <p style="font-size: 13px; color: #555; margin-top: 0;">
+                Bereits erreichte Rabattstaffeln werden angezeigt, können aber nicht mehr bearbeitet werden.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 8px; max-width: 620px; width: 100%;">
+                {% for i in range(thresholds|length) %}
+                    <div class="tier-input-group" style="display: flex; gap: 10px; align-items: center; width: 100%;">
+                        <span style="width: 80px; flex-shrink: 0; font-size: 0.9em;">
+                            Staffel {{ i + 1 }}:
+                        </span>
+
+                        <input
+                            type="hidden"
+                            name="locked_tier[]"
+                            value="{% if locked_tiers[i] %}true{% else %}false{% endif %}"
+                        >
+
+                        <input
+                            type="number"
+                            name="threshold_quantity[]"
+                            placeholder="Ab X Stück"
+                            min="1"
+                            value="{{ thresholds[i] }}"
+                            style="flex: 1; padding: 4px;"
+                            {% if locked_tiers[i] %}readonly{% endif %}
+                        >
+
+                        <input
+                            type="number"
+                            name="discount_percent[]"
+                            placeholder="Rabatt in %"
+                            step="0.1"
+                            min="0"
+                            max="100"
+                            value="{{ discounts[i] }}"
+                            style="flex: 1; padding: 4px;"
+                            {% if locked_tiers[i] %}readonly{% endif %}
+                        >
+
+                        {% if locked_tiers[i] %}
+                            <span style="font-size: 12px; color: #777; width: 150px;">
+                                bereits erreicht
+                            </span>
+                        {% else %}
+                            <span style="font-size: 12px; color: #777; width: 150px;">
+                                bearbeitbar
+                            </span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div style="margin-top: 12px; display: block;">
+                <button
+                    type="submit"
+                    name="action"
+                    value="add_tier"
+                    style="background-color: #28a745; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer;"
+                >
+                    + Weitere Staffel hinzufügen
+                </button>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" name="action" value="submit">
+                Änderungen speichern
+            </button>
+
+            <a class="button-link" href="/creator/dashboard">
+                Zurück zum Dashboard
+            </a>
+        </div>
+    </form>
+
+{% endblock %}

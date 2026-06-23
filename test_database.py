@@ -41,7 +41,7 @@ test_hives = [
     ),
     (
         "Goblin-Miniaturen-Set",
-        "Warhammer",
+        "Warhammer Fantasy",
         "Kleine Goblin-Miniaturen zum Bemalen.",
         "Ein Set aus Goblin-Miniaturen für Tabletop-Spiele, Bemalprojekte und kleine Fantasy-Armeen.",
         "05.06.2026",
@@ -77,7 +77,7 @@ test_hives = [
     ),
     (
         "Tabletop-Spielmatte",
-        "Warhammer",
+        "Warhammer 40k",
         "Bedruckte Spielmatte für Gefechte.",
         "Eine Spielmatte für Tabletop-Gefechte mit Geländeoptik.",
         "25.06.2026",

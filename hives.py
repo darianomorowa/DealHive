@@ -7,8 +7,11 @@ from database import (
     save_private_message,
     get_private_messages,
     get_hive_creator_id,
-    get_connection
+    get_connection,
+    calculate_current_price,
+    get_hive_tiers
 )
+
 
 def register_hive_routes(app):
 
@@ -42,32 +45,46 @@ def register_hive_routes(app):
         if hive is None:
             return "Hive wurde nicht gefunden."
 
-        # EBAY-UPDATE: Wir holen die ID des Erstellers, damit der Button weiß, an wen der Chat geht
+        # Wir holen die ID des Erstellers, damit der Button weiß, an wen der Chat geht
         creator_id = get_hive_creator_id(hive_id)
 
-        # hier geben wir den gefundenen Hive (und den Creator) an die Detail-HTML-Datei weiter
+        # Liveberechnung Stückpreises basierend auf Anzahl der Bestellungen
+        current_price = calculate_current_price(hive_id)
+        tiers = get_hive_tiers(hive_id)
+
+        # hier geben wir den gefundenen Hive, den Creator, den aktuellen Preis
+        # und die Rabattstufen an die Detail-HTML-Datei weiter
         return render_template(
             "hive_detail.html",
             hive=hive,
-            creator_id=creator_id
+            creator_id=creator_id,
+            current_price=current_price,
+            tiers=tiers
         )
 
 
     @app.route("/hives/<int:hive_id>/join", methods=["POST"])
     def join_hive(hive_id):
-         # ohne Login soll niemand verbindlich einem Hive beitreten
+        # ohne Login soll niemand verbindlich einem Hive beitreten
         if session.get("user_id") is None:
             return redirect("/login")
 
+        # hier lesen wir die gewünschte Menge aus dem Formular aus
+        # wenn nichts mitkommt, nehmen wir als Standard 1 Stück
+        quantity = int(request.form.get("quantity", 1))
+
+        # hier verbinden wir den eingeloggten Nutzer mit dem Hive als Käufer
+        # und übergeben die gewählte Stückzahl
         relation_was_created = assign_hive_to_user(
             session["user_id"],
             hive_id,
-            "buyer"
+            "buyer",
+            quantity=quantity
         )
 
         # die Teilnehmerzahl wird nur erhöht, wenn der Beitritt neu war
         if relation_was_created:
-            increase_hive_participants(hive_id)
+            increase_hive_participants(hive_id, amount=quantity)
 
         hive = get_hive_by_id(hive_id)
 
@@ -146,6 +163,8 @@ def register_hive_routes(app):
             "my_chats.html",
             chats=user_chats
         )
+
+
     @app.route("/api/hives")
     def api_hives():
         # Alle bestehenden Hives aus der Datenbank abrufen

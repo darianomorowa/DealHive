@@ -1,15 +1,31 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Profil</title>
-</head>
-<body>
+{% extends "layout.html" %}
 
+{% block content %}
     <h1>Mein Profil</h1>
 
-    <p><strong>Username:</strong> {{ username }}</p>
-    <p><strong>Rolle:</strong> {{ role }}</p>
+    <p>
+        Hier siehst du deine aktuellen Profildaten.
+    </p>
 
-</body>
-</html>
+    {% if user %}
+        <p><strong>Username:</strong> {{ user["username"] }}</p>
+        <p><strong>Name:</strong> {{ user["name"] }}</p>
+        <p><strong>E-Mail:</strong> {{ user["email"] }}</p>
+        <p><strong>Rolle:</strong> {{ user["role"] }}</p>
+
+        <h2>Adresse</h2>
+
+        <p><strong>Straße:</strong> {{ user["street"] }}</p>
+        <p><strong>PLZ:</strong> {{ user["postal_code"] }}</p>
+        <p><strong>Stadt:</strong> {{ user["city"] }}</p>
+        <p><strong>Land:</strong> {{ user["country"] }}</p>
+
+        <div class="form-actions">
+            <a href="/profile/edit">
+                <button type="button">Profil bearbeiten</button>
+            </a>
+        </div>
+    {% else %}
+        <p>Es konnten keine Profildaten geladen werden.</p>
+    {% endif %}
+{% endblock %}

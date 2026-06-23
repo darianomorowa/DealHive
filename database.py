@@ -1,5 +1,6 @@
 import sqlite3
 
+
 def get_connection():
     # Datenbankdatei dealhive.db
     connection = sqlite3.connect("dealhive.db")
@@ -8,8 +9,9 @@ def get_connection():
     # wir geben die Verbindung zurück, damit andere Funktionen sie nutzen können
     return connection
 
+
 def create_tables():
-     # hier holen wir uns eine Verbindung zur Datenbank
+    # hier holen wir uns eine Verbindung zur Datenbank
     connection = get_connection()
     # AUTOINCREMENT ist insane - es generiert selber IDs!!!
     # (jede Zeile bekommt eine eigene ID)
@@ -23,7 +25,8 @@ def create_tables():
             description TEXT NOT NULL,
             deadline TEXT NOT NULL,
             current_participants INTEGER NOT NULL,
-            min_participants INTEGER NOT NULL
+            min_participants INTEGER NOT NULL,
+            base_price REAL NOT NULL DEFAULT 0.0
         )
     """)
 
@@ -48,14 +51,25 @@ def create_tables():
             user_id INTEGER NOT NULL,
             hive_id INTEGER NOT NULL,
             relation_type TEXT NOT NULL,
-
+            quantity INTEGER NOT NULL DEFAULT 1,
             FOREIGN KEY (user_id) REFERENCES users(id),
             FOREIGN KEY (hive_id) REFERENCES hives(id),
 
             UNIQUE(user_id, hive_id, relation_type)
         )
     """)
-    
+
+    # Tabelle für die Preisstaffeln eines Hives
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS hive_tiers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            hive_id INTEGER NOT NULL,
+            threshold_quantity INTEGER NOT NULL,
+            discount_percent REAL NOT NULL,
+            FOREIGN KEY (hive_id) REFERENCES hives(id)
+        )
+    """)
+
     # Neue Tabelle für Chat-Nachrichten erstellen (eBay-Style 1-zu-1 Kommunikation)
     # FOREIGN KEYs stellen sicher, dass Nachrichten nur zu echten Hives und Usern gehören
     connection.execute("""
@@ -71,9 +85,11 @@ def create_tables():
             FOREIGN KEY (receiver_id) REFERENCES users(id)
         )
     """)
+
     # commit fürs eigentliche Speichern
     connection.commit()
     connection.close()
+
 
 # folgende Funktion wurde vollständig von KI generiert
 def insert_test_hives(test_hives):
@@ -81,6 +97,7 @@ def insert_test_hives(test_hives):
 
     # hier fügen wir Testdaten ein, die von außen übergeben werden
     # dadurch bleibt database.py übersichtlicher
+    # base_price wird hier nicht gesetzt, weil die Spalte einen Defaultwert 0.0 hat
     connection.executemany("""
         INSERT INTO hives (
             title,
@@ -98,37 +115,43 @@ def insert_test_hives(test_hives):
     connection.commit()
     connection.close()
 
+
 def get_all_hives():
     connection = get_connection()
 
     # Daten aus der Tabelle abfragen
     hives = connection.execute("""
-        SELECT id, 
-        title, 
-        game_system, 
-        short_description, 
-        deadline, 
-        current_participants, 
-        min_participants
+        SELECT
+            id,
+            title,
+            game_system,
+            short_description,
+            deadline,
+            current_participants,
+            min_participants,
+            base_price
         FROM hives
     """).fetchall()
 
     connection.close()
     return hives
 
+
 def get_hive_by_id(hive_id):
     connection = get_connection()
 
     # hier suchen wir genau einen Hive über seine ID
     hive = connection.execute("""
-        SELECT id, 
-        title, 
-        game_system, 
-        short_description, 
-        description, 
-        deadline, 
-        current_participants, 
-        min_participants
+        SELECT
+            id,
+            title,
+            game_system,
+            short_description,
+            description,
+            deadline,
+            current_participants,
+            min_participants,
+            base_price
         FROM hives
         WHERE id = ?
     """, (hive_id,)).fetchone()
@@ -139,11 +162,13 @@ def get_hive_by_id(hive_id):
     # falls nichts gefunden wurde
     return hive
 
-def insert_hive(title, game_system, short_description, description, deadline, current_participants, min_participants):
+
+def insert_hive(title, game_system, short_description, description, deadline, current_participants, min_participants, base_price=0.0):
     connection = get_connection()
 
     # hier speichern wir einen neuen Hive aus dem Creator-Formular
-    connection.execute("""
+    # 8 Spalten, 8 Fragezeichen, 8 Variablen
+    cursor = connection.execute("""
         INSERT INTO hives (
             title,
             game_system,
@@ -151,9 +176,10 @@ def insert_hive(title, game_system, short_description, description, deadline, cu
             description,
             deadline,
             current_participants,
-            min_participants
+            min_participants,
+            base_price
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         title,
         game_system,
@@ -161,12 +187,50 @@ def insert_hive(title, game_system, short_description, description, deadline, cu
         description,
         deadline,
         current_participants,
-        min_participants
+        min_participants,
+        base_price
     ))
+
+    # hier merken wir uns die ID vom gerade erstellten Hive
+    new_hive_id = cursor.lastrowid
 
     # commit fürs eigentliche Speichern
     connection.commit()
     connection.close()
+
+    return new_hive_id
+
+
+def update_hive(hive_id, title, game_system, short_description, description, deadline, min_participants, base_price):
+    connection = get_connection()
+
+    # hier aktualisieren wir die Grunddaten eines bestehenden Hives
+    # current_participants ändern wir hier nicht, weil das über Beitritte läuft
+    connection.execute("""
+        UPDATE hives
+        SET
+            title = ?,
+            game_system = ?,
+            short_description = ?,
+            description = ?,
+            deadline = ?,
+            min_participants = ?,
+            base_price = ?
+        WHERE id = ?
+    """, (
+        title,
+        game_system,
+        short_description,
+        description,
+        deadline,
+        min_participants,
+        base_price,
+        hive_id
+    ))
+
+    connection.commit()
+    connection.close()
+
 
 def create_test_user(username, name, email, password_hash, role, street, postal_code, city, country):
     connection = get_connection()
@@ -210,22 +274,26 @@ def create_test_user(username, name, email, password_hash, role, street, postal_
 
     return user["id"]
 
-def assign_hive_to_user(user_id, hive_id, relation_type):
+
+def assign_hive_to_user(user_id, hive_id, relation_type, quantity=1):
     connection = get_connection()
 
     # hier mappen wir einen User auf einen Hive
     # relation_type sagt, ob der Nutzer Creator oder Käufer dieses Hives ist
+    # quantity speichert, wie viele Stück der Käufer bestellen möchte
     cursor = connection.execute("""
         INSERT OR IGNORE INTO user_hives (
             user_id,
             hive_id,
-            relation_type
+            relation_type,
+            quantity
         )
-        VALUES (?, ?, ?)
+        VALUES (?, ?, ?, ?)
     """, (
         user_id,
         hive_id,
-        relation_type
+        relation_type,
+        quantity
     ))
 
     # rowcount sagt uns, ob wirklich eine neue Zuordnung entstanden ist
@@ -237,18 +305,23 @@ def assign_hive_to_user(user_id, hive_id, relation_type):
     return relation_was_created
 
 
-def increase_hive_participants(hive_id):
+def increase_hive_participants(hive_id, amount=1):
     connection = get_connection()
 
     # hier erhöhen wir die Teilnehmerzahl für genau diesen Hive
+    # amount ermöglicht, dass mehrere Stück gleichzeitig gezählt werden
     connection.execute("""
         UPDATE hives
-        SET current_participants = current_participants + 1
+        SET current_participants = current_participants + ?
         WHERE id = ?
-    """, (hive_id,))
+    """, (
+        amount,
+        hive_id
+    ))
 
     connection.commit()
     connection.close()
+
 
 def get_hives_for_user(user_id, relation_type):
     connection = get_connection()
@@ -263,7 +336,9 @@ def get_hives_for_user(user_id, relation_type):
             hives.deadline,
             hives.current_participants,
             hives.min_participants,
-            user_hives.relation_type
+            hives.base_price,
+            user_hives.relation_type,
+            user_hives.quantity
         FROM hives
         JOIN user_hives ON hives.id = user_hives.hive_id
         WHERE user_hives.user_id = ?
@@ -276,6 +351,7 @@ def get_hives_for_user(user_id, relation_type):
     connection.close()
 
     return hives
+
 
 def create_user_with_id(user_id, username, name, email, password_hash, role, street, postal_code, city, country):
     connection = get_connection()
@@ -314,6 +390,7 @@ def create_user_with_id(user_id, username, name, email, password_hash, role, str
 
     return user_id
 
+
 def create_user(username, name, email, password_hash, role, street, postal_code, city, country):
     connection = get_connection()
 
@@ -345,6 +422,7 @@ def create_user(username, name, email, password_hash, role, street, postal_code,
     connection.commit()
     connection.close()
 
+
 def get_user_by_username(username):
     connection = get_connection()
 
@@ -357,6 +435,50 @@ def get_user_by_username(username):
     connection.close()
 
     return user
+
+
+def get_user_by_id(user_id):
+    connection = get_connection()
+
+    user = connection.execute("""
+        SELECT *
+        FROM users
+        WHERE id = ?
+    """, (user_id,)).fetchone()
+
+    connection.close()
+
+    return user
+
+
+def update_user_profile(user_id, name, email, role, street, postal_code, city, country):
+    connection = get_connection()
+
+    # hier speichern wir Änderungen am Profil des eingeloggten Nutzers
+    connection.execute("""
+        UPDATE users
+        SET
+            name = ?,
+            email = ?,
+            role = ?,
+            street = ?,
+            postal_code = ?,
+            city = ?,
+            country = ?
+        WHERE id = ?
+    """, (
+        name,
+        email,
+        role,
+        street,
+        postal_code,
+        city,
+        country,
+        user_id
+    ))
+
+    connection.commit()
+    connection.close()
 
 
 def save_private_message(hive_id, sender_id, receiver_id, text):
@@ -431,3 +553,102 @@ def get_hive_creator_id(hive_id):
         return creator["user_id"]
 
     return None
+
+
+def insert_hive_tier(hive_id, threshold_quantity, discount_percent):
+    connection = get_connection()
+
+    # Speichert eine einzelne Rabattstaffel für einen spezifischen Hive in der Datenbank
+    connection.execute("""
+        INSERT INTO hive_tiers (
+            hive_id,
+            threshold_quantity,
+            discount_percent
+        )
+        VALUES (?, ?, ?)
+    """, (
+        hive_id,
+        threshold_quantity,
+        discount_percent
+    ))
+
+    connection.commit()
+    connection.close()
+
+
+def get_hive_tiers(hive_id):
+    connection = get_connection()
+
+    # Holt alle Rabattstaffeln eines Hives aus der Datenbank,
+    # sortiert nach der Mindestmenge aufsteigend
+    tiers = connection.execute("""
+        SELECT
+            threshold_quantity,
+            discount_percent
+        FROM hive_tiers
+        WHERE hive_id = ?
+        ORDER BY threshold_quantity ASC
+    """, (hive_id,)).fetchall()
+
+    connection.close()
+
+    return tiers
+
+
+def replace_hive_tiers(hive_id, thresholds, discounts):
+    connection = get_connection()
+
+    # hier löschen wir zuerst die alten Preisstufen dieses Hives
+    # danach speichern wir die aktuellen Werte aus dem Bearbeiten-Formular neu
+    connection.execute("""
+        DELETE FROM hive_tiers
+        WHERE hive_id = ?
+    """, (hive_id,))
+
+    # hier gehen wir beide Listen parallel durch
+    # leere Zeilen werden übersprungen, damit keine kaputten Staffeln gespeichert werden
+    for i in range(len(thresholds)):
+        if thresholds[i] and discounts[i]:
+            connection.execute("""
+                INSERT INTO hive_tiers (
+                    hive_id,
+                    threshold_quantity,
+                    discount_percent
+                )
+                VALUES (?, ?, ?)
+            """, (
+                hive_id,
+                int(thresholds[i]),
+                float(discounts[i])
+            ))
+
+    connection.commit()
+    connection.close()
+
+
+def calculate_current_price(hive_id):
+    # Berechnet den aktuellen, dynamischen Stückpreis eines Hives basierend auf den Gesamtbestellungen und Rabattstaffeln
+    hive = get_hive_by_id(hive_id)
+
+    if not hive:
+        return 0.0
+
+    base_price = hive["base_price"]
+
+    # Da current_participants jetzt die Summe aller bestellten Stück speichert
+    current_total = hive["current_participants"]
+
+    # Alle Staffeln für diesen Hive aufsteigend holen
+    tiers = get_hive_tiers(hive_id)
+
+    active_discount = 0.0
+
+    # Schleife prüft, welche Rabattstufe durch die Gesamtmenge bereits geknackt wurde
+    for tier in tiers:
+        if current_total >= tier["threshold_quantity"]:
+            active_discount = tier["discount_percent"]
+
+    # Endpreis berechnen z.B. 50.00 * (1.0 - 0.10) = 45.00
+    current_price = base_price * (1.0 - (active_discount / 100.0))
+
+    return round(current_price, 2)
