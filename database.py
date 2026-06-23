@@ -652,3 +652,25 @@ def calculate_current_price(hive_id):
     current_price = base_price * (1.0 - (active_discount / 100.0))
 
     return round(current_price, 2)
+
+def get_buyers_for_hive(hive_id):
+    connection = get_connection()
+
+    # Holt alle User, die als 'buyer' mit diesem Hive verknüpft sind
+    buyers = connection.execute("""
+        SELECT
+            users.id,
+            users.username,
+            users.name,
+            users.email,
+            users.city,
+            users.country,
+            user_hives.quantity
+        FROM users
+        JOIN user_hives ON users.id = user_hives.user_id
+        WHERE user_hives.hive_id = ?
+        AND user_hives.relation_type = 'buyer'
+    """, (hive_id,)).fetchall()
+
+    connection.close()
+    return buyers
