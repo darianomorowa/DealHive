@@ -49,7 +49,7 @@ Mir ist weiterhin bewusst, dass ich, sofern ich zur Erstellung dieser Arbeit KI-
 | :-- | :-- | :-- | :-- |
 | 1 | **Dynamic Pricingsystem und Erstellungsablauf** | Ich habe das relationale Preismodell (`hive_tiers`) integriert, wodurch Rabattstufen dynamisch berechnet werden und vollkommen optional bleiben. | Die serverseitige Validierung so anzupassen, dass unvollständige Formulareingaben oder leere Rabattfelder nicht zu Datenbankabstürzen führen. |
 | 2 | **1 zu 1 Kommunikationssystem (Chat MVP)** | Der Chat läuft robust im Hive Kontext (Kleinanzeigen Style) über reine HTML Formulare wwas die Abgabesicherheit komplett ohne JavaScript sichert. | Die saubere relationale Zuordnung und Filterung der Nachrichten nach `sender_id` und `receiver_id` direkt in den SQL abfragen. |
-| 3 | **Entwicklung der Käuferübersicht für Creator** | Das Feature ermöglicht dem Creator erstmals eine tabellarische Übersicht über alle verbindlichen Käufer und Mengen direkt aus dem Dashboard heraus. | Die Implementierung einer strikten Autorisierungsprüfung im Backend, um **Cross user snooping+* auf fremde Käuferdaten über die URL zu blockieren. |
+| 3 | **Entwicklung der Käuferübersicht für Creator** | Das Feature ermöglicht dem Creator erstmals eine tabellarische Übersicht über alle verbindlichen Käufer und Mengen direkt aus dem Dashboard heraus. | Die Implementierung einer strikten Autorisierungsprüfung im Backend, um **Cross user snooping** auf fremde Käuferdaten über die URL zu blockieren. |
 
 ## Contributions
 
@@ -63,6 +63,7 @@ Mir ist weiterhin bewusst, dass ich, sofern ich zur Erstellung dieser Arbeit KI-
 | **Sprint 3:** Einbau des dynamischen Pricing-Modells für optionale Rabattstufen. | Commits `c897ba`, `8fe6d13`, `efd463`, `8090c4` in `database.py` und `creator_routes.py`. | Konzeptionell basierend auf dem Dozenten-Feedback von Herrn Prof. Dr. Eck, Code-Anpassung mittels KI-Unterstützung (siehe AI Directory, Eintrag #06). |
 | **Sprint 4 (Heutige Aufgabe):** Entwicklung der geschützten Käuferübersicht (Buyer Overview) im Dashboard. | Commits `494343f`, `4ec0503`, `3aa8ff2`, `40da155` in `database.py` und `creator_routes.py`. | Eigene Implementierung auf Basis der vorhandenen Dashboard-routen, Codereview und Absicherung durch Gemini (siehe AI Directory, Eintrag #07). |
 | **Dokumentation:** Eigene Contribution Seite gepflegt. | Letzter Git commit in `docs/contributions/darian-omorowa.md`. | FSWD Contribution Vorlage der offiziellen Kursseite (https://hwrberlin.github.io/fswd/). |
+
 ---
 
 ## AI Directory
