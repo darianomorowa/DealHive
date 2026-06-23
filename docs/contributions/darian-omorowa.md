@@ -5,6 +5,7 @@ nav_order: 2
 ---
 
 {: .no_toc }
+
 # Darian Omorowa
 
 <details open markdown="block">

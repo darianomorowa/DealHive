@@ -3,7 +3,7 @@
 title: Matthieu Weinlein
 parent: Individual Contributions
 nav_order: 4
-------------
+---
 
 {: .no_toc }
 
