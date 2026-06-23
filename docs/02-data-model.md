@@ -1,7 +1,7 @@
 ---
 
 title: Data Model
-nav_exclude: true
+nav_exclude: false
 nav_order: 2
 ------------
 
@@ -31,6 +31,53 @@ Aktuell besteht das Datenmodell aus fünf Tabellen:
 
 Die wichtigsten Tabellen für den Grundaufbau sind `users`, `hives` und `user_hives`.
 Zusätzlich gibt es `hive_tiers` für Preisstaffeln und `messages` für den Chat.
+
+## Vereinfachte ER-Übersicht
+
+```text
+users
+  id
+  username
+  role
+   |
+   | 1:n
+   v
+user_hives
+  user_id
+  hive_id
+  relation_type
+  quantity
+   ^
+   | n:1
+   |
+hives
+  id
+  title
+  current_participants
+  min_participants
+  base_price
+   |
+   | 1:n
+   v
+hive_tiers
+  hive_id
+  threshold_quantity
+  discount_percent
+
+hives
+  id
+   |
+   | 1:n
+   v
+messages
+  hive_id
+  sender_id
+  receiver_id
+  message_text
+```
+
+Die Tabelle `user_hives` ist die zentrale Verbindung zwischen Nutzern und Hives. Über `relation_type` wird unterschieden, ob ein User als `creator` oder als `buyer` mit einem Hive verbunden ist. Über `quantity` wird gespeichert, wie viele Einheiten ein Buyer bestellen möchte.
+
 
 ---
 
