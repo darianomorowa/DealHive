@@ -1,8 +1,7 @@
 ---
-
 title: Data Model
 nav_order: 2
-------------
+---
 
 {: .no_toc }
 
@@ -12,7 +11,7 @@ nav_order: 2
 <summary>Table of contents</summary>
 
 1. TOC
-   {:toc}
+{:toc}
 
 </details>
 
