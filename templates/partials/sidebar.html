@@ -1,71 +1,88 @@
-{% if session.get("user_id") %}
+<aside class="sidebar">
+    <a href="/">
+        <img
+            src="{{ url_for('static', filename='images/dealhive-logo.png') }}"
+            alt="DealHive Logo"
+            class="sidebar-logo"
+            style="width: 165px; height: auto;"
+        >
+    </a>
 
-    <li class="sidebar-info">
-        Eingeloggt als {{ session.get("username") }}
-    </li>
+    <nav>
+        <ul class="sidebar-nav">
+            <li>
+                <a class="sidebar-link" href="/">Startseite</a>
+            </li>
 
-    <li>
-        <a class="sidebar-link" href="/profile">Mein Profil</a>
-    </li>
+            <li>
+                <a class="sidebar-link" href="/hives">Hives ansehen</a>
+            </li>
 
-    <li>
-        <a class="sidebar-link" href="/my-hives">Meine Hives</a>
-    </li>
+            {% if session.get("user_id") %}
+                <li>
+                    <a class="sidebar-link" href="/profile">Mein Profil</a>
+                </li>
 
-    <li>
-        <a class="sidebar-link" href="/my-chats">Meine Chats</a>
-    </li>
+                <li>
+                    <a class="sidebar-link" href="/my-hives">Meine Hives</a>
+                </li>
 
-    {% if session.get("role") == "creator" %}
+                <li>
+                    <a class="sidebar-link" href="/my-chats">Meine Chats</a>
+                </li>
 
-        <li>
-            <a class="sidebar-link" href="/creator/hives/new">
-                Hive erstellen
-            </a>
-        </li>
+                {% if session.get("role") == "creator" %}
+                    <li>
+                        <a class="sidebar-link" href="/creator/hives/new">Hive erstellen</a>
+                    </li>
 
-        <li>
-            <a class="sidebar-link" href="/creator/dashboard">
-                Creator Dashboard
-            </a>
-        </li>
+                    <li>
+                        <a class="sidebar-link" href="/creator/dashboard">Creator Dashboard</a>
+                    </li>
+                {% endif %}
 
-    {% endif %}
+                <li class="sidebar-info">
+                    <form method="POST" action="/session/role" class="role-switch-form">
+                        <input type="hidden" name="next_page" value="{{ request.path }}">
 
-    <li class="sidebar-info">
-        <form method="POST" action="/session/role" class="role-switch-form">
-            <input type="hidden" name="next_page" value="{{ request.path }}">
+                        <label for="role-switch">Ansicht:</label>
 
-            <label for="role-switch">Ansicht:</label>
+                        <select id="role-switch" name="role">
+                            <option value="buyer" {% if session.get("role") == "buyer" %}selected{% endif %}>
+                                Buyer
+                            </option>
 
-            <select id="role-switch" name="role" onchange="this.form.submit()">
-                <option value="buyer" {% if session.get("role") == "buyer" %}selected{% endif %}>
-                    Buyer
-                </option>
+                            <option value="creator" {% if session.get("role") == "creator" %}selected{% endif %}>
+                                Creator
+                            </option>
+                        </select>
 
-                <option value="creator" {% if session.get("role") == "creator" %}selected{% endif %}>
-                    Creator
-                </option>
-            </select>
-        </form>
-    </li>
+                        <button type="submit" style="margin-top: 8px; width: 100%;">
+                            Ansicht wechseln
+                        </button>
+                    </form>
+                </li>
 
-    <li>
-        <a class="sidebar-link" href="/logout">Logout</a>
-    </li>
+                <li>
+                    <a class="sidebar-link" href="/logout">Logout</a>
+                </li>
 
-{% else %}
+                <li class="sidebar-info sidebar-bottom-info">
+                    Eingeloggt als {{ session.get("username") }}
+                </li>
+            {% else %}
+                {% if request.path != "/login" %}
+                    <li>
+                        <a class="sidebar-link" href="/login">Login</a>
+                    </li>
+                {% endif %}
 
-    {% if request.path != "/login" %}
-        <li>
-            <a class="sidebar-link" href="/login">Login</a>
-        </li>
-    {% endif %}
-
-    {% if request.path != "/register" %}
-        <li>
-            <a class="sidebar-link" href="/register">Registrieren</a>
-        </li>
-    {% endif %}
-
-{% endif %}
+                {% if request.path != "/register" %}
+                    <li>
+                        <a class="sidebar-link" href="/register">Registrieren</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    </nav>
+</aside>
