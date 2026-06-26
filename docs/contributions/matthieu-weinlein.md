@@ -32,7 +32,7 @@ Besonders interessant an DealHive finde ich, dass wir eine Plattform entwickeln,
 
 ---
 
-## Eidesstattliche Erklärung (Stand 17.05.2026)
+## Eidesstattliche Erklärung (Stand 23.06.2026)
 
 **[Matthieu Weinlein, Matrikelnr.: 77211933341]**
 
