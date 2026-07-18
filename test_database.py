@@ -1,5 +1,6 @@
 import os
 
+from werkzeug.security import generate_password_hash
 from database import (
     create_tables,
     insert_hive,
@@ -106,7 +107,7 @@ for creator in test_creators:
         creator[0],
         creator[1],
         creator[2],
-        creator[3],
+        generate_password_hash(creator[3]),
         creator[4],
         creator[5],
         creator[6],
@@ -123,7 +124,7 @@ for buyer in test_buyers:
         buyer[0],
         buyer[1],
         buyer[2],
-        buyer[3],
+        generate_password_hash(buyer[3]),
         buyer[4],
         buyer[5],
         buyer[6],

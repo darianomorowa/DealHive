@@ -1,24 +1,24 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <h1>Beitritt bestätigt</h1>
+    <h1>Bestellung bestätigt</h1>
 
     {% if relation_was_created %}
 
         <p>
-            Du bist dem Hive "{{ hive['title'] }}" erfolgreich beigetreten.
+            Du hast im Hive "{{ hive['title'] }}" erfolgreich bestellt.
         </p>
 
     {% else %}
 
         <p>
-            Du bist diesem Hive bereits beigetreten.
+            Du hast in diesem Hive bereits eine Bestellung aufgegeben.
         </p>
 
     {% endif %}
 
     <p>
-        Der Creator sieht dadurch, dass genug Nachfrage für die Produktion entstehen kann.
+        Der Creator sieht dadurch, ob genug Bestellungen für die Produktion zusammenkommen.
     </p>
 
     <a class="button-link" href="/my-hives">

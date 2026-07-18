@@ -3,7 +3,6 @@ from database import (
     get_all_hives,
     get_hive_by_id,
     assign_hive_to_user,
-    increase_hive_participants,
     save_private_message,
     get_private_messages,
     get_hive_creator_id,
@@ -20,7 +19,10 @@ def register_hive_routes(app):
         # Alle bestehenden Hives aus der Datenbank abrufen
         hives = get_all_hives()
 
-        selected_game_system = request.args.get("game_system", "all")
+        selected_game_system = request.args.get(
+            "game_system",
+            "all"
+        )
 
         filtered_hives = []
 
@@ -37,7 +39,6 @@ def register_hive_routes(app):
             selected_game_system=selected_game_system
         )
 
-
     @app.route("/hives/<int:hive_id>")
     def hive_detail(hive_id):
         hive = get_hive_by_id(hive_id)
@@ -48,7 +49,7 @@ def register_hive_routes(app):
         # Wir holen die ID des Erstellers, damit der Button weiß, an wen der Chat geht
         creator_id = get_hive_creator_id(hive_id)
 
-        # Liveberechnung Stückpreises basierend auf Anzahl der Bestellungen
+        # Liveberechnung des Stückpreises basierend auf Anzahl der Bestellungen
         current_price = calculate_current_price(hive_id)
         tiers = get_hive_tiers(hive_id)
 
@@ -62,16 +63,26 @@ def register_hive_routes(app):
             tiers=tiers
         )
 
-
-    @app.route("/hives/<int:hive_id>/join", methods=["POST"])
+    @app.route(
+        "/hives/<int:hive_id>/join",
+        methods=["POST"]
+    )
     def join_hive(hive_id):
         # ohne Login soll niemand verbindlich einem Hive beitreten
         if session.get("user_id") is None:
             return redirect("/login")
 
-        # hier lesen wir die gewünschte Menge aus dem Formular aus
-        # wenn nichts mitkommt, nehmen wir als Standard 1 Stück
-        quantity = int(request.form.get("quantity", 1))
+        # hier lesen wir die gewünschte Stmenge aus dem Formular aus
+        # wenn nichts mitkommt, nehmen wir als Standard eine Stückzahl von 1
+        try:
+            quantity = int(
+                request.form.get("quantity", 1)
+            )
+        except (TypeError, ValueError):
+            return "Bitte gib eine gültige Stückzahl ein.", 400
+
+        if quantity < 1:
+            return "Du musst mindestens ein Stück bestellen.", 400
 
         # hier verbinden wir den eingeloggten Nutzer mit dem Hive als Käufer
         # und übergeben die gewählte Stückzahl
@@ -82,10 +93,6 @@ def register_hive_routes(app):
             quantity=quantity
         )
 
-        # die Teilnehmerzahl wird nur erhöht, wenn der Beitritt neu war
-        if relation_was_created:
-            increase_hive_participants(hive_id, amount=quantity)
-
         hive = get_hive_by_id(hive_id)
 
         return render_template(
@@ -94,9 +101,11 @@ def register_hive_routes(app):
             relation_was_created=relation_was_created
         )
 
-
     # EBAY-UPDATE: Die Chat-Route braucht jetzt zwingend die partner_id, mit der man gerade schreibt
-    @app.route("/hives/<int:hive_id>/chat/<int:partner_id>", methods=["GET", "POST"])
+    @app.route(
+        "/hives/<int:hive_id>/chat/<int:partner_id>",
+        methods=["GET", "POST"]
+    )
     def private_chat(hive_id, partner_id):
         if session.get("user_id") is None:
             return redirect("/login")
@@ -114,9 +123,12 @@ def register_hive_routes(app):
                     message_text
                 )
 
-            return redirect(f"/hives/{hive_id}/chat/{partner_id}")
+            return redirect(
+                f"/hives/{hive_id}/chat/{partner_id}"
+            )
 
         hive = get_hive_by_id(hive_id)
+
         messages = get_private_messages(
             hive_id,
             current_user,
@@ -129,7 +141,6 @@ def register_hive_routes(app):
             messages=messages,
             partner_id=partner_id
         )
-
 
     @app.route("/my-chats")
     def my_chats():
@@ -145,12 +156,14 @@ def register_hive_routes(app):
                 hives.id AS hive_id,
                 hives.title AS hive_title,
                 CASE
-                    WHEN messages.sender_id = ? THEN messages.receiver_id
+                    WHEN messages.sender_id = ?
+                    THEN messages.receiver_id
                     ELSE messages.sender_id
                 END AS partner_id
             FROM messages
             JOIN hives ON messages.hive_id = hives.id
-            WHERE messages.sender_id = ? OR messages.receiver_id = ?
+            WHERE messages.sender_id = ?
+            OR messages.receiver_id = ?
         """, (
             current_user,
             current_user,
@@ -163,7 +176,6 @@ def register_hive_routes(app):
             "my_chats.html",
             chats=user_chats
         )
-
 
     @app.route("/api/hives")
     def api_hives():
