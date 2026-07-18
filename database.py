@@ -163,7 +163,16 @@ def get_hive_by_id(hive_id):
     return hive
 
 
-def insert_hive(title, game_system, short_description, description, deadline, current_participants, min_participants, base_price=0.0):
+def insert_hive(
+    title,
+    game_system,
+    short_description,
+    description,
+    deadline,
+    current_participants,
+    min_participants,
+    base_price=0.0
+):
     connection = get_connection()
 
     # hier speichern wir einen neuen Hive aus dem Creator-Formular
@@ -201,7 +210,16 @@ def insert_hive(title, game_system, short_description, description, deadline, cu
     return new_hive_id
 
 
-def update_hive(hive_id, title, game_system, short_description, description, deadline, min_participants, base_price):
+def update_hive(
+    hive_id,
+    title,
+    game_system,
+    short_description,
+    description,
+    deadline,
+    min_participants,
+    base_price
+):
     connection = get_connection()
 
     # hier aktualisieren wir die Grunddaten eines bestehenden Hives
@@ -232,11 +250,22 @@ def update_hive(hive_id, title, game_system, short_description, description, dea
     connection.close()
 
 
-def create_test_user(username, name, email, password_hash, role, street, postal_code, city, country):
+def create_test_user(
+    username,
+    name,
+    email,
+    password_hash,
+    role,
+    street,
+    postal_code,
+    city,
+    country
+):
     connection = get_connection()
 
     # hier legen wir einen Testnutzer an, falls es ihn noch nicht gibt
-    # INSERT OR IGNORE verhindert doppelte Testnutzer, wenn test_database.py mehrfach läuft
+    # INSERT OR IGNORE verhindert doppelte Testnutzer,
+    # wenn test_database.py mehrfach läuft
     connection.execute("""
         INSERT OR IGNORE INTO users (
             username,
@@ -262,7 +291,8 @@ def create_test_user(username, name, email, password_hash, role, street, postal_
         country
     ))
 
-    # danach holen wir die ID, damit wir den Nutzer mit Hives verbinden können
+    # danach holen wir die ID,
+    # damit wir den Nutzer mit Hives verbinden können
     user = connection.execute("""
         SELECT id
         FROM users
@@ -276,6 +306,10 @@ def create_test_user(username, name, email, password_hash, role, street, postal_
 
 
 def assign_hive_to_user(user_id, hive_id, relation_type, quantity=1):
+    # Nur gültige Rollen erlauben
+    if relation_type not in ("creator", "buyer"):
+        raise ValueError("Invalid relation_type")
+
     connection = get_connection()
 
     # hier mappen wir einen User auf einen Hive
@@ -326,7 +360,8 @@ def increase_hive_participants(hive_id, amount=1):
 def get_hives_for_user(user_id, relation_type):
     connection = get_connection()
 
-    # hier holen wir nur die Hives, die einer bestimmten user_id zugeordnet sind
+    # hier holen wir nur die Hives,
+    # die einer bestimmten user_id zugeordnet sind
     hives = connection.execute("""
         SELECT
             hives.id,
@@ -353,7 +388,18 @@ def get_hives_for_user(user_id, relation_type):
     return hives
 
 
-def create_user_with_id(user_id, username, name, email, password_hash, role, street, postal_code, city, country):
+def create_user_with_id(
+    user_id,
+    username,
+    name,
+    email,
+    password_hash,
+    role,
+    street,
+    postal_code,
+    city,
+    country
+):
     connection = get_connection()
 
     # hier legen wir einen Nutzer mit einer festen ID an
@@ -391,7 +437,17 @@ def create_user_with_id(user_id, username, name, email, password_hash, role, str
     return user_id
 
 
-def create_user(username, name, email, password_hash, role, street, postal_code, city, country):
+def create_user(
+    username,
+    name,
+    email,
+    password_hash,
+    role,
+    street,
+    postal_code,
+    city,
+    country
+):
     connection = get_connection()
 
     connection.execute("""
@@ -451,7 +507,16 @@ def get_user_by_id(user_id):
     return user
 
 
-def update_user_profile(user_id, name, email, role, street, postal_code, city, country):
+def update_user_profile(
+    user_id,
+    name,
+    email,
+    role,
+    street,
+    postal_code,
+    city,
+    country
+):
     connection = get_connection()
 
     # hier speichern wir Änderungen am Profil des eingeloggten Nutzers
@@ -506,7 +571,8 @@ def save_private_message(hive_id, sender_id, receiver_id, text):
 def get_private_messages(hive_id, user1_id, user2_id):
     connection = get_connection()
 
-    # hier holen wir nur Nachrichten zwischen genau diesen beiden Usern für diesen Hive
+    # hier holen wir nur Nachrichten
+    # zwischen genau diesen beiden Usern für diesen Hive
     messages = connection.execute("""
         SELECT
             messages.id,
@@ -539,7 +605,8 @@ def get_private_messages(hive_id, user1_id, user2_id):
 def get_hive_creator_id(hive_id):
     connection = get_connection()
 
-    # hier holen wir den Creator, der zu diesem Hive gespeichert wurde
+    # hier holen wir den Creator,
+    # der zu diesem Hive gespeichert wurde
     creator = connection.execute("""
         SELECT user_id
         FROM user_hives
@@ -558,7 +625,8 @@ def get_hive_creator_id(hive_id):
 def insert_hive_tier(hive_id, threshold_quantity, discount_percent):
     connection = get_connection()
 
-    # Speichert eine einzelne Rabattstaffel für einen spezifischen Hive in der Datenbank
+    # Speichert eine einzelne Rabattstaffel
+    # für einen spezifischen Hive in der Datenbank
     connection.execute("""
         INSERT INTO hive_tiers (
             hive_id,
@@ -599,14 +667,16 @@ def replace_hive_tiers(hive_id, thresholds, discounts):
     connection = get_connection()
 
     # hier löschen wir zuerst die alten Preisstufen dieses Hives
-    # danach speichern wir die aktuellen Werte aus dem Bearbeiten-Formular neu
+    # danach speichern wir die aktuellen Werte
+    # aus dem Bearbeiten-Formular neu
     connection.execute("""
         DELETE FROM hive_tiers
         WHERE hive_id = ?
     """, (hive_id,))
 
     # hier gehen wir beide Listen parallel durch
-    # leere Zeilen werden übersprungen, damit keine kaputten Staffeln gespeichert werden
+    # leere Zeilen werden übersprungen,
+    # damit keine kaputten Staffeln gespeichert werden
     for i in range(len(thresholds)):
         if thresholds[i] and discounts[i]:
             connection.execute("""
@@ -627,7 +697,8 @@ def replace_hive_tiers(hive_id, thresholds, discounts):
 
 
 def calculate_current_price(hive_id):
-    # Berechnet den aktuellen, dynamischen Stückpreis eines Hives basierend auf den Gesamtbestellungen und Rabattstaffeln
+    # Berechnet den aktuellen, dynamischen Stückpreis eines Hives
+    # basierend auf den Gesamtbestellungen und Rabattstaffeln
     hive = get_hive_by_id(hive_id)
 
     if not hive:
@@ -635,7 +706,8 @@ def calculate_current_price(hive_id):
 
     base_price = hive["base_price"]
 
-    # Da current_participants jetzt die Summe aller bestellten Stück speichert
+    # Da current_participants jetzt die Summe
+    # aller bestellten Stück speichert
     current_total = hive["current_participants"]
 
     # Alle Staffeln für diesen Hive aufsteigend holen
@@ -643,7 +715,8 @@ def calculate_current_price(hive_id):
 
     active_discount = 0.0
 
-    # Schleife prüft, welche Rabattstufe durch die Gesamtmenge bereits geknackt wurde
+    # Schleife prüft, welche Rabattstufe
+    # durch die Gesamtmenge bereits geknackt wurde
     for tier in tiers:
         if current_total >= tier["threshold_quantity"]:
             active_discount = tier["discount_percent"]
@@ -653,10 +726,12 @@ def calculate_current_price(hive_id):
 
     return round(current_price, 2)
 
+
 def get_buyers_for_hive(hive_id):
     connection = get_connection()
 
-    # Holt alle User, die als 'buyer' mit diesem Hive verknüpft sind
+    # Holt alle User,
+    # die als 'buyer' mit diesem Hive verknüpft sind
     buyers = connection.execute("""
         SELECT
             users.id,

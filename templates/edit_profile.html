@@ -7,6 +7,12 @@
         Hier kannst du deine Profildaten ändern.
     </p>
 
+    {% if error %}
+        <p role="alert">
+            {{ error }}
+        </p>
+    {% endif %}
+
     <form method="POST">
         <div>
             <label for="name">Name</label><br>
@@ -14,7 +20,7 @@
                 type="text"
                 id="name"
                 name="name"
-                value="{{ user['name'] }}"
+                value="{{ user['name'] | default('', true) }}"
                 required
             >
         </div>
@@ -27,7 +33,7 @@
                 type="email"
                 id="email"
                 name="email"
-                value="{{ user['email'] }}"
+                value="{{ user['email'] | default('', true) }}"
                 required
             >
         </div>
@@ -37,10 +43,17 @@
         <div>
             <label for="role">Rolle</label><br>
             <select id="role" name="role" required>
-                <option value="buyer" {% if user["role"] == "buyer" %}selected{% endif %}>
+                <option
+                    value="buyer"
+                    {% if user["role"] == "buyer" %}selected{% endif %}
+                >
                     Buyer
                 </option>
-                <option value="creator" {% if user["role"] == "creator" %}selected{% endif %}>
+
+                <option
+                    value="creator"
+                    {% if user["role"] == "creator" %}selected{% endif %}
+                >
                     Creator
                 </option>
             </select>
@@ -56,7 +69,7 @@
                 type="text"
                 id="street"
                 name="street"
-                value="{{ user['street'] }}"
+                value="{{ user['street'] | default('', true) }}"
                 required
             >
         </div>
@@ -69,7 +82,10 @@
                 type="text"
                 id="postal_code"
                 name="postal_code"
-                value="{{ user['postal_code'] }}"
+                value="{{ user['postal_code'] | default('', true) }}"
+                inputmode="numeric"
+                pattern="[0-9]{5}"
+                title="Bitte gib eine fünfstellige Postleitzahl ein."
                 required
             >
         </div>
@@ -82,7 +98,7 @@
                 type="text"
                 id="city"
                 name="city"
-                value="{{ user['city'] }}"
+                value="{{ user['city'] | default('', true) }}"
                 required
             >
         </div>
@@ -95,7 +111,7 @@
                 type="text"
                 id="country"
                 name="country"
-                value="{{ user['country'] }}"
+                value="{{ user['country'] | default('', true) }}"
                 required
             >
         </div>
@@ -103,15 +119,13 @@
         <br>
 
         <div class="form-actions">
-            <button type="submit">Änderungen speichern</button>
+            <button type="submit">
+                Änderungen speichern
+            </button>
+
+            <button type="button" onclick="window.location.href='/profile'">
+    Zurück zum Profil
+</button>
         </div>
     </form>
-
-    <br>
-
-    <div class="form-actions">
-        <a href="/profile">
-            <button type="button">Zurück zum Profil</button>
-        </a>
-    </div>
 {% endblock %}

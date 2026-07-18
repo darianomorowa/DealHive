@@ -112,13 +112,56 @@ def setup_user_routes(app):
         user = get_user_by_id(user_id)
 
         if request.method == "POST":
-            name = request.form["name"]
-            email = request.form["email"]
-            role = request.form["role"]
-            street = request.form["street"]
-            postal_code = request.form["postal_code"]
-            city = request.form["city"]
-            country = request.form["country"]
+            name = request.form.get("name", "").strip()
+            email = request.form.get("email", "").strip()
+            role = request.form.get("role", "").strip()
+            street = request.form.get("street", "").strip()
+            postal_code = request.form.get("postal_code", "").strip()
+            city = request.form.get("city", "").strip()
+            country = request.form.get("country", "").strip()
+
+            form_user = {
+                "id": user_id,
+                "name": name,
+                "email": email,
+                "role": role,
+                "street": street,
+                "postal_code": postal_code,
+                "city": city,
+                "country": country
+            }
+
+            # Alle Pflichtfelder prüfen
+            if not all([
+                name,
+                email,
+                role,
+                street,
+                postal_code,
+                city,
+                country
+            ]):
+                return render_template(
+                    "edit_profile.html",
+                    user=form_user,
+                    error="Bitte fülle alle Pflichtfelder aus."
+                )
+
+            # Nur gültige Rollen erlauben
+            if role not in ("buyer", "creator"):
+                return render_template(
+                    "edit_profile.html",
+                    user=form_user,
+                    error="Ungültige Rolle ausgewählt."
+                )
+
+            # Deutsche PLZ muss aus genau fünf Ziffern bestehen
+            if not postal_code.isdigit() or len(postal_code) != 5:
+                return render_template(
+                    "edit_profile.html",
+                    user=form_user,
+                    error="Bitte gib eine gültige fünfstellige Postleitzahl ein."
+                )
 
             update_user_profile(
                 user_id,
