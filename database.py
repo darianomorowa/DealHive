@@ -212,86 +212,6 @@ def insert_hive(
     return new_hive_id
 
 
-def create_hive_with_tiers(
-    creator_id,
-    title,
-    game_system,
-    short_description,
-    description,
-    deadline,
-    min_participants,
-    base_price,
-    tiers
-):
-    connection = get_connection()
-
-    try:
-        # Hive, Creator-Zuordnung und Rabattstaffeln werden gemeinsam
-        # gespeichert.
-        # Wenn etwas schiefgeht, wird nichts nur teilweise angelegt.
-        cursor = connection.execute("""
-            INSERT INTO hives (
-                title,
-                game_system,
-                short_description,
-                description,
-                deadline,
-                current_participants,
-                min_participants,
-                base_price
-            )
-            VALUES (?, ?, ?, ?, ?, 0, ?, ?)
-        """, (
-            title,
-            game_system,
-            short_description,
-            description,
-            deadline,
-            min_participants,
-            base_price
-        ))
-
-        new_hive_id = cursor.lastrowid
-
-        connection.execute("""
-            INSERT INTO user_hives (
-                user_id,
-                hive_id,
-                relation_type,
-                quantity
-            )
-            VALUES (?, ?, 'creator', 1)
-        """, (
-            creator_id,
-            new_hive_id
-        ))
-
-        for threshold_quantity, discount_percent in tiers:
-            connection.execute("""
-                INSERT INTO hive_tiers (
-                    hive_id,
-                    threshold_quantity,
-                    discount_percent
-                )
-                VALUES (?, ?, ?)
-            """, (
-                new_hive_id,
-                threshold_quantity,
-                discount_percent
-            ))
-
-        connection.commit()
-
-        return new_hive_id
-
-    except Exception:
-        connection.rollback()
-        raise
-
-    finally:
-        connection.close()
-
-
 def update_hive(
     hive_id,
     title,
@@ -422,59 +342,6 @@ def assign_hive_to_user(user_id, hive_id, relation_type, quantity=1):
     connection.close()
 
     return relation_was_created
-
-def increase_hive_participants(hive_id, amount=1):
-    connection = get_connection()
-
-    # erhöht die gesamte bestellte Stückzahl des Hives
-    connection.execute("""
-        UPDATE hives
-        SET current_participants = current_participants + ?
-        WHERE id = ?
-    """, (
-        amount,
-        hive_id
-    ))
-
-    connection.commit()
-    connection.close()
-
-
-def join_hive_as_buyer(user_id, hive_id, quantity):
-    if not isinstance(quantity, int) or quantity < 1:
-        raise ValueError("Die Stückzahl muss mindestens 1 sein.")
-
-    connection = get_connection()
-
-    try:
-        # Der Beitritt wird nur einmal gespeichert.
-        # Die Gesamtmenge wird später direkt aus allen Bestellungen berechnet.
-        cursor = connection.execute("""
-            INSERT OR IGNORE INTO user_hives (
-                user_id,
-                hive_id,
-                relation_type,
-                quantity
-            )
-            VALUES (?, ?, 'buyer', ?)
-        """, (
-            user_id,
-            hive_id,
-            quantity
-        ))
-
-        relation_was_created = cursor.rowcount > 0
-
-        connection.commit()
-
-        return relation_was_created
-
-    except Exception:
-        connection.rollback()
-        raise
-
-    finally:
-        connection.close()
 
 
 def get_hives_for_user(user_id, relation_type):
@@ -749,7 +616,7 @@ def get_hive_tiers(hive_id):
     return tiers
 
 
-def replace_hive_tiers(hive_id, tiers):
+def replace_hive_tiers(hive_id, thresholds, discounts):
     connection = get_connection()
 
     try:
@@ -760,7 +627,10 @@ def replace_hive_tiers(hive_id, tiers):
             WHERE hive_id = ?
         """, (hive_id,))
 
-        for threshold_quantity, discount_percent in tiers:
+        for threshold_quantity, discount_percent in zip(
+            thresholds,
+            discounts
+        ):
             connection.execute("""
                 INSERT INTO hive_tiers (
                     hive_id,
@@ -799,7 +669,7 @@ def calculate_current_price(hive_id):
     active_discount = 0.0
 
     # Wir verwenden immer den höchsten bereits erreichten Rabatt.
-    # Dadurch kann der Preis bei einer h?heren Bestellmenge niemals wieder steigen.
+    # Dadurch kann der Preis bei einer höheren Bestellmenge niemals wieder steigen.
     for tier in tiers:
         if current_total >= tier["threshold_quantity"]:
             active_discount = max(

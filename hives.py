@@ -3,7 +3,6 @@ from database import (
     get_all_hives,
     get_hive_by_id,
     assign_hive_to_user,
-    increase_hive_participants,
     save_private_message,
     get_private_messages,
     get_hive_creator_id,
@@ -93,13 +92,6 @@ def register_hive_routes(app):
             "buyer",
             quantity=quantity
         )
-
-        # die bestellte Stückzahl wird nur erhöht, wenn der Beitritt neu war
-        if relation_was_created:
-            increase_hive_participants(
-                hive_id,
-                amount=quantity
-            )
 
         hive = get_hive_by_id(hive_id)
 
