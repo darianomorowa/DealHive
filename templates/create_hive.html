@@ -5,7 +5,7 @@
     <h1>Neuen Sammelkauf anlegen</h1>
 
     <p class="helper-text">
-        Hier kann ein Creator einen neuen Hive anlegen, dem Käufer später beitreten können.
+        Hier kann ein Creator einen neuen Hive anlegen, in dem Käufer später Bestellung abschlie?en können.
     </p>
 
     <form action="/creator/hives/new" method="POST" class="create-hive-form">
@@ -36,7 +36,7 @@
         </div>
 
         <div class="form-row">
-            <label for="min_participants">Mindestanzahl:</label>
+            <label for="min_participants">Mindestmenge:</label>
             <input
                 type="number"
                 id="min_participants"
@@ -48,7 +48,7 @@
         </div>
 
         <div class="form-row">
-            <label for="base_price">Basispreis (€):</label>
+            <label for="base_price">Basispreis pro Stück (€):</label>
             <input
                 type="number"
                 id="base_price"
@@ -75,7 +75,7 @@
                     
                     <input type="number" 
                            name="threshold_quantity[]" 
-                           placeholder="Ab X Brettern" 
+                           placeholder="Ab X Stück" 
                            min="1" 
                            value="{{ thresholds[i] }}" 
                            style="flex: 1; padding: 4px;">

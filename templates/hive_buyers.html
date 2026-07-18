@@ -4,7 +4,7 @@
     <h1>Käuferübersicht für: {{ hive["title"] }}</h1>
 
     <p class="helper-text">
-        Hier siehst du alle Teilnehmer, die diesem Sammelkauf verbindlich beigetreten sind.
+        Hier siehst du alle Käufer und wie viele Stück sie bestellt haben.
     </p>
 
     {% if buyers %}
@@ -14,7 +14,7 @@
                     <th style="padding: 8px;">Username</th>
                     <th style="padding: 8px;">Name</th>
                     <th style="padding: 8px;">E-Mail</th>
-                    <th style="padding: 8px;">Menge</th>
+                    <th style="padding: 8px;">Stückzahl</th>
                     <th style="padding: 8px;">Aktion</th>
                 </tr>
             </thead>
@@ -25,9 +25,11 @@
                         <td style="padding: 8px;">{{ buyer["username"] }}</td>
                         <td style="padding: 8px;">{{ buyer["name"] }}</td>
                         <td style="padding: 8px;">{{ buyer["email"] }}</td>
+
                         <td style="padding: 8px;">
-                            <strong>{{ buyer["quantity"] }} Stk.</strong>
+                            <strong>{{ buyer["quantity"] }} Stück</strong>
                         </td>
+
                         <td style="padding: 8px;">
                             <a class="button-link" href="/hives/{{ hive['id'] }}/chat/{{ buyer['id'] }}">
                                 Chat starten
@@ -39,7 +41,7 @@
         </table>
     {% else %}
         <p style="margin-top: 20px; color: #666;">
-            <em>Es sind noch keine Käufer diesem Hive beigetreten.</em>
+            <em>F?r diesen Hive wurden noch keine Bestellungen aufgegeben.</em>
         </p>
     {% endif %}
 
