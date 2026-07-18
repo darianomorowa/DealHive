@@ -46,21 +46,32 @@ def register_hive_routes(app):
         if hive is None:
             return "Hive wurde nicht gefunden."
 
-        # Wir holen die ID des Erstellers, damit der Button weiß, an wen der Chat geht
+        # Wir holen die ID des Erstellers,
+        # damit der Button weiß, an wen der Chat geht
         creator_id = get_hive_creator_id(hive_id)
 
-        # Liveberechnung des Stückpreises basierend auf Anzahl der Bestellungen
+        # Nur Käufer dürfen einem fremden Hive beitreten
+        can_join = (
+            session.get("user_id") is not None
+            and session.get("role") == "buyer"
+            and session["user_id"] != creator_id
+        )
+
+        # Liveberechnung des Stückpreises
+        # basierend auf Anzahl der Bestellungen
         current_price = calculate_current_price(hive_id)
         tiers = get_hive_tiers(hive_id)
 
-        # hier geben wir den gefundenen Hive, den Creator, den aktuellen Preis
-        # und die Rabattstufen an die Detail-HTML-Datei weiter
+        # hier geben wir den gefundenen Hive, den Creator,
+        # den aktuellen Preis und die Rabattstufen
+        # an die Detail-HTML-Datei weiter
         return render_template(
             "hive_detail.html",
             hive=hive,
             creator_id=creator_id,
             current_price=current_price,
-            tiers=tiers
+            tiers=tiers,
+            can_join=can_join
         )
 
     @app.route(
@@ -68,12 +79,32 @@ def register_hive_routes(app):
         methods=["POST"]
     )
     def join_hive(hive_id):
-        # ohne Login soll niemand verbindlich einem Hive beitreten
+        # ohne Login soll niemand verbindlich
+        # einem Hive beitreten
         if session.get("user_id") is None:
             return redirect("/login")
 
-        # hier lesen wir die gewünschte Stmenge aus dem Formular aus
-        # wenn nichts mitkommt, nehmen wir als Standard eine Stückzahl von 1
+        # Nur in der Käufer-Ansicht darf
+        # eine Bestellung abgeschlossen werden
+        if session.get("role") != "buyer":
+            return redirect(f"/hives/{hive_id}")
+
+        hive = get_hive_by_id(hive_id)
+
+        if hive is None:
+            return "Hive wurde nicht gefunden.", 404
+
+        # Der Creator darf seinem eigenen Hive
+        # niemals als Käufer beitreten
+        creator_id = get_hive_creator_id(hive_id)
+
+        if creator_id == session["user_id"]:
+            return redirect(f"/hives/{hive_id}")
+
+        # hier lesen wir die gewünschte Stückmenge
+        # aus dem Formular aus
+        # wenn nichts mitkommt, nehmen wir als Standard
+        # eine Stückzahl von 1
         try:
             quantity = int(
                 request.form.get("quantity", 1)
@@ -84,7 +115,8 @@ def register_hive_routes(app):
         if quantity < 1:
             return "Du musst mindestens ein Stück bestellen.", 400
 
-        # hier verbinden wir den eingeloggten Nutzer mit dem Hive als Käufer
+        # hier verbinden wir den eingeloggten Nutzer
+        # mit dem Hive als Käufer
         # und übergeben die gewählte Stückzahl
         relation_was_created = assign_hive_to_user(
             session["user_id"],
@@ -101,7 +133,9 @@ def register_hive_routes(app):
             relation_was_created=relation_was_created
         )
 
-    # EBAY-UPDATE: Die Chat-Route braucht jetzt zwingend die partner_id, mit der man gerade schreibt
+    # EBAY-UPDATE:
+    # Die Chat-Route braucht jetzt zwingend die partner_id,
+    # mit der man gerade schreibt
     @app.route(
         "/hives/<int:hive_id>/chat/<int:partner_id>",
         methods=["GET", "POST"]
@@ -182,11 +216,14 @@ def register_hive_routes(app):
         # Alle bestehenden Hives aus der Datenbank abrufen
         hives = get_all_hives()
 
-        # leere Liste, in der wir die Hives als Dictionary speichern
+        # leere Liste, in der wir die Hives
+        # als Dictionary speichern
         hive_list = []
 
-        # sqlite3.Row kann nicht direkt schön als JSON ausgegeben werden
-        # deshalb bauen wir jeden Hive manuell als Dictionary um
+        # sqlite3.Row kann nicht direkt schön
+        # als JSON ausgegeben werden
+        # deshalb bauen wir jeden Hive
+        # manuell als Dictionary um
         for hive in hives:
             hive_list.append({
                 "id": hive["id"],
@@ -194,9 +231,12 @@ def register_hive_routes(app):
                 "game_system": hive["game_system"],
                 "short_description": hive["short_description"],
                 "deadline": hive["deadline"],
-                "current_participants": hive["current_participants"],
+                "current_participants": hive[
+                    "current_participants"
+                ],
                 "min_participants": hive["min_participants"]
             })
 
-        # jsonify macht daraus eine echte JSON-Antwort für die API
+        # jsonify macht daraus
+        # eine echte JSON-Antwort für die API
         return jsonify(hive_list)

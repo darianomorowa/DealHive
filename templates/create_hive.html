@@ -5,9 +5,14 @@
     <h1>Neuen Sammelkauf anlegen</h1>
 
     <p class="helper-text">
-        Hier kann ein Creator einen neuen Hive anlegen, in dem Käufer später Bestellung abschlie?en können.
+        Hier kann ein Creator einen neuen Hive anlegen, in dem Käufer später Bestellung abschließen können.
     </p>
 
+    {% if error_message %}
+        <p style="color: red; font-weight: bold;">
+            {{ error_message }}
+        </p>
+    {% endif %}
     <form action="/creator/hives/new" method="POST" class="create-hive-form">
         <div class="form-row">
             <label for="title">Produktname:</label>

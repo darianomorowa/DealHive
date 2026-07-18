@@ -45,20 +45,41 @@
             {% for tier in tiers %}
                 <li>
                     Ab {{ tier.threshold_quantity }} Stück:
-                    {{ tier.discount_percent }}% Rabatt
+                    {{ tier.discount_percent }} % Rabatt
                 </li>
             {% endfor %}
         </ul>
     {% endif %}
 
     <div class="hive-actions">
-        <form method="POST" action="/hives/{{ hive['id'] }}/join" style="display: inline-block; margin: 0;">
-            <input type="number" id="quantity" name="quantity" value="1" min="1" required style="width: 50px; margin-right: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 4px;">
-            <button type="submit">Bestellung abschließen</button>
-        </form>
 
-        {% if creator_id %}
-            <a class="button-link" href="/hives/{{ hive['id'] }}/chat/{{ creator_id }}">
+        {% if can_join %}
+            <form
+                method="POST"
+                action="/hives/{{ hive['id'] }}/join"
+                style="display: inline-block; margin: 0;"
+            >
+                <input
+                    type="number"
+                    id="quantity"
+                    name="quantity"
+                    value="1"
+                    min="1"
+                    required
+                    style="width: 50px; margin-right: 10px; padding: 5px; border: 1px solid #ccc; border-radius: 4px;"
+                >
+
+                <button type="submit">
+                    Bestellung abschließen
+                </button>
+            </form>
+        {% endif %}
+
+        {% if creator_id and session.get("user_id") != creator_id %}
+            <a
+                class="button-link"
+                href="/hives/{{ hive['id'] }}/chat/{{ creator_id }}"
+            >
                 Creator kontaktieren
             </a>
         {% endif %}
