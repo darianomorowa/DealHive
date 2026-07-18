@@ -1,4 +1,9 @@
+
+
+
+
 from flask import render_template, request, session, redirect
+from werkzeug.security import generate_password_hash, check_password_hash
 from database import (
     create_user,
     get_user_by_username,
@@ -20,6 +25,7 @@ def setup_user_routes(app):
             name = request.form["name"]
             email = request.form["email"]
             password = request.form["password"]
+            password_hash = generate_password_hash(password)
             role = request.form["role"]
             street = request.form["street"]
             postal_code = request.form["postal_code"]
@@ -30,7 +36,7 @@ def setup_user_routes(app):
                 username,
                 name,
                 email,
-                password,
+                password_hash,
                 role,
                 street,
                 postal_code,
@@ -54,7 +60,8 @@ def setup_user_routes(app):
 
             user = get_user_by_username(username)
 
-            if user and user["password_hash"] == password:
+            if user and check_password_hash(user["password_hash"], password):
+
                 print("Login erfolgreich")
 
                 session["user_id"] = user["id"]
