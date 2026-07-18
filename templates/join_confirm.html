@@ -3,15 +3,31 @@
 {% block content %}
     <h1>Beitritt bestätigt</h1>
 
-    <p>
-        Du hast dein verbindliches Interesse an diesem Hive bestätigt.
-    </p>
+    {% if relation_was_created %}
+
+        <p>
+            Du bist dem Hive "{{ hive['title'] }}" erfolgreich beigetreten.
+        </p>
+
+    {% else %}
+
+        <p>
+            Du bist diesem Hive bereits beigetreten.
+        </p>
+
+    {% endif %}
 
     <p>
         Der Creator sieht dadurch, dass genug Nachfrage für die Produktion entstehen kann.
     </p>
 
+    <a class="button-link" href="/my-hives">
+        Meine Hives ansehen
+    </a>
+
+    <br><br>
+
     <a class="button-link" href="/hives">
-    Zurück zu allen Hives
+        Zurück zu allen Hives
     </a>
 {% endblock %}

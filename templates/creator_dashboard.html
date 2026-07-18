@@ -8,8 +8,8 @@
     </p>
 
     <div class="form-actions">
-        <a href="/creator/hives/new">
-            <button type="button">Neuen Hive erstellen</button>
+        <a class="button-link" href="/creator/hives/new">
+            Neuen Hive erstellen
         </a>
     </div>
 
@@ -48,13 +48,17 @@
                     {% endif %}
                 </p>
 
-                <div class="form-actions">
-                    <a href="/hives/{{ hive['id'] }}">
-                        <button type="button">Details ansehen</button>
+                <div class="hive-actions">
+                    <a class="button-link" href="/hives/{{ hive['id'] }}">
+                        Details ansehen
                     </a>
 
-                    <a href="/creator/hives/{{ hive['id'] }}/edit">
-                        <button type="button">Hive bearbeiten</button>
+                    <a class="button-link" href="/creator/hives/{{ hive['id'] }}/edit">
+                        Hive bearbeiten
+                    </a>
+
+                    <a class="button-link" href="/creator/hives/{{ hive['id'] }}/buyers">
+                        Käufer ansehen
                     </a>
                 </div>
             </section>

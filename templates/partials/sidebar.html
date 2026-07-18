@@ -22,9 +22,15 @@
                 <li>
                     <a class="sidebar-link" href="/profile">Mein Profil</a>
                 </li>
+
+                <li>
+                    <a class="sidebar-link" href="/my-hives">Meine Hives</a>
+                </li>
+
                 <li>
                     <a class="sidebar-link" href="/my-chats">Meine Chats</a>
-                </li>    
+                </li>
+
                 {% if session.get("role") == "creator" %}
                     <li>
                         <a class="sidebar-link" href="/creator/hives/new">Hive erstellen</a>
@@ -41,7 +47,7 @@
 
                         <label for="role-switch">Ansicht:</label>
 
-                        <select id="role-switch" name="role" onchange="this.form.submit()">
+                        <select id="role-switch" name="role">
                             <option value="buyer" {% if session.get("role") == "buyer" %}selected{% endif %}>
                                 Buyer
                             </option>
@@ -50,6 +56,10 @@
                                 Creator
                             </option>
                         </select>
+
+                        <button type="submit" style="margin-top: 8px; width: 100%;">
+                            Ansicht wechseln
+                        </button>
                     </form>
                 </li>
 

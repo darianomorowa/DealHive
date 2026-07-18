@@ -4,7 +4,7 @@ from creator_routes import register_creator_routes
 from user_routes import setup_user_routes
 from hives import register_hive_routes
 
-# Zugriff auf unsere Projektbilder ermöglichen
+#Zugriff auf unsere Projektbilder ermöglichen
 app = Flask(__name__, static_folder="docs/assets", static_url_path="/assets")
 
 # secret_key brauchen wir, damit Flask Sessions speichern kann
