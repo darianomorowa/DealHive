@@ -72,6 +72,7 @@ def register_hive_routes(app):
         if session.get("user_id") is None:
             return redirect("/login")
 
+
         # hier lesen wir die gewünschte Stmenge aus dem Formular aus
         # wenn nichts mitkommt, nehmen wir als Standard eine Stückzahl von 1
         try:
@@ -84,6 +85,17 @@ def register_hive_routes(app):
         if quantity < 1:
             return "Du musst mindestens ein Stück bestellen.", 400
 
+        # hier lesen wir die gewünschte Menge aus dem Formular aus
+        # wenn nichts mitkommt, nehmen wir als Standard 1 Stück
+        try:
+            quantity = int(request.form.get("quantity", 1))
+
+
+            if quantity <= 0:
+                return "Quantity must be greater than zero", 400
+
+        except ValueError:
+            return "Invalid quantity", 400
         # hier verbinden wir den eingeloggten Nutzer mit dem Hive als Käufer
         # und übergeben die gewählte Stückzahl
         relation_was_created = assign_hive_to_user(
