@@ -21,6 +21,7 @@
                 id="name"
                 name="name"
                 value="{{ user['name'] | default('', true) }}"
+                autocomplete="name"
                 required
             >
         </div>
@@ -34,6 +35,7 @@
                 id="email"
                 name="email"
                 value="{{ user['email'] | default('', true) }}"
+                autocomplete="email"
                 required
             >
         </div>
@@ -70,6 +72,7 @@
                 id="street"
                 name="street"
                 value="{{ user['street'] | default('', true) }}"
+                autocomplete="street-address"
                 required
             >
         </div>
@@ -85,6 +88,8 @@
                 value="{{ user['postal_code'] | default('', true) }}"
                 inputmode="numeric"
                 pattern="[0-9]{5}"
+                maxlength="5"
+                autocomplete="postal-code"
                 title="Bitte gib eine fünfstellige Postleitzahl ein."
                 required
             >
@@ -99,6 +104,7 @@
                 id="city"
                 name="city"
                 value="{{ user['city'] | default('', true) }}"
+                autocomplete="address-level2"
                 required
             >
         </div>
@@ -112,6 +118,7 @@
                 id="country"
                 name="country"
                 value="{{ user['country'] | default('', true) }}"
+                autocomplete="country-name"
                 required
             >
         </div>
@@ -123,9 +130,12 @@
                 Änderungen speichern
             </button>
 
-            <button type="button" onclick="window.location.href='/profile'">
-    Zurück zum Profil
-</button>
+            <button
+                type="button"
+                onclick="window.location.href='/profile'"
+            >
+                Zurück zum Profil
+            </button>
         </div>
     </form>
 {% endblock %}
