@@ -346,3 +346,16 @@ http://127.0.0.1:5001/
 http://127.0.0.1:5001/hives
 http://127.0.0.1:5001/api/hives
 ```
+## Funktionstests
+
+Die Backend-Funktionstests können mit folgendem Befehl ausgeführt werden:
+
+```bash
+python3 test_functionality.py
+Die Tests prüfen:
+
+* Passwort-Hashing
+* ungültige Rollen bei Hive-Zuordnungen
+* ungültige Bestellmengen
+
+Die Tests dienen dazu, zentrale Sicherheits- und Validierungsfunktionen der Anwendung reproduzierbar zu überprüfen.
