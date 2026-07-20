@@ -61,13 +61,13 @@ Mir ist weiterhin bewusst, dass ich, sofern ich zur Erstellung dieser Arbeit KI-
 
 | Contribution | Proof, e.g., git commits | Sources used |
 | :-- | :-- | :-- |
-| Implementierung der Route `/my-hives` für eingeloggte Käufer | Commit `Added buyer my-hives flow`, Datei `user_routes.py` | Bestehende Datenbankfunktionen, Teamarchitektur |
+| Implementierung der Route `/my-hives` für eingeloggte Käufer | Commit `6cd0623 Added buyer my-hives flow`, Datei `user_routes.py` | Bestehende Datenbankfunktionen, Teamarchitektur |
 | Erstellung der Seite `my_hives.html` zur Anzeige beigetretener Hives | Commit `Added buyer my-hives flow`, Datei `templates/my_hives.html` | Vorhandenes Layout (`layout.html`), Teamdesign |
 | Erweiterung der Sidebar um den Menüpunkt „Meine Hives“ | Datei `templates/partials/sidebar.html` | Bestehende Navigationsstruktur |
 | Funktionstests für Security- und Hive-Validierung ergänzt | Commit `Add functionality tests for security and hive validation`, Datei `test_functionality.py` | Eigene Tests der Backend-Validierung |
 | Verbesserung der Hive-Beitrittsbestätigung inkl. Hive-Name und Nutzerfeedback | Datei `templates/join_confirm.html` | Bestehender Buyer-Flow |
 | Nutzung und Integration der bestehenden Datenbanklogik für Hive-Zuordnungen und Rückmeldung über erfolgreiche Beitritte (`relation_was_created`) | Datei `database.py`, Integration im Buyer-Flow | Bestehende Datenbankstruktur |
-| Integration und Konfliktlösung beim Zusammenführen des Branches | Git-Historie, Rebase- und Merge-Prozess während der Feature-Integration | Git, GitHub, Teamarbeit |
+| Integration eigener Änderungen in die finale Feature-Struktur | Git-Historie während der Feature-Integration | Git, Branch-Management und Teamarbeit |
 | Passwort-Hashing für Registrierung und Login vervollständigt | Commit `Passwort-Hashing vervollständigt`, Dateien `user_routes.py`, `database.py`, `test_database.py` | Werkzeug Security Funktionen (`generate_password_hash`, `check_password_hash`) |
 | Serverseitige Validierung der Hive-Beitrittsmenge ergänzt | Commit `Validate hive join quantity input`, Datei `hives.py`, Route `/hives/<int:hive_id>/join` | Flask Request-Verarbeitung und Backend-Validierung |
 | README-Dokumentation zu Demo-Zugängen und API-Nutzung verbessert | Commit `Improve README documentation for demo access and API` | Projektdokumentation und eigene Überarbeitung |
