@@ -64,6 +64,7 @@ Mir ist weiterhin bewusst, dass ich, sofern ich zur Erstellung dieser Arbeit KI-
 | Implementierung der Route `/my-hives` für eingeloggte Käufer | Commit `Added buyer my-hives flow`, Datei `user_routes.py` | Bestehende Datenbankfunktionen, Teamarchitektur |
 | Erstellung der Seite `my_hives.html` zur Anzeige beigetretener Hives | Commit `Added buyer my-hives flow`, Datei `templates/my_hives.html` | Vorhandenes Layout (`layout.html`), Teamdesign |
 | Erweiterung der Sidebar um den Menüpunkt „Meine Hives“ | Datei `templates/partials/sidebar.html` | Bestehende Navigationsstruktur |
+| Funktionstests für Security- und Hive-Validierung ergänzt | Commit `Add functionality tests for security and hive validation`, Datei `test_functionality.py` | Eigene Tests der Backend-Validierung |
 | Verbesserung der Hive-Beitrittsbestätigung inkl. Hive-Name und Nutzerfeedback | Datei `templates/join_confirm.html` | Bestehender Buyer-Flow |
 | Nutzung und Integration der bestehenden Datenbanklogik für Hive-Zuordnungen und Rückmeldung über erfolgreiche Beitritte (`relation_was_created`) | Datei `database.py`, Integration im Buyer-Flow | Bestehende Datenbankstruktur |
 | Integration und Konfliktlösung beim Zusammenführen des Branches | Git-Historie, Rebase- und Merge-Prozess während der Feature-Integration | Git, GitHub, Teamarbeit |
