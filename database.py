@@ -442,10 +442,21 @@ def create_user(
     city,
     country
 ):
-    connection = get_connection()
-
-    connection.execute("""
-        INSERT INTO users (
+    with database_transaction() as connection:
+        connection.execute("""
+            INSERT INTO users (
+                username,
+                name,
+                email,
+                password_hash,
+                role,
+                street,
+                postal_code,
+                city,
+                country
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
             username,
             name,
             email,
@@ -455,19 +466,7 @@ def create_user(
             postal_code,
             city,
             country
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (
-        username,
-        name,
-        email,
-        password_hash,
-        role,
-        street,
-        postal_code,
-        city,
-        country
-    ))
+        ))
 
     connection.commit()
     connection.close()
