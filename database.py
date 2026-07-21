@@ -635,25 +635,19 @@ def insert_hive_tier(hive_id, threshold_quantity, discount_percent):
     if discount_percent < 0 or discount_percent > 100:
         raise ValueError("Der Rabatt muss zwischen 0 und 100 liegen.")
 
-    connection = get_connection()
-
-    # Speichert eine einzelne Rabattstaffel
-    # für einen spezifischen Hive in der Datenbank
-    connection.execute("""
-        INSERT INTO hive_tiers (
+    with database_transaction() as connection:
+        connection.execute("""
+            INSERT INTO hive_tiers (
+                hive_id,
+                threshold_quantity,
+                discount_percent
+            )
+            VALUES (?, ?, ?)
+        """, (
             hive_id,
             threshold_quantity,
             discount_percent
-        )
-        VALUES (?, ?, ?)
-    """, (
-        hive_id,
-        threshold_quantity,
-        discount_percent
-    ))
-
-    connection.commit()
-    connection.close()
+        ))
 
 
 def get_hive_tiers(hive_id):
