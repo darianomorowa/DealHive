@@ -41,7 +41,7 @@ def register_hive_routes(app):
             selected_game_system=selected_game_system
         )
 
-        @app.route("/hives/<int:hive_id>")
+    @app.route("/hives/<int:hive_id>")
     def hive_detail(hive_id):
         hive = get_hive_by_id(hive_id)
 
@@ -144,7 +144,7 @@ def register_hive_routes(app):
     # EBAY-UPDATE:
     # Die Chat-Route braucht jetzt zwingend die partner_id,
     # mit der man gerade schreibt
-      @app.route(
+    @app.route(
         "/hives/<int:hive_id>/chat/<int:partner_id>",
         methods=["GET", "POST"]
     )
