@@ -192,6 +192,7 @@ Nach Ausführung von `test_database.py` sind folgende Creator-Testnutzer vorhand
 | Creator | `terrain_creator`   | `test123` |
 | Creator | `miniature_creator` | `test123` |
 
+Die angegebenen Zugangsdaten dienen ausschließlich zur lokalen Demonstration und sollten in einer produktiven Umgebung ersetzt werden.
 Zusätzlich kann jederzeit ein neuer Nutzer über die Registrierungsseite angelegt werden.
 
 Für den Buyer-Flow empfiehlt es sich, direkt über die App einen neuen Buyer zu registrieren.
@@ -267,6 +268,7 @@ http://127.0.0.1:5001/api/hives
 ```
 
 Diese Route gibt die vorhandenen Hives als JSON zurück.
+Die API kann unabhängig vom HTML-Frontend getestet werden und stellt Hive-Daten für externe Clients im JSON-Format bereit.
 
 ## Wichtige Routen
 
@@ -302,7 +304,9 @@ Diese App erfüllt die zentralen technischen Anforderungen der First Submission:
 | SQLite                    | App verwendet `dealhive.db` als SQLite-Datenbank                                        |
 | Genau eine Datenbankdatei | `dealhive.db` ist die lokale SQLite-Datenbank                                           |
 | User-Rollen               | Es gibt `buyer` und `creator`                                                           |
-| Autorisierung             | Creator-Bereiche prüfen Login, Rolle und teilweise Ownership                            |
+| Autorisierung             | Creator-Bereiche prüfen Login, Rolle und Hive-Ownership |
+| Passwortschutz            | Passwörter werden sicher gehasht gespeichert |
+| Eingabevalidierung        | Serverseitige Validierung von Benutzereingaben wie Bestellmengen |     
 | Headless API              | `/api/hives` liefert JSON                                                               |
 | Kein JavaScript           | Die App nutzt HTML, CSS, Flask und Jinja2, aber kein eigenes JavaScript                 |
 | Lokal ausführbar          | Start über `python app.py` oder `python3 app.py`                                        |
@@ -342,3 +346,16 @@ http://127.0.0.1:5001/
 http://127.0.0.1:5001/hives
 http://127.0.0.1:5001/api/hives
 ```
+## Funktionstests
+
+Die Backend-Funktionstests können mit folgendem Befehl ausgeführt werden:
+
+```bash
+python3 test_functionality.py
+Die Tests prüfen:
+
+* Passwort-Hashing
+* ungültige Rollen bei Hive-Zuordnungen
+* ungültige Bestellmengen
+
+Die Tests dienen dazu, zentrale Sicherheits- und Validierungsfunktionen der Anwendung reproduzierbar zu überprüfen.
