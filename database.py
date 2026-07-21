@@ -511,30 +511,28 @@ def update_user_profile(
     city,
     country
 ):
-    connection = get_connection()
-
-    # hier speichern wir Änderungen am Profil des eingeloggten Nutzers
-    connection.execute("""
-        UPDATE users
-        SET
-            name = ?,
-            email = ?,
-            role = ?,
-            street = ?,
-            postal_code = ?,
-            city = ?,
-            country = ?
-        WHERE id = ?
-    """, (
-        name,
-        email,
-        role,
-        street,
-        postal_code,
-        city,
-        country,
-        user_id
-    ))
+    with database_transaction() as connection:
+        connection.execute("""
+            UPDATE users
+            SET
+                name = ?,
+                email = ?,
+                role = ?,
+                street = ?,
+                postal_code = ?,
+                city = ?,
+                country = ?
+            WHERE id = ?
+        """, (
+            name,
+            email,
+            role,
+            street,
+            postal_code,
+            city,
+            country,
+            user_id
+        ))
 
     connection.commit()
     connection.close()
