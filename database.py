@@ -568,6 +568,51 @@ def get_hive_creator_id(hive_id):
 
     return None
 
+def can_users_chat_in_hive(hive_id, user1_id, user2_id):
+    # Niemand darf mit sich selbst chatten.
+    if user1_id == user2_id:
+        return False
+
+    connection = get_connection()
+
+    try:
+        relations = connection.execute("""
+            SELECT
+                user_id,
+                relation_type
+            FROM user_hives
+            WHERE hive_id = ?
+            AND user_id IN (?, ?)
+        """, (
+            hive_id,
+            user1_id,
+            user2_id
+        )).fetchall()
+
+    finally:
+        connection.close()
+
+    creator_ids = {
+        relation["user_id"]
+        for relation in relations
+        if relation["relation_type"] == "creator"
+    }
+
+    buyer_ids = {
+        relation["user_id"]
+        for relation in relations
+        if relation["relation_type"] == "buyer"
+    }
+
+    return (
+        user1_id in creator_ids
+        and user2_id in buyer_ids
+    ) or (
+        user2_id in creator_ids
+        and user1_id in buyer_ids
+    )
+
+
 
 def insert_hive_tier(hive_id, threshold_quantity, discount_percent):
     if threshold_quantity < 1:
