@@ -8,6 +8,8 @@ from database import (
     get_hive_creator_id,
     get_user_by_id,
     can_users_chat_in_hive,
+    is_deadline_expired,
+    get_hive_status,
     get_connection,
     calculate_current_price,
     get_hive_tiers
@@ -51,14 +53,20 @@ def register_hive_routes(app):
         creator_id = get_hive_creator_id(hive_id)
         current_user_id = session.get("user_id")
 
-        # Nur Käufer dürfen einem fremden Hive beitreten.
+        hive_status = get_hive_status(
+            hive["deadline"],
+            hive["current_participants"],
+            hive["min_participants"]
+        )
+
+        # Nur Käufer dürfen einem offenen fremden Hive beitreten.
         can_join = (
             current_user_id is not None
             and session.get("role") == "buyer"
             and current_user_id != creator_id
+            and hive_status != "Abgelaufen"
         )
 
-        # Der Chat-Link erscheint nur für einen tatsächlichen Buyer.
         can_chat = (
             current_user_id is not None
             and creator_id is not None
@@ -79,7 +87,8 @@ def register_hive_routes(app):
             current_price=current_price,
             tiers=tiers,
             can_join=can_join,
-            can_chat=can_chat
+            can_chat=can_chat,
+            hive_status=hive_status
         )
 
     @app.route(
@@ -101,6 +110,12 @@ def register_hive_routes(app):
 
         if hive is None:
             return "Hive wurde nicht gefunden.", 404
+        
+        if is_deadline_expired(hive["deadline"]):
+            return (
+                "Die Bestellfrist für diesen Hive ist abgelaufen.",
+                409
+            )
 
         # Der Creator darf seinem eigenen Hive
         # niemals als Käufer beitreten
