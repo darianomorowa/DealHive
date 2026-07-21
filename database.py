@@ -541,22 +541,21 @@ def update_user_profile(
 
 
 def save_private_message(hive_id, sender_id, receiver_id, text):
-    connection = get_connection()
-
-    connection.execute("""
-        INSERT INTO messages (
+    with database_transaction() as connection:
+        connection.execute("""
+            INSERT INTO messages (
+                hive_id,
+                sender_id,
+                receiver_id,
+                message_text
+            )
+            VALUES (?, ?, ?, ?)
+        """, (
             hive_id,
             sender_id,
             receiver_id,
-            message_text
-        )
-        VALUES (?, ?, ?, ?)
-    """, (
-        hive_id,
-        sender_id,
-        receiver_id,
-        text
-    ))
+            text
+        ))
 
     connection.commit()
     connection.close()
