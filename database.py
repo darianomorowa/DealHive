@@ -310,13 +310,21 @@ def create_test_user(
     city,
     country
 ):
-    connection = get_connection()
-
-    # hier legen wir einen Testnutzer an, falls es ihn noch nicht gibt
-    # INSERT OR IGNORE verhindert doppelte Testnutzer,
-    # wenn test_database.py mehrfach läuft
-    connection.execute("""
-        INSERT OR IGNORE INTO users (
+    with database_transaction() as connection:
+        connection.execute("""
+            INSERT OR IGNORE INTO users (
+                username,
+                name,
+                email,
+                password_hash,
+                role,
+                street,
+                postal_code,
+                city,
+                country
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
             username,
             name,
             email,
@@ -326,30 +334,13 @@ def create_test_user(
             postal_code,
             city,
             country
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (
-        username,
-        name,
-        email,
-        password_hash,
-        role,
-        street,
-        postal_code,
-        city,
-        country
-    ))
+        ))
 
-    # danach holen wir die ID,
-    # damit wir den Nutzer mit Hives verbinden können
-    user = connection.execute("""
-        SELECT id
-        FROM users
-        WHERE username = ?
-    """, (username,)).fetchone()
-
-    connection.commit()
-    connection.close()
+        user = connection.execute("""
+            SELECT id
+            FROM users
+            WHERE username = ?
+        """, (username,)).fetchone()
 
     return user["id"]
 
