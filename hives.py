@@ -41,39 +41,45 @@ def register_hive_routes(app):
             selected_game_system=selected_game_system
         )
 
-    @app.route("/hives/<int:hive_id>")
+        @app.route("/hives/<int:hive_id>")
     def hive_detail(hive_id):
         hive = get_hive_by_id(hive_id)
 
         if hive is None:
-            return "Hive wurde nicht gefunden."
+            return "Hive wurde nicht gefunden.", 404
 
-        # Wir holen die ID des Erstellers,
-        # damit der Button weiß, an wen der Chat geht
         creator_id = get_hive_creator_id(hive_id)
+        current_user_id = session.get("user_id")
 
-        # Nur Käufer dürfen einem fremden Hive beitreten
+        # Nur Käufer dürfen einem fremden Hive beitreten.
         can_join = (
-            session.get("user_id") is not None
+            current_user_id is not None
             and session.get("role") == "buyer"
-            and session["user_id"] != creator_id
+            and current_user_id != creator_id
         )
 
-        # Liveberechnung des Stückpreises
-        # basierend auf Anzahl der Bestellungen
+        # Der Chat-Link erscheint nur für einen tatsächlichen Buyer.
+        can_chat = (
+            current_user_id is not None
+            and creator_id is not None
+            and can_users_chat_in_hive(
+                hive_id,
+                current_user_id,
+                creator_id
+            )
+        )
+
         current_price = calculate_current_price(hive_id)
         tiers = get_hive_tiers(hive_id)
 
-        # hier geben wir den gefundenen Hive, den Creator,
-        # den aktuellen Preis und die Rabattstufen
-        # an die Detail-HTML-Datei weiter
         return render_template(
             "hive_detail.html",
             hive=hive,
             creator_id=creator_id,
             current_price=current_price,
             tiers=tiers,
-            can_join=can_join
+            can_join=can_join,
+            can_chat=can_chat
         )
 
     @app.route(
