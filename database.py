@@ -699,15 +699,6 @@ def replace_hive_tiers(hive_id, thresholds, discounts):
                 discount_percent
             ))
 
-        connection.commit()
-
-    except Exception:
-        connection.rollback()
-        raise
-
-    finally:
-        connection.close()
-
 
 def calculate_current_price(hive_id):
     # Berechnet den aktuellen, dynamischen Preis pro Stück
