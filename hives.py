@@ -138,7 +138,7 @@ def register_hive_routes(app):
     # EBAY-UPDATE:
     # Die Chat-Route braucht jetzt zwingend die partner_id,
     # mit der man gerade schreibt
-    @app.route(
+      @app.route(
         "/hives/<int:hive_id>/chat/<int:partner_id>",
         methods=["GET", "POST"]
     )
@@ -146,28 +146,54 @@ def register_hive_routes(app):
         if session.get("user_id") is None:
             return redirect("/login")
 
-        current_user = session["user_id"]
+        current_user_id = session["user_id"]
+
+        # Alte Sessions mit einem nicht mehr vorhandenen Nutzer beenden.
+        if get_user_by_id(current_user_id) is None:
+            session.clear()
+            return redirect("/login")
+
+        hive = get_hive_by_id(hive_id)
+
+        if hive is None:
+            return "Hive wurde nicht gefunden.", 404
+
+        partner = get_user_by_id(partner_id)
+
+        if partner is None:
+            return "Chatpartner wurde nicht gefunden.", 404
+
+        # Nur Creator und tatsächlicher Buyer dieses Hives dürfen chatten.
+        if not can_users_chat_in_hive(
+            hive_id,
+            current_user_id,
+            partner_id
+        ):
+            return "Du hast keinen Zugriff auf diesen Chat.", 403
 
         if request.method == "POST":
-            message_text = request.form.get("message_text")
+            message_text = request.form.get(
+                "message_text",
+                ""
+            ).strip()
 
-            if message_text:
-                save_private_message(
-                    hive_id,
-                    current_user,
-                    partner_id,
-                    message_text
-                )
+            if not message_text:
+                return "Bitte gib eine Nachricht ein.", 400
+
+            save_private_message(
+                hive_id,
+                current_user_id,
+                partner_id,
+                message_text
+            )
 
             return redirect(
                 f"/hives/{hive_id}/chat/{partner_id}"
             )
 
-        hive = get_hive_by_id(hive_id)
-
         messages = get_private_messages(
             hive_id,
-            current_user,
+            current_user_id,
             partner_id
         )
 
