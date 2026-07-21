@@ -8,7 +8,8 @@ from database import (
     get_hive_creator_id,
     update_hive,
     get_hive_tiers,
-    replace_hive_tiers
+    replace_hive_tiers,
+    get_hive_status
 )
 
 
@@ -272,11 +273,23 @@ def register_creator_routes(app):
             "creator"
         )
 
+        hives_with_status = []
+
+        for hive in hives:
+            hive_data = dict(hive)
+
+            hive_data["status"] = get_hive_status(
+                hive["deadline"],
+                hive["current_participants"],
+                hive["min_participants"]
+            )
+
+            hives_with_status.append(hive_data)
+
         return render_template(
             "creator_dashboard.html",
-            hives=hives
+            hives=hives_with_status
         )
-
 
     @app.route(
         "/creator/hives/<int:hive_id>/edit",
