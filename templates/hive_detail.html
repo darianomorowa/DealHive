@@ -27,6 +27,11 @@
         <strong>Deadline:</strong>
         {{ hive["deadline"] }}
     </p>
+    
+    <p>
+        <strong>Status:</strong>
+        {{ hive_status }}
+    </p>
 
     <p>
         <strong>Basispreis pro Stück:</strong>
@@ -75,7 +80,7 @@
             </form>
         {% endif %}
 
-        {% if creator_id and session.get("user_id") != creator_id %}
+        {% if can_chat %}
             <a
                 class="button-link"
                 href="/hives/{{ hive['id'] }}/chat/{{ creator_id }}"

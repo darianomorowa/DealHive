@@ -6,6 +6,10 @@ from database import (
     save_private_message,
     get_private_messages,
     get_hive_creator_id,
+    get_user_by_id,
+    can_users_chat_in_hive,
+    is_deadline_expired,
+    get_hive_status,
     get_connection,
     calculate_current_price,
     get_hive_tiers
@@ -16,7 +20,6 @@ def register_hive_routes(app):
 
     @app.route("/hives")
     def hives_overview():
-        # Alle bestehenden Hives aus der Datenbank abrufen
         hives = get_all_hives()
 
         selected_game_system = request.args.get(
@@ -27,11 +30,19 @@ def register_hive_routes(app):
         filtered_hives = []
 
         for hive in hives:
-            if selected_game_system == "all":
-                filtered_hives.append(hive)
+            if (
+                selected_game_system == "all"
+                or hive["game_system"] == selected_game_system
+            ):
+                hive_data = dict(hive)
 
-            elif hive["game_system"] == selected_game_system:
-                filtered_hives.append(hive)
+                hive_data["status"] = get_hive_status(
+                    hive["deadline"],
+                    hive["current_participants"],
+                    hive["min_participants"]
+                )
+
+                filtered_hives.append(hive_data)
 
         return render_template(
             "hives.html",
@@ -44,34 +55,47 @@ def register_hive_routes(app):
         hive = get_hive_by_id(hive_id)
 
         if hive is None:
-            return "Hive wurde nicht gefunden."
+            return "Hive wurde nicht gefunden.", 404
 
-        # Wir holen die ID des Erstellers,
-        # damit der Button weiß, an wen der Chat geht
         creator_id = get_hive_creator_id(hive_id)
+        current_user_id = session.get("user_id")
 
-        # Nur Käufer dürfen einem fremden Hive beitreten
-        can_join = (
-            session.get("user_id") is not None
-            and session.get("role") == "buyer"
-            and session["user_id"] != creator_id
+        hive_status = get_hive_status(
+            hive["deadline"],
+            hive["current_participants"],
+            hive["min_participants"]
         )
 
-        # Liveberechnung des Stückpreises
-        # basierend auf Anzahl der Bestellungen
+        # Nur Käufer dürfen einem offenen fremden Hive beitreten.
+        can_join = (
+            current_user_id is not None
+            and session.get("role") == "buyer"
+            and current_user_id != creator_id
+            and hive_status != "Abgelaufen"
+        )
+
+        can_chat = (
+            current_user_id is not None
+            and creator_id is not None
+            and can_users_chat_in_hive(
+                hive_id,
+                current_user_id,
+                creator_id
+            )
+        )
+
         current_price = calculate_current_price(hive_id)
         tiers = get_hive_tiers(hive_id)
 
-        # hier geben wir den gefundenen Hive, den Creator,
-        # den aktuellen Preis und die Rabattstufen
-        # an die Detail-HTML-Datei weiter
         return render_template(
             "hive_detail.html",
             hive=hive,
             creator_id=creator_id,
             current_price=current_price,
             tiers=tiers,
-            can_join=can_join
+            can_join=can_join,
+            can_chat=can_chat,
+            hive_status=hive_status
         )
 
     @app.route(
@@ -93,6 +117,12 @@ def register_hive_routes(app):
 
         if hive is None:
             return "Hive wurde nicht gefunden.", 404
+        
+        if is_deadline_expired(hive["deadline"]):
+            return (
+                "Die Bestellfrist für diesen Hive ist abgelaufen.",
+                409
+            )
 
         # Der Creator darf seinem eigenen Hive
         # niemals als Käufer beitreten
@@ -144,28 +174,54 @@ def register_hive_routes(app):
         if session.get("user_id") is None:
             return redirect("/login")
 
-        current_user = session["user_id"]
+        current_user_id = session["user_id"]
+
+        # Alte Sessions mit einem nicht mehr vorhandenen Nutzer beenden.
+        if get_user_by_id(current_user_id) is None:
+            session.clear()
+            return redirect("/login")
+
+        hive = get_hive_by_id(hive_id)
+
+        if hive is None:
+            return "Hive wurde nicht gefunden.", 404
+
+        partner = get_user_by_id(partner_id)
+
+        if partner is None:
+            return "Chatpartner wurde nicht gefunden.", 404
+
+        # Nur Creator und tatsächlicher Buyer dieses Hives dürfen chatten.
+        if not can_users_chat_in_hive(
+            hive_id,
+            current_user_id,
+            partner_id
+        ):
+            return "Du hast keinen Zugriff auf diesen Chat.", 403
 
         if request.method == "POST":
-            message_text = request.form.get("message_text")
+            message_text = request.form.get(
+                "message_text",
+                ""
+            ).strip()
 
-            if message_text:
-                save_private_message(
-                    hive_id,
-                    current_user,
-                    partner_id,
-                    message_text
-                )
+            if not message_text:
+                return "Bitte gib eine Nachricht ein.", 400
+
+            save_private_message(
+                hive_id,
+                current_user_id,
+                partner_id,
+                message_text
+            )
 
             return redirect(
                 f"/hives/{hive_id}/chat/{partner_id}"
             )
 
-        hive = get_hive_by_id(hive_id)
-
         messages = get_private_messages(
             hive_id,
-            current_user,
+            current_user_id,
             partner_id
         )
 

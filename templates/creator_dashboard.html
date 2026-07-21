@@ -39,13 +39,9 @@
                     {{ hive["deadline"] }}
                 </p>
 
-                <p>
+                                <p>
                     <strong>Status:</strong>
-                    {% if hive["current_participants"] >= hive["min_participants"] %}
-                        Mindestmenge erreicht
-                    {% else %}
-                        Offen
-                    {% endif %}
+                    {{ hive["status"] }}
                 </p>
 
                 <div class="hive-actions">

@@ -1,14 +1,14 @@
 from flask import render_template, request, redirect, session
+from datetime import date
 from database import (
-    insert_hive,
+    create_hive_with_tiers,
     get_hives_for_user,
-    assign_hive_to_user,
-    insert_hive_tier,
     get_hive_by_id,
     get_hive_creator_id,
     update_hive,
     get_hive_tiers,
-    replace_hive_tiers
+    replace_hive_tiers,
+    get_hive_status
 )
 
 
@@ -77,6 +77,17 @@ def validate_tiers(thresholds, discounts):
         previous_discount = discount
 
     return None, validated_tiers
+
+def validate_deadline(deadline_value):
+    try:
+        parsed_deadline = date.fromisoformat(deadline_value)
+    except (TypeError, ValueError):
+        return "Bitte gib eine gültige Deadline im Format JJJJ-MM-TT ein."
+
+    if parsed_deadline < date.today():
+        return "Die Deadline darf nicht in der Vergangenheit liegen."
+
+    return None
 
 
 def register_creator_routes(app):
@@ -193,6 +204,22 @@ def register_creator_routes(app):
                             "Der Basispreis darf nicht negativ sein."
                         )
                     )
+                deadline_error = validate_deadline(deadline)
+
+                if deadline_error:
+                    return render_template(
+                        "create_hive.html",
+                        thresholds=thresholds,
+                        discounts=discounts,
+                        title=title,
+                        game_system=game_system,
+                        short_description=short_description,
+                        description=description,
+                        min_participants=min_participants,
+                        base_price=base_price,
+                        deadline=deadline,
+                        error_message=deadline_error
+                    )
 
                 validation_error, validated_tiers = validate_tiers(
                     thresholds,
@@ -214,37 +241,19 @@ def register_creator_routes(app):
                         error_message=validation_error
                     )
 
-                # Neue Hives starten mit einer Bestellmenge von 0
-                current_participants = 0
-
-                # Den neuen Datensatz über database.py
-                # in die zentrale hives-Tabelle schreiben
-                new_hive_id = insert_hive(
+                # Hive, Creator-Zuordnung und Rabattstaffeln
+                # werden gemeinsam in einer Transaktion gespeichert.
+                create_hive_with_tiers(
+                    session["user_id"],
                     title,
                     game_system,
                     short_description,
                     description,
                     deadline,
-                    current_participants,
                     min_participants_number,
-                    base_price_number
+                    base_price_number,
+                    validated_tiers
                 )
-
-                # Den neu erstellten Hive direkt
-                # dem eingeloggten Creator zuordnen
-                assign_hive_to_user(
-                    session["user_id"],
-                    new_hive_id,
-                    "creator"
-                )
-
-                # Alle geprüften Rabattstaffeln speichern
-                for threshold, discount in validated_tiers:
-                    insert_hive_tier(
-                        new_hive_id,
-                        threshold,
-                        discount
-                    )
 
                 # Nach erfolgreichem Speichern
                 # zum Creator Dashboard umleiten
@@ -272,11 +281,23 @@ def register_creator_routes(app):
             "creator"
         )
 
+        hives_with_status = []
+
+        for hive in hives:
+            hive_data = dict(hive)
+
+            hive_data["status"] = get_hive_status(
+                hive["deadline"],
+                hive["current_participants"],
+                hive["min_participants"]
+            )
+
+            hives_with_status.append(hive_data)
+
         return render_template(
             "creator_dashboard.html",
-            hives=hives
+            hives=hives_with_status
         )
-
 
     @app.route(
         "/creator/hives/<int:hive_id>/edit",
@@ -460,6 +481,24 @@ def register_creator_routes(app):
                     error_message=(
                         "Der Basispreis darf nicht negativ sein."
                     )
+                )
+            deadline_error = validate_deadline(deadline)
+
+            if deadline_error:
+                return render_template(
+                    "edit_hive.html",
+                    hive=hive,
+                    thresholds=thresholds,
+                    discounts=discounts,
+                    locked_tiers=locked_tiers,
+                    title=title,
+                    game_system=game_system,
+                    short_description=short_description,
+                    description=description,
+                    min_participants=min_participants,
+                    base_price=base_price,
+                    deadline=deadline,
+                    error_message=deadline_error
                 )
 
             validation_error, validated_tiers = validate_tiers(
