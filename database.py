@@ -799,3 +799,76 @@ def get_buyers_for_hive(hive_id):
     connection.close()
 
     return buyers
+
+
+def create_hive_with_tiers(
+    creator_id,
+    title,
+    game_system,
+    short_description,
+    description,
+    deadline,
+    min_participants,
+    base_price,
+    tiers
+):
+    # Hive, Creator-Zuordnung und Rabattstaffeln werden
+    # vollständig in derselben Transaktion gespeichert.
+    with database_transaction() as connection:
+        cursor = connection.execute("""
+            INSERT INTO hives (
+                title,
+                game_system,
+                short_description,
+                description,
+                deadline,
+                current_participants,
+                min_participants,
+                base_price
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            title,
+            game_system,
+            short_description,
+            description,
+            deadline,
+            0,
+            min_participants,
+            base_price
+        ))
+
+        new_hive_id = cursor.lastrowid
+
+        connection.execute("""
+            INSERT INTO user_hives (
+                user_id,
+                hive_id,
+                relation_type,
+                quantity
+            )
+            VALUES (?, ?, ?, ?)
+        """, (
+            creator_id,
+            new_hive_id,
+            "creator",
+            1
+        ))
+
+        connection.executemany("""
+            INSERT INTO hive_tiers (
+                hive_id,
+                threshold_quantity,
+                discount_percent
+            )
+            VALUES (?, ?, ?)
+        """, [
+            (
+                new_hive_id,
+                threshold,
+                discount
+            )
+            for threshold, discount in tiers
+        ])
+
+    return new_hive_id
