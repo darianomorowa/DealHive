@@ -1,4 +1,5 @@
 import sqlite3
+from contextlib import contextmanager
 from datetime import date
 from pathlib import Path
 
@@ -49,6 +50,21 @@ def get_connection():
 
     # wir geben die Verbindung zurück, damit andere Funktionen sie nutzen können
     return connection
+
+@contextmanager
+def database_transaction():
+    connection = get_connection()
+
+    try:
+        yield connection
+        connection.commit()
+
+    except Exception:
+        connection.rollback()
+        raise
+
+    finally:
+        connection.close()
 
 
 def create_tables():
