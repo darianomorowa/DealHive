@@ -1,4 +1,5 @@
 import os
+from datetime import date, timedelta
 
 from werkzeug.security import generate_password_hash
 from database import (
@@ -134,6 +135,11 @@ for buyer in test_buyers:
 
     buyer_ids[buyer[0]] = buyer_id
 
+def future_deadline(days_from_today):
+    return (
+        date.today() + timedelta(days=days_from_today)
+    ).isoformat()
+
 
 # Demo-Hives mit Basispreis, Mindestmenge, aktuellen Bestellungen und Rabattstaffeln
 # current_participants entspricht hier der Summe der unten eingetragenen Buyer-Mengen
@@ -143,7 +149,7 @@ test_hives = [
         "game_system": "D&D",
         "short_description": "Handgemachtes Würfelset mit Drachenmotiv.",
         "description": "Ein 7-teiliges Resin-Würfelset mit Drachenmotiv für Fantasy-Rollenspiele.",
-        "deadline": "31.05.2026",
+        "deadline": future_deadline(30),
         "min_participants": 20,
         "base_price": 35.00,
         "creator": "dice_creator",
@@ -163,7 +169,7 @@ test_hives = [
         "game_system": "D&D",
         "short_description": "Modulares Terrain für Dungeon-Runden.",
         "description": "Ein Set aus modularen Dungeon-Teilen für Pen-&-Paper-Kämpfe, Burgen und Verliese.",
-        "deadline": "28.05.2026",
+        "deadline": future_deadline(40),
         "min_participants": 40,
         "base_price": 89.00,
         "creator": "terrain_creator",
@@ -182,7 +188,7 @@ test_hives = [
         "game_system": "Systemunabhängig",
         "short_description": "Schlichter Würfelturm aus Holz.",
         "description": "Ein stabiler Würfelturm aus Holz für Brettspiele, TTRPGs und gemütliche Spielabende.",
-        "deadline": "02.06.2026",
+        "deadline": future_deadline(50),
         "min_participants": 25,
         "base_price": 24.99,
         "creator": "dice_creator",
@@ -201,7 +207,7 @@ test_hives = [
         "game_system": "Warhammer Fantasy",
         "short_description": "Kleine Goblin-Miniaturen zum Bemalen.",
         "description": "Ein Set aus Goblin-Miniaturen für Tabletop-Spiele, Bemalprojekte und kleine Fantasy-Armeen.",
-        "deadline": "05.06.2026",
+        "deadline": future_deadline(60),
         "min_participants": 30,
         "base_price": 49.99,
         "creator": "miniature_creator",
@@ -220,7 +226,7 @@ test_hives = [
         "game_system": "Pathfinder",
         "short_description": "Kartenhalter im Zauberbuch-Stil.",
         "description": "Ein Kartenhalter für Zauber-, Item- oder Monsterkarten im Look eines alten Zauberbuchs.",
-        "deadline": "10.06.2026",
+        "deadline": future_deadline(70),
         "min_participants": 15,
         "base_price": 19.99,
         "creator": "dice_creator",
@@ -239,7 +245,7 @@ test_hives = [
         "game_system": "D&D",
         "short_description": "Token für Zustände und Gegner.",
         "description": "Ein Token-Set für Zustände, Gegner, Marker und wichtige Momente in längeren Kampagnen.",
-        "deadline": "15.06.2026",
+        "deadline": future_deadline(80),
         "min_participants": 50,
         "base_price": 14.99,
         "creator": "terrain_creator",
@@ -258,7 +264,7 @@ test_hives = [
         "game_system": "Systemunabhängig",
         "short_description": "Blaues Resin-Würfelset mit Nebel-Effekt.",
         "description": "Ein handgemachtes Würfelset aus Resin mit blauem Nebel-Effekt für verschiedene Rollenspielsysteme.",
-        "deadline": "20.06.2026",
+        "deadline": future_deadline(90),
         "min_participants": 20,
         "base_price": 32.50,
         "creator": "dice_creator",
@@ -277,7 +283,7 @@ test_hives = [
         "game_system": "Warhammer 40k",
         "short_description": "Bedruckte Spielmatte für Gefechte.",
         "description": "Eine Spielmatte für Tabletop-Gefechte mit Geländeoptik.",
-        "deadline": "25.06.2026",
+        "deadline": future_deadline(100),
         "min_participants": 30,
         "base_price": 59.99,
         "creator": "miniature_creator",
@@ -296,7 +302,7 @@ test_hives = [
         "game_system": "D&D",
         "short_description": "Würfelturm in Form eines Mimics.",
         "description": "Ein Würfelturm im Mimic-Design für Fantasy-Rollenspiele und Spieltische mit etwas Chaos.",
-        "deadline": "30.06.2026",
+        "deadline": future_deadline(110),
         "min_participants": 25,
         "base_price": 39.99,
         "creator": "dice_creator",
@@ -315,7 +321,7 @@ test_hives = [
         "game_system": "Pathfinder",
         "short_description": "Kurzes Abenteuer-Modul für eine Session.",
         "description": "Ein kurzes Fantasy-Abenteuer rund um eine verlassene Krypta und eine wütende Bienenkönigin.",
-        "deadline": "05.07.2026",
+        "deadline": future_deadline(120),
         "min_participants": 20,
         "base_price": 9.99,
         "creator": "terrain_creator",
