@@ -1,10 +1,8 @@
 from flask import render_template, request, redirect, session
 from datetime import date
 from database import (
-    insert_hive,
+    create_hive_with_tiers,
     get_hives_for_user,
-    assign_hive_to_user,
-    insert_hive_tier,
     get_hive_by_id,
     get_hive_creator_id,
     update_hive,
@@ -243,37 +241,19 @@ def register_creator_routes(app):
                         error_message=validation_error
                     )
 
-                # Neue Hives starten mit einer Bestellmenge von 0
-                current_participants = 0
-
-                # Den neuen Datensatz über database.py
-                # in die zentrale hives-Tabelle schreiben
-                new_hive_id = insert_hive(
+                # Hive, Creator-Zuordnung und Rabattstaffeln
+                # werden gemeinsam in einer Transaktion gespeichert.
+                create_hive_with_tiers(
+                    session["user_id"],
                     title,
                     game_system,
                     short_description,
                     description,
                     deadline,
-                    current_participants,
                     min_participants_number,
-                    base_price_number
+                    base_price_number,
+                    validated_tiers
                 )
-
-                # Den neu erstellten Hive direkt
-                # dem eingeloggten Creator zuordnen
-                assign_hive_to_user(
-                    session["user_id"],
-                    new_hive_id,
-                    "creator"
-                )
-
-                # Alle geprüften Rabattstaffeln speichern
-                for threshold, discount in validated_tiers:
-                    insert_hive_tier(
-                        new_hive_id,
-                        threshold,
-                        discount
-                    )
 
                 # Nach erfolgreichem Speichern
                 # zum Creator Dashboard umleiten
