@@ -269,31 +269,28 @@ def update_hive(
     min_participants,
     base_price
 ):
-    connection = get_connection()
-
-    # hier aktualisieren wir die Grunddaten eines bestehenden Hives
-    # die aktuelle Stückmenge wird aus den Bestellungen berechnet
-    connection.execute("""
-        UPDATE hives
-        SET
-            title = ?,
-            game_system = ?,
-            short_description = ?,
-            description = ?,
-            deadline = ?,
-            min_participants = ?,
-            base_price = ?
-        WHERE id = ?
-    """, (
-        title,
-        game_system,
-        short_description,
-        description,
-        deadline,
-        min_participants,
-        base_price,
-        hive_id
-    ))
+    with database_transaction() as connection:
+        connection.execute("""
+            UPDATE hives
+            SET
+                title = ?,
+                game_system = ?,
+                short_description = ?,
+                description = ?,
+                deadline = ?,
+                min_participants = ?,
+                base_price = ?
+            WHERE id = ?
+        """, (
+            title,
+            game_system,
+            short_description,
+            description,
+            deadline,
+            min_participants,
+            base_price,
+            hive_id
+        ))
 
     connection.commit()
     connection.close()
