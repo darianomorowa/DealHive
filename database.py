@@ -222,12 +222,20 @@ def insert_hive(
     min_participants,
     base_price=0.0
 ):
-    connection = get_connection()
-
-    # hier speichern wir einen neuen Hive
-    # current_participants bleibt für das alte Seed-Skript erhalten
-    cursor = connection.execute("""
-        INSERT INTO hives (
+    with database_transaction() as connection:
+        cursor = connection.execute("""
+            INSERT INTO hives (
+                title,
+                game_system,
+                short_description,
+                description,
+                deadline,
+                current_participants,
+                min_participants,
+                base_price
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
             title,
             game_system,
             short_description,
@@ -236,25 +244,9 @@ def insert_hive(
             current_participants,
             min_participants,
             base_price
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, (
-        title,
-        game_system,
-        short_description,
-        description,
-        deadline,
-        current_participants,
-        min_participants,
-        base_price
-    ))
+        ))
 
-    # hier merken wir uns die ID vom gerade erstellten Hive
-    new_hive_id = cursor.lastrowid
-
-    # commit fürs eigentliche Speichern
-    connection.commit()
-    connection.close()
+        new_hive_id = cursor.lastrowid
 
     return new_hive_id
 
