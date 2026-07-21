@@ -20,7 +20,6 @@ def register_hive_routes(app):
 
     @app.route("/hives")
     def hives_overview():
-        # Alle bestehenden Hives aus der Datenbank abrufen
         hives = get_all_hives()
 
         selected_game_system = request.args.get(
@@ -31,11 +30,19 @@ def register_hive_routes(app):
         filtered_hives = []
 
         for hive in hives:
-            if selected_game_system == "all":
-                filtered_hives.append(hive)
+            if (
+                selected_game_system == "all"
+                or hive["game_system"] == selected_game_system
+            ):
+                hive_data = dict(hive)
 
-            elif hive["game_system"] == selected_game_system:
-                filtered_hives.append(hive)
+                hive_data["status"] = get_hive_status(
+                    hive["deadline"],
+                    hive["current_participants"],
+                    hive["min_participants"]
+                )
+
+                filtered_hives.append(hive_data)
 
         return render_template(
             "hives.html",
