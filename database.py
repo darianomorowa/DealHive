@@ -676,11 +676,7 @@ def get_hive_tiers(hive_id):
 
 
 def replace_hive_tiers(hive_id, thresholds, discounts):
-    connection = get_connection()
-
-    try:
-        # hier löschen wir zuerst die alten Preisstufen dieses Hives
-        # danach speichern wir die bereits geprüften Werte neu
+    with database_transaction() as connection:
         connection.execute("""
             DELETE FROM hive_tiers
             WHERE hive_id = ?
