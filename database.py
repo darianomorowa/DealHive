@@ -271,8 +271,7 @@ def update_hive(
             hive_id
         ))
 
-    connection.commit()
-    connection.close()
+    
 
 
 def create_test_user(
@@ -426,8 +425,7 @@ def create_user(
             country
         ))
 
-    connection.commit()
-    connection.close()
+   
 
 
 def get_user_by_username(username):
@@ -491,8 +489,7 @@ def update_user_profile(
             user_id
         ))
 
-    connection.commit()
-    connection.close()
+   
 
 
 def save_private_message(hive_id, sender_id, receiver_id, text):
@@ -512,8 +509,6 @@ def save_private_message(hive_id, sender_id, receiver_id, text):
             text
         ))
 
-    connection.commit()
-    connection.close()
 
 
 def get_private_messages(hive_id, user1_id, user2_id):
