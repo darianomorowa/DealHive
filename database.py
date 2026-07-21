@@ -68,85 +68,72 @@ def database_transaction():
 
 
 def create_tables():
-    # hier holen wir uns eine Verbindung zur Datenbank
-    connection = get_connection()
+    with database_transaction() as connection:
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS hives (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                game_system TEXT NOT NULL,
+                short_description TEXT NOT NULL,
+                description TEXT NOT NULL,
+                deadline TEXT NOT NULL,
+                current_participants INTEGER NOT NULL DEFAULT 0,
+                min_participants INTEGER NOT NULL,
+                base_price REAL NOT NULL DEFAULT 0.0
+            )
+        """)
 
-    # AUTOINCREMENT ist insane - es generiert selber IDs!!!
-    # (jede Zeile bekommt eine eigene ID)
-    # rest ist standart DDL oder so
-    connection.execute("""
-        CREATE TABLE IF NOT EXISTS hives (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
-            game_system TEXT NOT NULL,
-            short_description TEXT NOT NULL,
-            description TEXT NOT NULL,
-            deadline TEXT NOT NULL,
-            current_participants INTEGER NOT NULL DEFAULT 0,
-            min_participants INTEGER NOT NULL,
-            base_price REAL NOT NULL DEFAULT 0.0
-        )
-    """)
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL UNIQUE,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL,
+                password_hash TEXT NOT NULL,
+                role TEXT NOT NULL,
+                street TEXT NOT NULL,
+                postal_code TEXT NOT NULL,
+                city TEXT NOT NULL,
+                country TEXT NOT NULL
+            )
+        """)
 
-    connection.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL UNIQUE,
-            name TEXT NOT NULL,
-            email TEXT NOT NULL,
-            password_hash TEXT NOT NULL,
-            role TEXT NOT NULL,
-            street TEXT NOT NULL,
-            postal_code TEXT NOT NULL,
-            city TEXT NOT NULL,
-            country TEXT NOT NULL
-        )
-    """)
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS user_hives (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL,
+                hive_id INTEGER NOT NULL,
+                relation_type TEXT NOT NULL,
+                quantity INTEGER NOT NULL DEFAULT 1,
+                FOREIGN KEY (user_id) REFERENCES users(id),
+                FOREIGN KEY (hive_id) REFERENCES hives(id),
+                UNIQUE(user_id, hive_id, relation_type)
+            )
+        """)
 
-    connection.execute("""
-        CREATE TABLE IF NOT EXISTS user_hives (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            hive_id INTEGER NOT NULL,
-            relation_type TEXT NOT NULL,
-            quantity INTEGER NOT NULL DEFAULT 1,
-            FOREIGN KEY (user_id) REFERENCES users(id),
-            FOREIGN KEY (hive_id) REFERENCES hives(id),
-            UNIQUE(user_id, hive_id, relation_type)
-        )
-    """)
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS hive_tiers (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                hive_id INTEGER NOT NULL,
+                threshold_quantity INTEGER NOT NULL,
+                discount_percent REAL NOT NULL,
+                FOREIGN KEY (hive_id) REFERENCES hives(id)
+            )
+        """)
 
-    # Tabelle für die Preisstaffeln eines Hives
-    connection.execute("""
-        CREATE TABLE IF NOT EXISTS hive_tiers (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            hive_id INTEGER NOT NULL,
-            threshold_quantity INTEGER NOT NULL,
-            discount_percent REAL NOT NULL,
-            FOREIGN KEY (hive_id) REFERENCES hives(id)
-        )
-    """)
-
-    # Neue Tabelle für Chat-Nachrichten erstellen
-    # FOREIGN KEYs stellen sicher, dass Nachrichten nur zu echten Hives
-    # und Usern gehören
-    connection.execute("""
-        CREATE TABLE IF NOT EXISTS messages (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            hive_id INTEGER NOT NULL,
-            sender_id INTEGER NOT NULL,
-            receiver_id INTEGER NOT NULL,
-            message_text TEXT NOT NULL,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (hive_id) REFERENCES hives(id),
-            FOREIGN KEY (sender_id) REFERENCES users(id),
-            FOREIGN KEY (receiver_id) REFERENCES users(id)
-        )
-    """)
-
-    # commit fürs eigentliche Speichern
-    connection.commit()
-    connection.close()
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS messages (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                hive_id INTEGER NOT NULL,
+                sender_id INTEGER NOT NULL,
+                receiver_id INTEGER NOT NULL,
+                message_text TEXT NOT NULL,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (hive_id) REFERENCES hives(id),
+                FOREIGN KEY (sender_id) REFERENCES users(id),
+                FOREIGN KEY (receiver_id) REFERENCES users(id)
+            )
+        """)
 
 
 def get_all_hives():
