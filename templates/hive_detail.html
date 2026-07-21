@@ -75,7 +75,8 @@
             </form>
         {% endif %}
 
-{% if can_chat %}            <a
+        {% if can_chat %}
+            <a
                 class="button-link"
                 href="/hives/{{ hive['id'] }}/chat/{{ creator_id }}"
             >
