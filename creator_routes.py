@@ -1,4 +1,5 @@
 from flask import render_template, request, redirect, session
+from datetime import date
 from database import (
     insert_hive,
     get_hives_for_user,
@@ -78,6 +79,17 @@ def validate_tiers(thresholds, discounts):
         previous_discount = discount
 
     return None, validated_tiers
+
+def validate_deadline(deadline_value):
+    try:
+        parsed_deadline = date.fromisoformat(deadline_value)
+    except (TypeError, ValueError):
+        return "Bitte gib eine gültige Deadline im Format JJJJ-MM-TT ein."
+
+    if parsed_deadline < date.today():
+        return "Die Deadline darf nicht in der Vergangenheit liegen."
+
+    return None
 
 
 def register_creator_routes(app):
@@ -193,6 +205,22 @@ def register_creator_routes(app):
                         error_message=(
                             "Der Basispreis darf nicht negativ sein."
                         )
+                    )
+                deadline_error = validate_deadline(deadline)
+
+                if deadline_error:
+                    return render_template(
+                        "create_hive.html",
+                        thresholds=thresholds,
+                        discounts=discounts,
+                        title=title,
+                        game_system=game_system,
+                        short_description=short_description,
+                        description=description,
+                        min_participants=min_participants,
+                        base_price=base_price,
+                        deadline=deadline,
+                        error_message=deadline_error
                     )
 
                 validation_error, validated_tiers = validate_tiers(
@@ -473,6 +501,24 @@ def register_creator_routes(app):
                     error_message=(
                         "Der Basispreis darf nicht negativ sein."
                     )
+                )
+            deadline_error = validate_deadline(deadline)
+
+            if deadline_error:
+                return render_template(
+                    "edit_hive.html",
+                    hive=hive,
+                    thresholds=thresholds,
+                    discounts=discounts,
+                    locked_tiers=locked_tiers,
+                    title=title,
+                    game_system=game_system,
+                    short_description=short_description,
+                    description=description,
+                    min_participants=min_participants,
+                    base_price=base_price,
+                    deadline=deadline,
+                    error_message=deadline_error
                 )
 
             validation_error, validated_tiers = validate_tiers(
