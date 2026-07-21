@@ -1,9 +1,40 @@
 import sqlite3
+from datetime import date
 from pathlib import Path
 
 
 # dadurch wird immer die Datenbank neben dieser Python-Datei verwendet
 DATABASE_PATH = Path(__file__).resolve().parent / "dealhive.db"
+
+def parse_deadline(deadline_value):
+    try:
+        return date.fromisoformat(deadline_value)
+    except (TypeError, ValueError):
+        return None
+
+
+def is_deadline_expired(deadline_value):
+    parsed_deadline = parse_deadline(deadline_value)
+
+    # Ungültige Daten werden sicherheitshalber als abgelaufen behandelt.
+    if parsed_deadline is None:
+        return True
+
+    return parsed_deadline < date.today()
+
+
+def get_hive_status(
+    deadline_value,
+    current_quantity,
+    minimum_quantity
+):
+    if is_deadline_expired(deadline_value):
+        return "Abgelaufen"
+
+    if current_quantity >= minimum_quantity:
+        return "Mindestmenge erreicht"
+
+    return "Offen"
 
 
 def get_connection():
