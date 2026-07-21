@@ -6,6 +6,8 @@ from database import (
     save_private_message,
     get_private_messages,
     get_hive_creator_id,
+    get_user_by_id,
+    can_users_chat_in_hive,
     get_connection,
     calculate_current_price,
     get_hive_tiers
