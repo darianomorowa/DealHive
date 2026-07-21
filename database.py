@@ -355,38 +355,29 @@ def create_test_user(
 
 
 def assign_hive_to_user(user_id, hive_id, relation_type, quantity=1):
-    # Nur gültige Rollen erlauben
     if relation_type not in ("creator", "buyer"):
         raise ValueError("Invalid relation_type")
 
     if not isinstance(quantity, int) or quantity < 1:
         raise ValueError("quantity muss mindestens 1 sein")
 
-    connection = get_connection()
-
-    # hier mappen wir einen User auf einen Hive
-    # relation_type sagt, ob der Nutzer Creator oder Käufer dieses Hives ist
-    # quantity speichert, wie viele Stück der Käufer bestellen möchte
-    cursor = connection.execute("""
-        INSERT OR IGNORE INTO user_hives (
+    with database_transaction() as connection:
+        cursor = connection.execute("""
+            INSERT OR IGNORE INTO user_hives (
+                user_id,
+                hive_id,
+                relation_type,
+                quantity
+            )
+            VALUES (?, ?, ?, ?)
+        """, (
             user_id,
             hive_id,
             relation_type,
             quantity
-        )
-        VALUES (?, ?, ?, ?)
-    """, (
-        user_id,
-        hive_id,
-        relation_type,
-        quantity
-    ))
+        ))
 
-    # rowcount sagt uns, ob wirklich eine neue Zuordnung entstanden ist
-    relation_was_created = cursor.rowcount > 0
-
-    connection.commit()
-    connection.close()
+        relation_was_created = cursor.rowcount > 0
 
     return relation_was_created
 
